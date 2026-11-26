@@ -407,7 +407,7 @@ details.ex[open] summary::before{content:"− "}
 .mv-h{font-family:var(--serif);font-weight:500;font-size:clamp(24px,4.4vw,36px);line-height:1.35;margin:6px 0 8px;color:#fff}
 .mv-lead{font-size:13.5px;color:#cfc9c0;margin:0 0 16px}
 .mv-sc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
-#mvSc button[data-sc=move],#mvAdj{display:none !important}
+#mvSc button[data-sc=agy],#mvAdj,#agyWhat{display:none !important}
 .mv-sc button.agy-b{border-color:#7a5a62}
 .mv-sc button.agy-b.on{border-color:#fff;background:#3a2328}
 @media (max-width:520px){.mv-sc button{padding:10px 10px}.mv-sc small{font-size:11px}.mv-sc b{font-size:28px}}
@@ -739,6 +739,47 @@ body.cmode .cm-note{display:block}
 .agy .fin input{width:58px;font:inherit;font-family:var(--mono);font-size:14px;padding:2px 6px;border:1px solid var(--wine);border-radius:6px;background:#fbf1f2;text-align:right}
 .agy .fin input[data-ag=pool]{width:104px}
 .agy .fin .tg{font-size:10px;padding:0 5px;margin-left:2px}
+.agy .ag-what{margin-top:16px;border:2px solid var(--wine);border-radius:16px;padding:14px 16px;background:#fff}
+.agy .ag-what h4{margin:0 0 2px;font-size:16px}
+.agy .ag-what .sub{font-size:12px;color:var(--ink3);margin:0 0 10px}
+.agy .wrk{display:grid;grid-template-columns:28px 1fr auto auto;gap:4px 10px;align-items:center;padding:8px 0;border-top:1px solid var(--hair);font-size:13.5px}
+.agy .wrk .no{font-family:var(--mono);color:var(--wine);font-weight:700;text-align:center}
+.agy .wrk .g{font-family:var(--mono);font-weight:700;color:#1f6b3a;white-space:nowrap}
+.agy .wrk .g.neg{color:var(--ink3)}
+.agy .wrk button,.agy .wctl button{border:1px solid var(--hair);background:#faf9f7;border-radius:999px;padding:4px 10px;font:inherit;font-size:12px;cursor:pointer}
+.agy .wrk.top{background:#fbf1f2;border-radius:10px;padding:8px 6px}
+.agy .wres{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 10px;margin:12px 0 6px;padding:10px 12px;background:#161514;color:#f4f2ee;border-radius:12px}
+.agy .wres b{font-family:var(--serif);font-weight:500;font-size:28px;color:#ff8fa6}
+.agy .wres .from{font-family:var(--serif);font-size:20px;color:#cfc9c0}
+.agy .wres small{flex-basis:100%;font-size:12px;color:#cfc9c0}
+.agy .wctl{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding:7px 0;border-top:1px solid var(--hair);font-size:13.5px}
+.agy .wctl .v{font-size:12.5px;color:var(--ink2)}
+.agy .wctl .v b{color:var(--wine)}
+.agy .wctl .bt{display:flex;gap:6px}
+.agy .wctl button.lo{border-color:#e7a6b4;color:var(--wine)}
+.agy .wh5{margin:14px 0 2px;font-size:13px;color:var(--ink2)}
+.agy .wclr{margin-top:8px;border:0;background:none;color:var(--ink3);text-decoration:underline;font:inherit;font-size:12px;cursor:pointer}
+.wh-adj{background:#221f1d;border:1px solid #3a3532;border-radius:16px;padding:12px 14px;margin-top:12px;color:#f4f2ee}
+.wh-adj .h{font-size:13px;color:#cfc9c0;margin:0 0 6px}
+.wh-adj .r{display:grid;grid-template-columns:1fr auto;gap:2px 8px;align-items:center;padding:8px 0;border-top:1px solid #3a3532}
+.wh-adj .r:first-of-type{border-top:0}
+.wh-adj .n{font-size:13.5px;line-height:1.35}
+.wh-adj .n small{display:block;font-size:12px;color:#cfc9c0}
+.wh-adj .n small b{color:#ff8fa6}
+.wh-adj .best{display:inline-block;background:#ff6b8e;color:#161514;font-size:10.5px;font-weight:700;border-radius:999px;padding:1px 7px;margin-right:4px;vertical-align:1px}
+.wh-adj .gn{font-family:var(--mono);font-size:11px;color:#9fd8ae;margin-left:4px;white-space:nowrap}
+.wh-adj .bt{display:flex;gap:5px}
+.wh-adj button{border:1px solid #4a4542;background:transparent;color:#f4f2ee;border-radius:999px;padding:5px 10px;font:inherit;font-size:12px;cursor:pointer;white-space:nowrap}
+.wh-adj button.lo{border-color:#ff6b8e;color:#ff8fa6}
+.wh-adj .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
+.wh-adj .act{background:#2a2624;border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.wh-adj .act .t{font-size:12px;color:#cfc9c0}
+.wh-adj .act .row{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.wh-adj .act .row b{font-family:var(--mono);font-size:15px;color:#fff}
+.wh-adj .act.chg .row b{color:#ff8fa6}
+.wh-adj .act button{padding:2px 10px;font-size:15px}
+.wh-adj .foot{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.wh-adj .foot button{border:0;color:#cfc9c0;text-decoration:underline;padding:0}
 .agy .ag-reset{margin-top:10px;border:0;background:none;color:var(--ink3);text-decoration:underline;font:inherit;font-size:12px;cursor:pointer}
 </style>
 </head>
@@ -906,10 +947,10 @@ body.cmode .cm-note{display:block}
     <div class="mv-head">
       <div class="step-tag" style="color:#ff8fa6">RESULT</div>
       <h2 class="mv-h">1000人のあなたを、<span id="mvDl">1年後</span>まで走らせる</h2>
-      <p class="mv-lead">同じ条件の「あなた」が1000人いたら、期限までに何人が<b style="color:#fff">結婚が決まる（成婚）</b>か。白く光るのが成婚、ピンクは交際まで進んだ人です。ふだんの出会いと、結婚相談所に入った場合をくらべられます。条件を変えると、ふだんの出会いの人数も変わります。</p>
+      <p class="mv-lead">同じ条件・同じ活動の「あなた」が1000人いたら、期限までに何人が<b style="color:#fff">成婚する</b>か（相談所での活動として計算）。白く光るのが成婚、ピンクは仮交際まで進んだ人です。下で条件や活動を変えると、「条件を変えたあなた」が走ります。</p>
     </div>
     <div class="mv-sc" id="mvSc">
-      <button data-sc="now" class="on"><small>ふだんの出会いの<br>あなた</small><b id="mvNow">–</b></button>
+      <button data-sc="now" class="on"><small>今のままの<br>あなた</small><b id="mvNow">–</b></button>
       <button data-sc="move"><small id="mvMoveLab">1つ変えた<br>（ふだんの出会い）</small><b id="mvMoveN">–</b></button>
       <button data-sc="agy" class="agy-b"><small>結婚相談所に<br>入ったあなた</small><b id="mvAgyN">–</b></button>
     </div>
@@ -922,6 +963,7 @@ body.cmode .cm-note{display:block}
     <div class="mv-title" id="mvTitle" hidden></div>
     <p class="mv-sum" id="mvSum"></p>
     <div class="mv-adj" id="mvAdj"></div>
+    <div class="wh-adj" id="whAdj"></div>
     <div class="mv-btns"><button id="mvReplay">▶ もう一度</button><button id="mvCard" class="pri">結果をカードにする</button><button id="codeOut">友達に送るコード</button></div>
   </section>
   <div class="ob" id="ob" hidden><div class="ob-box">
@@ -953,6 +995,7 @@ body.cmode .cm-note{display:block}
     <p class="prm-d" id="agyHint" style="margin:6px 0 0"></p>
     <div class="ag-cmp" id="agyCmp"></div>
     <div class="ag-res" id="agyRes"></div>
+    <div class="ag-what" id="agyWhat"></div>
     <div class="ag-msg" id="agyMsg"></div>
     <div class="ag-fn">
       <h4>成婚までの内訳<span>枠の数字は全部書きかえられます。割合と期間はあなたの相談所の実績に（このブラウザに残ります）</span></h4>
@@ -1790,12 +1833,13 @@ function mvCompute(){
   const bk=mvAdjUI();
   MV.beh=new Set();if(!MV.touched&&bk){MV.adj={};if(bk.startsWith("c:"))MV.adj[bk.slice(2)]=1;else MV.beh.add(bk.slice(2));mvAdjUI();}
   const sc=mvScenario();
-  MV.runs.now=wedify(mvSim(conds,{}));MV.runs.move=wedify(mvSim(sc.cs,sc.ov));
-  {const ap=agyParams();MV.runs.agy=agySim(ap.poolN,prm.T,ap.Q.meet,true);MV.runs.agy.key=agyKeyStr();const S=MV.runs.agy.selves,Rs=mulberry(99);for(let i=S.length-1;i>0;i--){const j=Math.floor(Rs()*(i+1));[S[i],S[j]]=[S[j],S[i]];}}
+  MV.runs.gen=wedify(mvSim(conds,{}));
+  {const ap=agyParams();MV.runs.agy=agySim(ap.poolN,prm.T,ap.Q.meet,true);MV.runs.agy.key=agyKeyStr();shuffleSelves(MV.runs.agy);MV.runs.now=MV.runs.agy;}
+  {const W=whRun(Object.assign({},whScenario(),{keep:true}));MV.runs.move=shuffleSelves(W.A);MV.runs.move.who=whChanged()?"変えた":"何も変えない";}
   if(last)renderAgy(last);
-  MV.runs.move.who=sc.parts.length?sc.parts.join("・"):"何も変えない";
+  whAdjUI();
   $("mvDl").textContent=dlName();
-  $("mvMoveLab").innerHTML="1つ変えた<br>（ふだんの出会い）";
+  $("mvMoveLab").innerHTML="条件を変えた<br>あなた";
   mvLabels();
   if(MV.anim)return;
   MV.t=MV.played?1:0;MV.sel=-1;mvDraw();
@@ -1822,7 +1866,7 @@ function mvLabels(){
   $("mvMoveN").innerHTML=MV.seen.move?`${MV.runs.move.count}<small>人</small>`:q;
   $("mvAgyN").innerHTML=MV.seen.agy?`${MV.runs.agy.count}<small>人</small>`:q;
   if(MV.seen.now){mvSum();const T=mvTitleOf();$("mvTitle").hidden=false;$("mvTitle").innerHTML=`<small>あなたの称号</small><b>${T.t}</b><span>${T.d}</span>`;}else{$("mvSum").innerHTML="";$("mvTitle").hidden=true;}
-  if(MV.seen.now&&!MV.seen.agy)$("mvSum").innerHTML+=` <span style="color:#cfc9c0">→ 上の「結婚相談所に入ったあなた」も走らせてみてください。</span>`;
+  if(MV.seen.now&&!whChanged())$("mvSum").innerHTML+=` <span style="color:#cfc9c0">→ 下で条件や活動を変えると、「条件を変えたあなた」が走ります。</span>`;
 }
 function mvTitleOf(){
   const a=MV.runs.now.count,b=MV.runs.move?MV.runs.move.count:a,F=compute(conds).fitsNat;
@@ -1834,9 +1878,8 @@ function mvTitleOf(){
   return {t:"コツコツ積み上げ型",d:"大きな問題はなし。続けるほど結果がついてきます。"};
 }
 function mvSum(){
-  const a=MV.runs.now,b=MV.runs.move,g=MV.runs.agy;let t=`${dlName()}までに成婚：ふだんの出会い <b>${a.count}人</b>（付き合えたのは${a.dateCount}人。結婚まで平均約4.3年かかるため）`;
-  if(MV.seen.move)t+=`、1つ変えると <b>${b.count}人</b>`;
-  if(MV.seen.agy&&g)t+=`、<b style="color:#fff">結婚相談所なら ${g.count}人</b>`;
+  const a=MV.runs.now,b=MV.runs.move;let t=`相談所で活動した場合、${dlName()}までに成婚：今のまま <b>${a.count}人</b>`;
+  if(MV.seen.move&&whChanged())t+=` → 条件を変えると <b style="color:#fff">${b.count}人</b>（${b.count-a.count>=0?"+":""}${b.count-a.count}人）`;
   $("mvSum").innerHTML=t+"。";
 }
 function mvLayout(){
@@ -2192,6 +2235,7 @@ function memberP(c){const M=mdist[sex];
   return condProb(c);}
 const mdUsed=()=>{const M=mdist[sex];return conds.some(c=>(c.type==="age"&&mdHasAge())||(c.type==="income"&&mdHasInc())||(c.type==="height"&&M.h>0)||(c.type==="stat"&&((c.name==="大卒以上"&&M.edu!=null)||(c.name==="タバコを吸わない"&&M.smoke!=null))));};
 const memberF=()=>conds.reduce((a,c)=>a*memberP(c),1);
+const memberFof=cs=>cs.reduce((a,c)=>a*memberP(c),1);
 const KS=10; /* 実績が少ないうちは見込みに寄せる（見込みを10件分の重みとして混ぜる） */
 function agyRates(){
   const has=v=>v!=null&&v!=="";
@@ -2268,7 +2312,7 @@ function renderAgy(R){
   const bottleneck=conds.length&&poolN<20?"A":Q.acc<0.1?"B":"";
   $("agyCmp").innerHTML=`<div class="${bottleneck==="A"?"hit":""}"><small>求める側：条件に合う会員</small><b>${poolN.toLocaleString()}<span style="display:inline;font-size:14px">人</span></b><span>${inp!=null?"相談所の検索":useMd?"会員の分布からの推定":"IBJ 会員数からの推定"}${conds.length?(useMd?`・会員の中で${oneInN(FM)}（日本全体は${oneInN(R.fitsNat)}）`:`・日本全体で${oneInN(R.fitsNat)}`):""}</span></div>
     <div class="${bottleneck==="B"?"hit":""}"><small>選ばれる側：申込が通るのは</small><b style="font-size:24px">${Q.acc>0&&Q.acc<0.5?`${Math.round(1/Q.acc)}件に1件`:Math.round(Q.acc*100)+"%"}</b><span>${Q.accA?`実績 ${agy.aAcc}/${agy.aSend}件を見込みと合わせて`:"相談員さんの見込み"}・受ける申込 月${f1(Q.recv)}件</span></div>`;
-  const W=MV.runs&&MV.runs.now&&MV.runs.now.wedCount!=null?MV.runs.now.wedCount/1000:null,fl=agyFilled();
+  const W=MV.runs&&MV.runs.gen&&MV.runs.gen.wedCount!=null?MV.runs.gen.wedCount/1000:null,fl=agyFilled();
   $("agyRes").innerHTML=`<span>${dlName()}までに成婚</span><span class="vs">ふだんの出会い <b class="o">${W==null?"…":fmtP(W)}</b></span><span>→ 相談所 <b>${fmtP(A.P)}</b></span><small>どちらも「期限までに結婚が決まる（成婚）」で数えています。ふだんの出会いは付き合ってから結婚まで平均約4.3年（出生動向基本調査 2021）、相談所はお見合い 月${f1(Q.meet)}回・${A.med!=null?`真ん中の人は${mo(A.med)}で成婚`:"半分以上は期限までに成婚せず"}。${fl.length<3?`<br><b style="color:#ffc53d;font-size:12px">⚠ 会員数・申込が通る割合・交際の進み方がまだ仮の値です。相談所の数字を入れると、確かな比較になります。</b>`:""}</small>`;
   const fin=k=>{const a=AGY_DEF.find(x=>x.k===k),[c,l]=agyTag(a),v=a.per?agyPool[agyKey()]:agy[k];return `<span class="fin"><input type="number" data-ag="${k}" step="${a.step}" min="${a.min}" ${a.max?`max="${a.max}"`:""} value="${v??""}" placeholder="${a.per?est.toLocaleString():""}">${a.unit}<span class="tg ${c}" data-agt="${k}">${l}</span></span>`;};
   const mo1=x=>(+x).toFixed(1).replace(/\.0$/,"");
@@ -2291,6 +2335,7 @@ function renderAgy(R){
   if(Q.accA&&Q.accRaw!=null&&Math.abs(Q.accRaw-agy.acc/100)>0.05)why.push(`実績の成立率（${perN(Q.accRaw)}）が、見込み（${agy.acc}%）と違います。見込みを実績に近づけると、ほかのお客さんの計算にも役立ちます。`);
   let msg=why.length?`<ul>${why.map(w=>`<li>${w}</li>`).join("")}</ul>`:"大きな詰まりはありません。このペースで続けましょう。";
   $("agyMsg").innerHTML=msg;
+  renderWhat({P:A.P,med:A.med,poolN,meetM:Q.meet});
   if(tab!=="must")AGY_LAST={P:A.P,med:A.med};
 }
 document.addEventListener("input",e=>{const md=e.target.dataset&&e.target.dataset.md;if(md==null)return;const raw=e.target.value,v=raw===""||isNaN(+raw)?null:Math.max(0,+raw);
@@ -2335,6 +2380,81 @@ document.addEventListener("click",e=>{
     EXS.push({l:v("exL")||"相談者さん",c:v("exC"),n:v("exN")?Math.round(+v("exN")):null,a:v("exA")===""?null:+v("exA"),r:v("exR"),m:v("exM")===""?null:+v("exM"),t:v("exT")});
     ["exL","exC","exN","exA","exM","exT"].forEach(id=>$(id).value="");exSave();renderExs();}
 });
+
+
+/* ---------- もし〜なら：改善効果ランキングと、値をいじって比べる（相談所の計算） ---------- */
+const WH={adj:{},send:null,acc:null,recv:null,ok:null,dT:0};
+function whRun(o){const Q=agyRates(),ap=agyParams();
+  const cs=o.cs||conds,FM0=memberFof(conds),FM1=memberFof(cs);
+  const pool=Math.max(0,Math.round(ap.inp!=null?ap.inp*(FM0>0?FM1/FM0:1):agyEst(FM1)));
+  const send=o.send??agy.send,acc=Math.min(1,Math.max(0,o.acc??Q.acc)),recv=o.recv??Q.recv,ok=Math.min(1,Math.max(0,o.ok??Q.ok));
+  const meet=send*acc+recv*ok,T=Math.max(30,prm.T+(o.dT||0));
+  return {A:agySim(pool,T,meet,!!o.keep),pool,meet,T,send,acc,recv,ok};}
+function whScenario(){const Q=agyRates();
+  const cs=conds.map(c=>adjCond(c,WH.adj[c.id]||0));
+  return {cs,send:WH.send??agy.send,acc:WH.acc??Q.acc,recv:WH.recv??Q.recv,ok:WH.ok??Q.ok,dT:WH.dT};}
+const whChanged=()=>Object.values(WH.adj).some(v=>v)||WH.send!=null||WH.acc!=null||WH.recv!=null||WH.ok!=null||WH.dT;
+const pt=(a,b)=>{const d=Math.round((b-a)*1000)/10;return (d>0?"+":"")+d.toFixed(1).replace(/\.0$/,"")+"ポイント";};
+const moTxt=x=>x==null?"期限内に半数届かず":x<12?`${Math.round(x)}か月`:`${(x/12).toFixed(1)}年`;
+function renderWhat(base){return;
+  const el=$("agyWhat");if(!el)return;const Q=agyRates();
+  /* 1つだけ変えた効果のランキング */
+  const cand=[];
+  conds.forEach(c=>{const d=adjCond(c,1);if(JSON.stringify(d)===JSON.stringify(c))return;cand.push({k:"c:"+c.id,lab:`「${condTitle(c)}」をゆるめる（${adjShort(c)} → ${adjShort(d)}）`,o:{cs:conds.map(x=>x===c?d:x)},apply:()=>{WH.adj[c.id]=(WH.adj[c.id]||0)+1;}});});
+  cand.push({k:"send",lab:`申込を増やす（月${agy.send}件 → ${agy.send+10}件）`,o:{send:agy.send+10},apply:()=>{WH.send=(WH.send??agy.send)+10;}});
+  cand.push({k:"acc",lab:`申込が通る割合を上げる（${Math.round(Q.acc*100)}% → ${Math.round(Q.acc*100)+5}%：写真・プロフィールの見直し）`,o:{acc:Q.acc+0.05},apply:()=>{WH.acc=(WH.acc??Q.acc)+0.05;}});
+  cand.push({k:"ok",lab:`受けた申込をもう少し受ける（${Math.round(Q.ok*100)}% → ${Math.min(100,Math.round(Q.ok*100)+20)}%）`,o:{ok:Q.ok+0.2},apply:()=>{WH.ok=(WH.ok??Q.ok)+0.2;}});
+  cand.push({k:"dT",lab:"期限を半年のばす",o:{dT:182},apply:()=>{WH.dT+=182;}});
+  const R0=base.P;cand.forEach(m=>{m.r=whRun(m.o);m.g=m.r.A.P-R0;});cand.sort((a,b)=>b.g-a.g);
+  WH._cand=cand;
+  const rank=cand.slice(0,6).map((m,i)=>`<div class="wrk ${i===0&&m.g>0.005?"top":""}"><span class="no">${i+1}</span><span>${i===0&&m.g>0.005?"<b>最大の伸びしろ：</b>":""}${m.lab}</span><span class="g ${m.g<=0.005?"neg":""}">${pt(R0,m.r.A.P)}</span><button data-whtry="${m.k}">試す</button></div>`).join("");
+  /* 値をいじった結果 */
+  const S=whScenario(),W=whChanged()?whRun(S):null;
+  const ctl=(lab,val,k,step,fmt)=>`<div class="wctl"><span>${lab}<br><span class="v">${fmt(val)}</span></span><span class="bt"><button data-whst="${k}" data-d="${-step}">−</button><button data-whst="${k}" data-d="${step}" class="lo">＋</button></span></div>`;
+  const condRows=conds.map(c=>{const st=WH.adj[c.id]||0,d=adjCond(c,st);return `<div class="wctl"><span>${condTitle(c)}<br><span class="v">${st?`${adjShort(c)} → <b>${adjShort(d)}</b>`:adjShort(c)}</span></span><span class="bt"><button data-whc="${c.id}" data-d="-1">きびしく</button><button data-whc="${c.id}" data-d="1" class="lo">ゆるめる</button></span></div>`;}).join("");
+  const fmtN=v=>`月${(+v).toFixed(1).replace(/\.0$/,"")}件`,fmtP2=v=>`${Math.round(v*100)}%`;
+  el.innerHTML=`<h4>もし〜なら：何を変えると、成婚がどれだけ変わる？</h4><p class="sub">相談所で活動した場合の、${dlName()}までに成婚する確率（いま ${fmtP(R0)}）。1つだけ変えたときの差を、効く順に並べています。</p>${rank}
+    <p class="wh5">値をいじってみる（条件をきびしく・ゆるく、申込の数など）</p>
+    ${condRows}
+    ${ctl("送る申込",S.send,"send",5,fmtN)}${ctl("申込が通る割合",S.acc,"acc",0.05,fmtP2)}${ctl("受ける申込",S.recv,"recv",1,fmtN)}${ctl("受けた申込をOKする割合",S.ok,"ok",0.1,fmtP2)}${ctl("期限",prm.T+WH.dT,"dT",182,v=>`${Math.round(v/30.4)}か月後（${WH.dT?(WH.dT>0?"+":"")+Math.round(WH.dT/30.4)+"か月":"いまの期限"}）`)}
+    <div class="wres">${W?`<span class="from">いま ${fmtP(R0)}</span><span>→</span><b>${fmtP(W.A.P)}</b><span>${pt(R0,W.A.P)}</span><small>条件に合う会員 ${base.poolN.toLocaleString()}人 → ${W.pool.toLocaleString()}人・お見合い 月${(+base.meetM).toFixed(1)}回 → ${W.meet.toFixed(1)}回・真ん中の人 ${moTxt(base.med)} → ${moTxt(W.A.med)}</small>`:`<span>上の「試す」か、＋−を押すと、ここに「いま → 変えたあと」が出ます。</span>`}</div>
+    ${whChanged()?`<button class="wclr" data-whclr>元に戻す</button>`:""}`;
+}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("[data-whtry],[data-whst],[data-whc],[data-whclr]");if(!t||!t.closest("#agyWhat"))return;const Q=agyRates();
+  if(t.dataset.whtry){const m=(WH._cand||[]).find(x=>x.k===t.dataset.whtry);if(m)m.apply();}
+  else if(t.dataset.whc){WH.adj[t.dataset.whc]=(WH.adj[t.dataset.whc]||0)+(+t.dataset.d);}
+  else if(t.dataset.whst){const k=t.dataset.whst,d=+t.dataset.d;
+    if(k==="dT")WH.dT=Math.max(-prm.T+30,WH.dT+d);
+    else{const cur=WH[k]??(k==="send"?agy.send:Q[k]);let v=Math.max(0,cur+d);if(k==="acc"||k==="ok")v=Math.min(1,v);WH[k]=Math.round(v*1000)/1000;}}
+  else if(t.dataset.whclr){WH.adj={};WH.send=WH.acc=WH.recv=WH.ok=null;WH.dT=0;}
+  if(last)renderAgy(last);});
+
+
+function shuffleSelves(run){const S=run.selves,Rs=mulberry(99);for(let i=S.length-1;i>0;i--){const j=Math.floor(Rs()*(i+1));[S[i],S[j]]=[S[j],S[i]];}return run;}
+function whAdjUI(){
+  const el=$("whAdj");if(!el)return;const Q=agyRates(),R0=MV.runs.now?MV.runs.now.P:null;if(R0==null){el.innerHTML="";return;}
+  const S=whScenario(),gain=o=>{const s=Object.assign({},S,o);return whRun(s).A.P-(MV.runs.move?MV.runs.move.P:R0);};
+  const items=[];
+  conds.forEach(c=>{const st=WH.adj[c.id]||0,cs1=conds.map(x=>adjCond(x,(WH.adj[x.id]||0)+(x===c?1:0)));items.push({k:"c:"+c.id,g:gain({cs:cs1})});});
+  [["send",5],["acc",0.05],["recv",1],["dT",182]].forEach(([k,d])=>{const o={};o[k]=k==="dT"?S.dT+d:Math.min(k==="acc"?1:1e9,S[k]+d);items.push({k,g:gain(o)});});
+  const top=items.slice().sort((a,b)=>b.g-a.g)[0],G=k=>{const it=items.find(x=>x.k===k);return it&&it.g>0.0005?`<span class="gn">+${(it.g*100).toFixed(1).replace(/\.0$/,"")}pt</span>`:"";},B=k=>top&&top.k===k&&top.g>0.0005?`<span class="best">一番効く</span>`:"";
+  const cr=conds.map(c=>{const st=WH.adj[c.id]||0,d=adjCond(c,st);return `<div class="r"><span class="n">${B("c:"+c.id)}${condTitle(c)}${G("c:"+c.id)}<small>${st?`${adjShort(c)} → <b>${adjShort(d)}</b>`:adjShort(c)}</small></span><span class="bt"><button data-whc="${c.id}" data-d="-1">きびしく</button><button data-whc="${c.id}" data-d="1" class="lo">ゆるめる</button></span></div>`;}).join("");
+  const a=(k,lab,val,step,fmt)=>`<div class="act ${WH[k]!=null&&k!=="dT"||(k==="dT"&&WH.dT)?"chg":""}"><span class="t">${B(k)}${lab}${G(k)}</span><span class="row"><button data-whst="${k}" data-d="${-step}">−</button><b>${fmt(val)}</b><button data-whst="${k}" data-d="${step}" class="lo">＋</button></span></div>`;
+  el.innerHTML=`<p class="h">条件や活動を変えて、もう一度走らせる（数字は1段階変えたときに成婚が増える分）</p>${cr}
+    <div class="grid2">${a("send","送る申込",S.send,5,v=>`月${Math.round(v)}件`)}${a("acc","申込が通る",S.acc,0.05,v=>`${Math.round(v*100)}%`)}${a("recv","受ける申込",S.recv,1,v=>`月${(+v).toFixed(1).replace(/\.0$/,"")}件`)}${a("dT","期限",prm.T+S.dT,182,v=>`${Math.round(v/30.4)}か月`)}</div>
+    <div class="foot"><span style="font-size:12px;color:#cfc9c0">${whChanged()?"変えた分は「条件を変えたあなた」に入ります":""}</span>${whChanged()?`<button data-whclr>元に戻す</button>`:""}</div>`;
+}
+let whTimer=null;
+function whChangedRun(){whAdjUI();clearTimeout(whTimer);whTimer=setTimeout(()=>{mvCompute();MV.seen.move=false;MV.sc="move";$("mvSc").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.sc==="move"));mvScrollTo();mvPlay();},500);}
+document.addEventListener("click",e=>{
+  const t=e.target.closest("#whAdj [data-whst],#whAdj [data-whc],#whAdj [data-whclr]");if(!t)return;const Q=agyRates();
+  if(t.dataset.whc){WH.adj[t.dataset.whc]=(WH.adj[t.dataset.whc]||0)+(+t.dataset.d);}
+  else if(t.dataset.whst){const k=t.dataset.whst,d=+t.dataset.d;
+    if(k==="dT")WH.dT=Math.max(-prm.T+30,WH.dT+d);
+    else{const cur=WH[k]??(k==="send"?agy.send:Q[k]);let v=Math.max(0,cur+d);if(k==="acc")v=Math.min(1,v);WH[k]=Math.round(v*1000)/1000;}}
+  else if(t.dataset.whclr){WH.adj={};WH.send=WH.acc=WH.recv=WH.ok=null;WH.dT=0;}
+  whChangedRun();});
 
 /* ---------- init ---------- */
 deadline=xmasDate();$("days").textContent=daysToXmas();
