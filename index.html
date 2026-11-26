@@ -1,0 +1,2354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>婚活ドック — 運命の人は、何人に1人？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f4f2ee; --ink:#161514; --ink2:#57534e; --ink3:#9a958e; --hair:#e3dfd8; --card:#fbfaf8;
+  --wine:#8c1d2c; --wine-soft:#f3e6e7; --shade:rgba(140,29,44,.16);
+  --red:#ff4d4d; --yellow:#ffc53d; --green:#3ddc84;
+  --serif:"Shippori Mincho B1",serif; --sans:"Zen Kaku Gothic New",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.7}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+@media (max-width:640px){.wrap{padding:0 16px}}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink3);text-transform:uppercase}
+.mono{font-family:var(--mono)}
+
+/* top */
+.top{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--hair);font-size:13px}
+.mark{font-family:var(--serif);font-size:18px}.mark i{font-style:normal;color:var(--wine)}
+.meta{display:flex;gap:22px;color:var(--ink2)}.meta b{font-family:var(--mono);font-weight:500;color:var(--ink)}
+.meta a{color:var(--ink2);text-decoration:none}.meta a:hover{color:var(--wine)}
+@media (max-width:640px){.meta a{display:none}}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:end;padding:56px 0 36px}
+.hero h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,4.8vw,60px);line-height:1.25;margin:12px 0 0}
+.hero h1 em{font-style:normal;color:var(--wine)}
+.hero p{color:var(--ink2);margin:0}
+.formula-line{margin-top:14px;font-family:var(--serif);font-size:15px;color:var(--ink)}
+.formula-line span{color:var(--wine)}
+@media (max-width:860px){.hero{grid-template-columns:1fr;gap:16px;padding:40px 0 28px}}
+
+/* sticky mini bar */
+.mini{position:sticky;top:0;z-index:20;background:rgba(244,242,238,.92);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--hair);transform:translateY(-100%);opacity:0;transition:transform .25s,opacity .25s;pointer-events:none;margin-bottom:-49px;height:49px}
+.mini.show{transform:none;opacity:1;pointer-events:auto}
+.mini .wrap{display:flex;align-items:center;gap:18px;height:48px;font-family:var(--mono);font-size:12px;color:var(--ink2);overflow-x:auto;white-space:nowrap}
+.mini b{font-weight:500;color:var(--ink)}.mini .arrow{color:var(--ink3)}
+.mini .P{margin-left:auto;font-size:16px;color:var(--wine)}
+.mini .dots{display:flex;gap:4px}.mini .dots i,.chip .dots i{width:7px;height:7px;border-radius:50%;background:#ddd}
+
+/* panels */
+.panel{background:var(--card);border:1px solid var(--hair);border-radius:20px;padding:28px}
+@media (max-width:640px){.panel{padding:18px}}
+.p-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:18px}
+.p-head h2{font-family:var(--serif);font-weight:500;font-size:21px;margin:0}
+
+/* result */
+.result{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);gap:40px}
+@media (max-width:900px){.result{grid-template-columns:1fr;gap:28px}}
+.res-main{display:flex;gap:28px;align-items:center}
+@media (max-width:520px){.res-main{flex-direction:column;text-align:center}}
+.ring{position:relative;width:200px;height:200px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .num b{font-family:var(--serif);font-weight:500;font-size:50px;line-height:1}
+.ring .num b small{font-size:20px;margin-left:2px}
+.ring .num span{font-size:10.5px;color:var(--ink3);font-family:var(--mono);margin-top:8px;letter-spacing:.1em}
+#arc{transition:stroke-dashoffset .6s cubic-bezier(.2,.8,.2,1)}
+.verdict h3{font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.5;margin:0}
+.verdict p{color:var(--ink2);margin:6px 0 0;font-size:13.5px}
+.chip{display:inline-flex;align-items:center;gap:8px;margin-top:14px;border:1px solid var(--hair);border-radius:999px;padding:4px 12px 4px 8px;font-size:12px;color:var(--ink2);background:#fff}
+.chip .dots{display:flex;gap:4px}
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:.15}}
+.dots i.b{animation:blink .5s infinite}
+.chain{list-style:none;margin:0;padding:0;counter-reset:c}
+.chain li{display:grid;grid-template-columns:26px 1fr auto;gap:10px;align-items:baseline;padding:10px 0;border-top:1px solid var(--hair)}
+.chain li:first-child{border-top:none;padding-top:0}
+.chain .n{font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.chain .t{font-size:14px}
+.chain .t small{display:block;font-family:var(--mono);font-size:11px;color:var(--ink3);line-height:1.4}
+.chain .v{font-family:var(--mono);font-size:17px;font-weight:500;text-align:right;white-space:nowrap}
+.chain .v small{display:block;font-size:11px;font-weight:400;color:var(--ink3)}
+.chain li.final .t{font-weight:700}.chain li.final .v{color:var(--wine);font-size:20px}
+.chain li.info .v{color:var(--ink2);font-size:14px}
+.scale{margin-top:26px}
+.bands{position:relative;display:grid;grid-template-columns:5fr 5fr 10fr 20fr 20fr 20fr 20fr;gap:3px}
+.bands div{height:6px;border-radius:2px;background:#e6e2db}.bands div.cur{background:var(--ink)}
+.bands-lab{display:grid;grid-template-columns:5fr 5fr 10fr 20fr 20fr 20fr 20fr;gap:3px;margin-top:7px;font-size:10.5px;color:var(--ink3);font-family:var(--mono)}
+.bands-lab span{overflow:hidden;white-space:nowrap}.bands-lab span.cur{color:var(--ink)}
+.pin{position:absolute;top:-7px;width:2px;height:20px;background:var(--wine);border-radius:1px;transition:left .6s cubic-bezier(.2,.8,.2,1)}
+
+/* input grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;margin:24px 0 0;align-items:start}
+@media (max-width:980px){.grid{grid-template-columns:1fr}}
+.col{display:flex;flex-direction:column;gap:24px;min-width:0}
+
+/* sex toggle */
+.seg{display:inline-flex;border:1px solid var(--hair);border-radius:999px;padding:3px;background:#fff}
+.seg button{border:none;background:none;border-radius:999px;padding:4px 14px;font-size:13px;cursor:pointer;color:var(--ink2)}
+.seg button.on{background:var(--ink);color:#fff}
+.who{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--ink2);margin-bottom:16px;flex-wrap:wrap}
+
+/* condition cards */
+.conds{display:flex;flex-direction:column;gap:12px}
+.cond{border:1px solid var(--hair);border-radius:14px;background:#fff;padding:14px 16px}
+.c-top{display:flex;align-items:center;gap:10px}
+.c-name{font-weight:500;font-size:15px}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--ink3);border:1px solid var(--hair);border-radius:4px;padding:0 5px}
+.c-prob{margin-left:auto;font-family:var(--mono);font-size:18px;font-weight:500}
+.x{border:none;background:none;color:var(--ink3);cursor:pointer;font-size:18px;line-height:1;padding:0 2px}
+.x:hover{color:var(--wine)}
+.c-body{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:16px;align-items:center;margin-top:10px}
+@media (max-width:560px){.c-body{grid-template-columns:1fr}}
+.c-ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--ink2)}
+.c-ctrl select,.c-ctrl input[type=number],.c-ctrl input[type=text]{border:1px solid var(--hair);border-radius:8px;background:var(--card);padding:5px 8px;font-family:var(--mono);font-size:13px}
+.c-ctrl input[type=number]{width:78px}
+.c-ctrl input[type=text]{font-family:var(--sans);width:140px}
+.c-ctrl .rng{flex:1 1 100%;display:flex;align-items:center;gap:10px}
+input[type=range]{flex:1;accent-color:var(--wine);min-width:120px}
+.c-plot{width:100%;height:58px;display:block}
+.c-foot{display:flex;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px dashed var(--hair);font-family:var(--mono);font-size:11px;color:var(--ink3)}
+.c-foot b{font-weight:500;color:var(--ink2)}
+.c-note{font-size:11.5px;color:var(--ink3);margin-top:4px}
+.add{margin-top:18px}
+.add h3{font-size:13px;font-weight:500;color:var(--ink2);margin:0 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips button{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:4px 12px;font-size:12.5px;cursor:pointer;color:var(--ink);transition:all .12s}
+.chips button small{font-family:var(--mono);color:var(--ink3);margin-left:4px;font-size:10.5px}
+.chips button:hover{border-color:var(--ink)}
+.chips button:disabled{opacity:.35;cursor:default;border-color:var(--hair)}
+.empty{font-size:13px;color:var(--ink3);padding:14px;border:1px dashed var(--hair);border-radius:12px;text-align:center}
+
+/* params */
+.prm{padding:12px 0;border-top:1px solid var(--hair)}
+.prm:first-of-type{border-top:none;padding-top:0}
+.prm-h{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.prm-h label{font-size:14px}
+.prm-h label small{font-family:var(--mono);font-size:11px;color:var(--ink3);margin-left:6px}
+.prm-h output{font-family:var(--mono);font-size:15px;font-weight:500;white-space:nowrap}
+.prm-d{font-size:11.5px;color:var(--ink3)}
+.prm .row{display:flex;align-items:center;gap:10px}
+.mini-btn{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:2px 10px;font-size:11.5px;cursor:pointer;white-space:nowrap}
+.mini-btn:hover{border-color:var(--ink)}
+.group-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--ink3);margin:18px 0 6px;text-transform:uppercase}
+canvas#chart{width:100%;height:220px;display:block}
+.legend{display:flex;gap:18px;font-size:12px;color:var(--ink3);margin-top:8px;flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:2px;vertical-align:4px;margin-right:6px}
+
+/* basis */
+.basis{border-top:1px solid var(--hair);margin-top:72px;padding:72px 0 40px;display:grid;grid-template-columns:260px 1fr;gap:56px}
+@media (max-width:900px){.basis{grid-template-columns:1fr;gap:20px;padding-top:48px;margin-top:48px}}
+.basis-side{position:sticky;top:64px;align-self:start}
+@media (max-width:900px){.basis-side{position:static}}
+.basis-side h2{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.35;margin:10px 0 14px}
+.basis-side p{color:var(--ink2);font-size:14px;margin:0}
+.toc{list-style:none;padding:0;margin:22px 0 0;font-size:13px}
+.toc li{padding:6px 0;border-top:1px solid var(--hair)}
+.toc a{color:var(--ink2);text-decoration:none}.toc a:hover{color:var(--wine)}
+.toc span{font-family:var(--mono);font-size:11px;color:var(--ink3);margin-right:10px}
+.art{max-width:720px}
+.art section{padding:0 0 40px;scroll-margin-top:64px}
+.art section+section{border-top:1px solid var(--hair);padding-top:38px}
+.art .no{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--wine)}
+.art h3{font-family:var(--serif);font-weight:500;font-size:23px;margin:6px 0 14px;line-height:1.5}
+.art h4{font-size:14px;font-weight:700;margin:20px 0 6px}
+.art p{margin:0 0 10px;color:#2f2c29}
+.art ul{margin:6px 0 12px;padding-left:1.2em;color:#2f2c29}
+.eq{margin:16px 0;padding:18px 22px;background:var(--card);border:1px solid var(--hair);border-radius:14px;font-family:var(--serif);font-size:21px;text-align:center;overflow-x:auto;white-space:nowrap}
+.eq.lg{font-size:19px}
+.eq sub,.eq sup{font-size:.55em;font-family:var(--sans)}
+.eq .big{font-size:1.4em;vertical-align:-.12em;margin:0 .08em}
+.eq-note{font-size:13px;color:var(--ink2);margin-top:-6px}
+.ex{font-size:13px;color:var(--ink2);background:#efece6;border-radius:10px;padding:10px 14px;margin:10px 0}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+.tbl th,.tbl td{border-top:1px solid var(--hair);padding:6px 8px;text-align:left}
+.tbl th{color:var(--ink3);font-weight:400;font-family:var(--mono);font-size:11px}
+.tbl td.m{font-family:var(--mono);text-align:right}
+footer{border-top:1px solid var(--hair);padding:26px 0 44px;font-size:12px;color:var(--ink3)}
+@media (prefers-reduced-motion:reduce){#arc,.pin,.mini{transition:none}.dots i.b{animation-duration:1.6s}}
+
+.corr{margin-top:14px;padding:14px 16px;border:1px solid var(--hair);border-radius:14px;background:#fff}
+.corr[hidden]{display:none}
+.corr .row{display:flex;align-items:center;gap:10px}
+
+.fn-h{font-family:var(--serif);font-weight:500;font-size:17px;margin:0 0 12px}
+.funnel{display:flex;flex-direction:column;gap:9px}
+.fn-row{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:baseline}
+.fn-row .lb{font-size:13.5px;color:var(--ink2)}
+.fn-row .lb b{color:var(--ink);font-weight:500}
+.fn-row .ct{font-family:var(--mono);font-size:16px;font-weight:500;text-align:right;white-space:nowrap}
+.fn-row .bar{grid-column:1 / 3;height:8px;border-radius:4px;background:#efebe5;overflow:hidden}
+.fn-row .bar i{display:block;height:100%;background:#cfc6bb;border-radius:4px;transition:width .5s}
+.fn-row.last .bar i{background:var(--wine)}
+.fn-row.last .ct{color:var(--wine)}
+.fn-row .hint{grid-column:1 / 3;font-size:11.5px;color:var(--ink3)}
+.fn-sum{margin:14px 0 0;font-size:14px;line-height:1.8;padding:12px 14px;background:#efece6;border-radius:10px}
+.fn-sum b{color:var(--wine);font-weight:700}
+.caveat{margin-top:24px;font-size:13px;color:var(--ink2);border-left:3px solid var(--wine);padding:6px 0 6px 12px;border-radius:0}
+.caveat b{color:var(--ink)}
+details.more{margin-top:18px;border-top:1px solid var(--hair);padding-top:12px}
+details.more summary,details.math>summary{cursor:pointer;font-size:13.5px;color:var(--wine);list-style:none}
+details.more summary::-webkit-details-marker,details.math>summary::-webkit-details-marker{display:none}
+details.more summary::before,details.math>summary::before{content:"＋ ";font-family:var(--mono)}
+details.more[open] summary::before,details.math[open]>summary::before{content:"− "}
+details.more .chain{margin-top:14px}
+.easy{max-width:720px}
+.easy ol{list-style:none;padding:0;margin:20px 0 0;counter-reset:e}
+.easy li{position:relative;padding:14px 0 14px 46px;border-top:1px solid var(--hair)}
+.easy li::before{counter-increment:e;content:counter(e);position:absolute;left:0;top:14px;width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--mono);font-size:13px;display:flex;align-items:center;justify-content:center}
+.easy li b{display:block;font-size:15px;margin-bottom:2px}
+.easy li span{font-size:13.5px;color:var(--ink2)}
+.easy .ex{margin-top:18px}
+details.math{margin-top:36px;border-top:1px solid var(--hair);padding-top:18px}
+details.math>summary{font-size:15px}
+details.math .art{margin-top:28px}
+.dl-row{flex-wrap:wrap;gap:8px}
+.dl-row input[type=date]{border:1px solid var(--hair);border-radius:8px;background:#fff;padding:5px 8px;font-family:var(--mono);font-size:13px}
+#dlChips button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hero .lead{font-size:16px;color:var(--ink);margin:0}
+.steps{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.steps li{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink2)}
+.steps li span{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--mono);font-size:11px;display:flex;align-items:center;justify-content:center;flex:none}
+.steps-out{margin:10px 0 0;font-size:13.5px;color:var(--wine)}
+.step-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--wine);margin-bottom:6px}
+.step1{display:grid;grid-template-columns:auto 1fr auto;gap:28px;align-items:center;margin-bottom:24px}
+.step1 .step-tag{margin:0}
+.step1 h2{font-family:var(--serif);font-weight:500;font-size:22px;margin:0 0 10px}
+.s1-days{text-align:right}
+.s1-days b{font-family:var(--serif);font-weight:500;font-size:44px;line-height:1}
+.s1-days span{font-size:13px;color:var(--ink3);margin-left:4px}
+@media (max-width:760px){.step1{grid-template-columns:1fr;gap:10px}.s1-days{text-align:left}}
+.res-side{display:flex;flex-direction:column;justify-content:center}
+.res-side .fn-sum{margin:0;font-size:15px}
+.res-note{font-size:12px;color:var(--ink3);margin:10px 0 0}
+.outrow{margin-top:24px}
+@media (max-width:640px){.p-head .eyebrow{display:none}}
+.ctabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#efebe5;border-radius:14px;padding:4px;margin-bottom:8px}
+.ctab{border:none;background:none;border-radius:11px;padding:10px 12px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:baseline;gap:8px;color:var(--ink2)}
+.ctab span{font-size:14px}
+.ctab b{font-family:var(--mono);font-weight:500;font-size:14px}
+.ctab.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.ctab.on b{color:var(--wine)}
+.ctab-note{font-size:12.5px;color:var(--ink3);margin:0 0 14px;min-height:1em}
+.ctab-note button{border:1px solid var(--wine);color:var(--wine);background:#fff;border-radius:999px;padding:3px 12px;font-size:12px;cursor:pointer;margin-left:6px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmp .box{border:1px solid var(--hair);border-radius:12px;padding:12px 14px;background:#fff;cursor:pointer}
+.cmp .box.on{border-color:var(--ink)}
+.cmp .box small{display:block;font-size:12px;color:var(--ink3)}
+.cmp .box b{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.2}
+.cmp .box span{display:block;font-size:11.5px;color:var(--ink3)}
+.cmp .diff{grid-column:1 / 3;font-size:14px;line-height:1.7}
+.cmp .diff b{color:var(--wine)}
+.best{margin-top:14px;padding:14px 16px;background:#efece6;border-radius:12px}
+.best h4{margin:0;font-size:12px;font-weight:400;color:var(--ink3);letter-spacing:.06em}
+.best .best-top{font-size:15px;line-height:1.7;margin:2px 0 8px}
+.best .best-top b{color:var(--wine)}
+.best ul{list-style:none;margin:0;padding:0;font-size:12.5px;color:var(--ink2)}
+.best li{display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-top:1px dashed #ddd6cc}
+.best li span:last-child{font-family:var(--mono);white-space:nowrap}
+.fn-cols{display:grid;grid-template-columns:1fr 72px 72px;font-size:11px;color:var(--ink3);font-family:var(--mono);text-align:right;margin:-6px 0 4px}
+.fn-row{grid-template-columns:1fr 72px 72px !important}
+.fn-row .ct{font-size:14px !important}
+.fn-row .ct.off{color:var(--ink3);font-weight:400}
+.fn-row .bar,.fn-row .hint{grid-column:1 / 4 !important}
+#fnSum{margin-top:16px}
+.verdict h3{font-size:19px}
+.best .best-top b{font-weight:700}
+.gnav{position:sticky;top:0;z-index:30;display:flex;gap:4px;background:rgba(244,242,238,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--hair);margin:0 -32px;padding:0 32px;overflow-x:auto}
+.gnav a{display:flex;align-items:baseline;gap:8px;padding:14px 16px 12px;color:var(--ink2);text-decoration:none;font-size:14px;border-bottom:2px solid transparent;white-space:nowrap}
+.gnav a b{font-family:var(--mono);font-weight:500;font-size:12px;color:var(--ink3)}
+.gnav a:hover{color:var(--ink)}
+.gnav a.on{color:var(--ink);border-bottom-color:var(--wine)}
+.gnav a.on b{color:var(--wine)}
+@media (max-width:640px){.gnav{margin:0 -16px;padding:0 16px}.gnav a{padding:12px 10px 10px;font-size:13px}}
+.view[hidden]{display:none}
+.page-h{padding:56px 0 28px}
+.page-h h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.4vw,52px);line-height:1.3;margin:10px 0 0}
+.page-h h1 em{font-style:normal;color:var(--wine)}
+.page-h .lead{color:var(--ink2);max-width:640px;margin:14px 0 0}
+.go-cmp{display:inline-block;margin-top:12px;color:var(--wine);text-decoration:none;font-size:14px}
+.go-cmp:hover{text-decoration:underline}
+#view-compare .best+.best{margin-top:12px}
+#view-about .basis{border-top:none;margin-top:0}
+.res-side .fn-sum{margin:0 0 12px}
+.fn-row.one{grid-template-columns:1fr auto !important}
+.fn-row.one .bar,.fn-row.one .hint{grid-column:1 / 3 !important}
+.ends{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:-2px}
+.bigP .tiny,#bigP .tiny{font-size:22px;line-height:1.3;display:block;text-align:center;padding:0 18px}
+.big-rare{font-family:var(--serif);font-size:28px;font-weight:500}
+.best li span:first-child{flex:1}
+.retro{margin-bottom:24px}
+.retro-main{display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end}
+@media (max-width:860px){.retro-main{grid-template-columns:1fr}}
+.retro-lead{font-size:16px;color:var(--ink2);margin:6px 0 0}
+.retro-big{font-family:var(--serif);font-weight:500;font-size:clamp(48px,7vw,84px);line-height:1.1;margin:8px 0 6px;color:var(--wine)}
+.retro-msg{font-size:15px;color:var(--ink);margin:0}
+.retro-pace{background:#efece6;border-radius:14px;padding:16px 18px}
+.retro-pace label{font-size:14px}
+.retro-pace .row{display:flex;margin-top:6px}
+.retro-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px}
+@media (max-width:1000px){.retro-stats{grid-template-columns:1fr 1fr}}@media (max-width:560px){.retro-stats{grid-template-columns:1fr}}
+.retro-stats div{background:#fff;border:1px solid var(--hair);border-radius:14px;padding:16px 18px}
+.retro-stats small{display:block;font-size:12.5px;color:var(--ink3)}
+.retro-stats b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;margin-top:4px}
+.retro-stats span{font-size:12px;color:var(--ink3)}
+.retro-cmp{list-style:none;padding:0;margin:20px 0 0;font-size:14px}
+.retro-cmp li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid var(--hair)}
+.retro-cmp li b{color:var(--wine);white-space:nowrap}
+.grid.solo{grid-template-columns:1fr}
+[hidden]{display:none !important}
+.shared-note{font-size:12.5px;color:var(--wine);background:var(--wine-soft);border-radius:10px;padding:8px 12px;margin:-6px 0 14px}
+.inline-res{margin-top:14px;background:var(--wine-soft);border-radius:14px;padding:14px 18px;font-size:14px;color:var(--ink)}
+.inline-res b{font-family:var(--serif);font-weight:500;font-size:28px;color:var(--wine);margin:0 4px}
+.inline-res.big b{font-size:36px}
+.inline-res small{display:block;font-size:12px;color:var(--ink2);margin-top:2px}
+.inline-res .dots{display:inline-flex;gap:4px;margin-left:8px;vertical-align:middle}
+.inline-res .dots i{width:8px;height:8px;border-radius:50%;background:#ddd}
+.lv{margin-top:4px;width:100%}
+.c-ctrl .lv,.c-ctrl .lvs{flex:1 1 100%;min-width:0}
+.lv-q{margin:0 0 4px;font-size:13px;color:var(--ink2)}
+.lv-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:12px}
+.lv-name{font-size:15px;font-weight:700;color:var(--ink)}
+.lv-ok{font-size:13px;color:var(--ink2)}
+.lv-ok b{font-family:var(--serif);font-weight:500;font-size:22px;color:var(--wine);margin:0 2px}
+.lv-track{position:relative;height:28px;margin:0 9px}
+.lv-track::before{content:"";position:absolute;left:0;right:0;top:12px;height:4px;border-radius:2px;background:#ebe6df}
+.lv-fill{position:absolute;left:0;top:12px;height:4px;border-radius:2px;background:var(--wine);transition:width .2s}
+.lv-stop{position:absolute;top:5px;width:18px;height:18px;margin-left:-9px;border-radius:50%;border:2px solid #d9d3ca;background:#fff;cursor:pointer;padding:0;transition:all .15s}
+.lv-stop.pass{border-color:var(--wine)}
+.lv-stop.cur{width:26px;height:26px;top:1px;margin-left:-13px;background:var(--wine);border-color:var(--wine);box-shadow:0 0 0 5px rgba(140,29,44,.12)}
+.lv-stop:hover{transform:scale(1.15)}
+.lv-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink3);margin-top:2px}
+.lv-people{display:flex;gap:6px;margin-top:12px}
+.lv-people i{width:16px;height:21px;display:block}
+.lv-people svg{width:100%;height:100%;fill:#e6e0d8;transition:fill .2s}
+.lv-people i.on svg{fill:var(--wine)}
+.lv-fine{margin-top:10px;font-size:12px;color:var(--ink3)}
+.lv-fine summary{cursor:pointer}
+.lv-fine span{display:inline-block;margin-top:6px;color:var(--ink2)}
+.okx{width:64px !important;font-family:var(--mono);border:1px solid var(--hair);border-radius:8px;padding:3px 6px;background:var(--card);font-size:13px}
+.lv-hint{font-size:11.5px;color:var(--ink3);margin:8px 0 0}
+.amode{display:inline-flex;border:1px solid var(--hair);border-radius:999px;padding:3px;background:#fff;margin-right:8px}
+.amode button{border:none;background:none;border-radius:999px;padding:4px 12px;font-size:12px;cursor:pointer;color:var(--ink2)}
+.amode button.on{background:var(--ink);color:#fff}
+.age-rng{display:inline-flex;align-items:center;gap:6px}
+.c-plot{cursor:ew-resize;touch-action:none}
+.plot-hint{font-size:11px;color:var(--ink3);margin:2px 0 0;text-align:right}
+.lv-ok small{font-size:11.5px;color:var(--ink3);margin-left:4px}
+.picker{display:flex;gap:8px;margin-top:4px}
+@media (max-width:520px){.picker{gap:4px}}
+.pp{position:relative;width:26px;height:34px;display:block}
+.pp-base,.pp-fill{position:absolute;left:0;top:0;height:100%;overflow:hidden;display:block}
+.pp-base{width:100%}
+.pp svg{width:26px;height:34px;display:block}
+.pp-base svg{fill:#e6e0d8}
+.pp-fill svg{fill:var(--wine)}
+.pp-fill{transition:width .15s}
+.pp-h{position:absolute;top:0;height:100%;width:50%;border:none;background:transparent;cursor:pointer;padding:0;border-radius:4px}
+.pp-h.l{left:0}.pp-h.r{right:0}
+.pp-h:hover{background:rgba(140,29,44,.12)}
+.picker:hover .pp-base svg{fill:#ddd5cb}
+.pp-hint{font-size:11.5px;color:var(--ink3);margin:8px 0 0}
+.lv-rare{margin-top:10px;border:1px dashed #d9cfc4;background:#fff;border-radius:999px;padding:4px 12px;font-size:12px;color:var(--ink2);cursor:pointer}
+.lv-rare.on{border-style:solid;border-color:var(--wine);color:var(--wine);background:var(--wine-soft)}
+.lv-q{font-size:13px;color:var(--ink2)}
+.cr-lead{display:block;font-size:14px;color:var(--ink2)}
+.cr-big{display:block;font-family:var(--serif);font-weight:500;font-size:clamp(40px,5vw,60px);line-height:1.15;color:var(--wine);margin:4px 0}
+.cr-msg{display:block;font-size:14px}
+.retro-below{margin-top:22px;padding-top:18px;border-top:1px solid var(--hair)}
+.retro-below .retro-stats{grid-template-columns:1fr 1fr;margin-top:16px}
+@media (max-width:560px){.retro-below .retro-stats{grid-template-columns:1fr}}
+.top-cav{margin:20px 0 0;background:var(--card);border:1px solid var(--hair);border-left:3px solid var(--wine);border-radius:0 12px 12px 0;padding:14px 18px;font-size:13px;line-height:1.75}
+.top-cav ul{margin:6px 0 6px;padding-left:1.2em}
+.top-cav li{margin:2px 0}
+#view-compare .top-cav,#view-about .top-cav{margin-top:28px}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:40;display:flex;align-items:center;gap:12px;background:#161514;color:#f4f2ee;border-radius:999px;padding:10px 20px;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,.25);max-width:calc(100% - 24px);white-space:nowrap;overflow:hidden}
+.dock b{font-family:var(--serif);font-weight:500;font-size:24px;color:#ffb3c0;line-height:1}
+.dk-l{font-size:12.5px;color:#cfc9c0}
+.dk-s{font-size:12.5px;color:#cfc9c0;border-left:1px solid #3a3634;padding-left:12px;overflow:hidden;text-overflow:ellipsis}
+.dock .dots{display:inline-flex;gap:4px}.dock .dots i{width:8px;height:8px;border-radius:50%}
+@media (max-width:520px){.dock{display:grid;grid-template-columns:auto auto 1fr;grid-template-rows:auto auto;column-gap:10px;row-gap:2px;width:calc(100% - 20px);border-radius:16px;padding:9px 16px;bottom:10px}.dk-l{grid-column:1/-1;font-size:11px}.dock b{font-size:22px}.dk-s{font-size:11.5px;padding-left:10px;white-space:normal;line-height:1.3}}
+body{padding-bottom:84px}
+body.res-in .dock{opacity:0;pointer-events:none}
+.dock{transition:opacity .2s}
+details.top-cav summary{list-style:none;cursor:pointer}
+details.top-cav summary::-webkit-details-marker{display:none}
+.cav-more{margin-left:8px;color:var(--wine);text-decoration:underline;font-size:12.5px;white-space:nowrap}
+details.top-cav[open] .cav-more{display:none}
+details.adv{margin-top:14px;border:1px solid var(--hair);border-radius:12px;background:#fff;padding:0 16px}
+details.adv summary{list-style:none;cursor:pointer;padding:12px 0;font-size:14px;color:var(--wine)}
+details.adv summary::-webkit-details-marker{display:none}
+details.adv summary::before{content:"＋ ";font-family:var(--mono)}
+details.adv[open] summary::before{content:"− "}
+details.adv summary span{display:block;font-size:11.5px;color:var(--ink3);margin-top:2px}
+details.adv[open]{padding-bottom:12px}
+.prm-d{font-size:12.5px;color:var(--ink2)}
+.ends{color:var(--ink2)}
+.free{display:flex;gap:8px}
+.free input{flex:1;min-width:0;border:1px solid var(--hair);border-radius:10px;padding:10px 12px;font:inherit;font-size:15px;background:#fff}
+.free input:focus{outline:2px solid var(--wine);outline-offset:-1px}
+.free button{border:0;background:var(--ink);color:#fff;border-radius:10px;padding:0 18px;font:inherit;font-size:14px;cursor:pointer}
+details.ex{margin-top:16px;border-top:1px solid var(--hair);padding-top:12px}
+details.ex summary{cursor:pointer;font-size:13px;color:var(--wine);list-style:none}
+details.ex summary::-webkit-details-marker{display:none}
+details.ex summary::before{content:"＋ ";font-family:var(--mono)}
+details.ex[open] summary::before{content:"− "}
+.ex-n{font-size:12.5px;color:var(--ink2);margin:8px 0 10px;line-height:1.6}
+.mv{background:#161514;color:#f4f2ee;border-color:#161514}
+.mv-h{font-family:var(--serif);font-weight:500;font-size:clamp(24px,4.4vw,36px);line-height:1.35;margin:6px 0 8px;color:#fff}
+.mv-lead{font-size:13.5px;color:#cfc9c0;margin:0 0 16px}
+.mv-sc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+#mvSc button[data-sc=move],#mvAdj{display:none !important}
+.mv-sc button.agy-b{border-color:#7a5a62}
+.mv-sc button.agy-b.on{border-color:#fff;background:#3a2328}
+@media (max-width:520px){.mv-sc button{padding:10px 10px}.mv-sc small{font-size:11px}.mv-sc b{font-size:28px}}
+.mv-sc button{background:#221f1d;border:1px solid #3a3532;border-radius:14px;color:#cfc9c0;padding:12px 14px;text-align:left;cursor:pointer;font:inherit}
+.mv-sc button.on{border-color:#ff6b8e;background:#2a1a1f;color:#fff}
+.mv-sc small{display:block;font-size:12px;line-height:1.4}
+.mv-sc b{font-family:var(--serif);font-weight:500;font-size:34px;color:#ff8fa6;line-height:1.2}
+.mv-sc b small{display:inline;font-size:15px;color:#cfc9c0;margin-left:2px}
+.mv-moves{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:14px}
+.mv-moves span{font-size:12px;color:#8a847c;margin-right:4px}
+.mv-moves button{background:transparent;border:1px solid #3a3532;color:#cfc9c0;border-radius:999px;padding:5px 12px;font:inherit;font-size:12.5px;cursor:pointer}
+.mv-moves button.on{background:#ff6b8e;border-color:#ff6b8e;color:#161514}
+.mv-stage{position:relative}
+.mv-desc{font-size:12.5px;color:#cfc9c0;line-height:1.6;margin:-4px 0 14px;padding-left:10px;border-left:2px solid #ff6b8e}
+.mv-moves button i{font-style:normal;font-size:10.5px;background:#161514;color:#ff8fa6;border-radius:999px;padding:1px 6px;margin-right:6px}
+.mv-moves button:not(.on) i{background:#2a1a1f}
+#best{display:none}
+.mv-stage canvas{display:block;width:100%;cursor:pointer}
+.mv-hud{display:flex;justify-content:space-between;font-family:var(--mono);font-size:13px;color:#cfc9c0;margin-top:10px}
+.mv-hud b{color:#ff8fa6;font-size:18px}
+.mv-play{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);background:#ff6b8e;color:#161514;border:0;border-radius:999px;padding:14px 28px;font:inherit;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(255,107,142,.35)}
+.mv-story{min-height:3em;font-size:14px;line-height:1.7;color:#e8e3dc;background:#221f1d;border-radius:12px;padding:12px 14px;margin:14px 0 10px}
+.mv-story b{color:#ff8fa6;font-weight:600}
+.mv-sum{font-size:15px;line-height:1.8;color:#f4f2ee;margin:0 0 14px}
+.mv-sum b{color:#ff8fa6}
+.mv-btns{display:flex;gap:8px;flex-wrap:wrap}
+.mv-btns button{background:transparent;border:1px solid #4a4542;color:#f4f2ee;border-radius:999px;padding:10px 18px;font:inherit;font-size:14px;cursor:pointer}
+.mv-btns button.pri{background:#ff6b8e;border-color:#ff6b8e;color:#161514;font-weight:700}
+.mv-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:60;display:flex;align-items:center;justify-content:center;padding:20px}
+.mv-mbox{background:#161514;border-radius:16px;padding:16px;max-width:420px;width:100%;color:#cfc9c0;font-size:12.5px;text-align:center}
+.mv-mbox img{width:100%;border-radius:10px;display:block;margin-bottom:10px}
+.mv-mbox .mv-btns{justify-content:center}
+.demo{background:#161514;color:#f4f2ee;border-radius:24px;padding:28px 24px 26px;margin:20px 0 8px}
+.dm-k{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#ff8fa6;margin:0 0 10px}
+.dm-h{font-family:var(--serif);font-weight:500;font-size:clamp(28px,6vw,52px);line-height:1.3;margin:0 0 12px;color:#fff}
+.dm-ex{font-size:13px;color:#cfc9c0;margin:0 0 16px;line-height:1.6}
+.dm-stage canvas{display:block;width:100%}
+.dm-prog{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;list-style:none;padding:0;margin:0 0 12px;counter-reset:s}
+.dm-prog li{font-size:11px;color:#8a847c;text-align:center;padding-top:7px;border-top:3px solid #3a3532;transition:all .3s;counter-increment:s}
+.dm-prog li::before{content:counter(s) " ";font-family:var(--mono)}
+.dm-prog li.on{color:#ff8fa6;border-color:#ff6b8e}.dm-prog li.done{color:#cfc9c0;border-color:#7a5a62}
+.dm-screen{background:#f4f2ee;color:#1d1b19;border-radius:16px;padding:16px;min-height:300px;position:relative;overflow:hidden}
+.dm-screen h5{font-size:12px;color:#8a847c;margin:0 0 8px;font-weight:500}
+.dsc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.dsc span{border:1px solid #d9d3ca;background:#fff;border-radius:999px;padding:5px 11px;font-size:12.5px;transition:all .25s}
+.dsc span small{font-size:10px;color:#8a847c;margin-left:3px}
+.dsc span.tap{background:#8c1d2c;color:#fff;border-color:#8c1d2c;transform:scale(.94)}
+.dsc span.used{opacity:.35}
+.drk{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e3dfd8;border-radius:10px;padding:8px 10px;margin-bottom:6px;font-size:13.5px;animation:dIn .35s ease both}
+.drk i{font-style:normal;background:#8c1d2c;color:#fff;border-radius:999px;font-size:11px;padding:2px 8px;font-family:var(--mono)}
+.drk b{margin-left:auto;font-family:var(--mono);font-weight:500;font-size:12.5px;color:#5a544e}
+.drk .chg{color:#1f6b3a;font-weight:700}
+@keyframes dIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.dring{display:flex;align-items:center;gap:16px;animation:dIn .35s ease both}
+.dring svg{width:116px;height:116px;flex:none}
+.dring circle.v{transition:stroke-dashoffset 1s ease}
+.dring .t b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.2}
+.dring .t small{font-size:12px;color:#5a544e;line-height:1.6;display:block}
+.dring .t em{font-style:normal;color:#8c1d2c;font-weight:700}
+.dfi{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #e3dfd8;border-radius:10px;padding:9px 12px;margin-bottom:6px;font-size:13px;animation:dIn .35s ease both}
+.dfi span:last-child{font-family:var(--mono);border:1px solid #d9d3ca;border-radius:6px;padding:3px 8px;min-width:76px;text-align:right;background:#faf9f7}
+.dfi.typing span:last-child{border-color:#8c1d2c;box-shadow:0 0 0 2px rgba(140,29,44,.15)}
+.dcards{display:grid;grid-template-columns:1fr 1fr;gap:8px;animation:dIn .35s ease both}
+.dcards div{background:#fff;border:1px solid #e3dfd8;border-radius:12px;padding:10px 12px;transition:all .4s}
+.dcards div small{display:block;font-size:11px;color:#8a847c}
+.dcards div b{display:block;font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.3}
+.dcards div.hit{border-color:#8c1d2c;background:#fbf1f2;box-shadow:0 0 0 3px rgba(140,29,44,.12)}
+.dmsg{margin-top:10px;font-size:13px;line-height:1.7;background:#efece6;border-radius:10px;padding:10px 12px;animation:dIn .35s ease both}
+.dmsg b{color:#8c1d2c}
+.dm-cap{font-size:14px;color:#f4f2ee;line-height:1.7;margin:12px 0 0;min-height:3.4em}
+.dm-cap b{color:#ff8fa6}
+.dm-out{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.dm-h .sp{display:none}
+.dm-row{background:#221f1d;border:1px solid #3a3532;border-radius:14px;padding:10px 14px;opacity:.35;transition:opacity .3s,border-color .3s}
+.dm-row.shown{opacity:1}.dm-row.on{border-color:#ff6b8e;background:#2a1a1f}
+.dm-row small{display:block;font-size:12px;color:#cfc9c0}
+.dm-row b{font-family:var(--serif);font-weight:500;font-size:clamp(30px,6vw,44px);color:#ff8fa6;line-height:1.2}
+.dm-row b small{display:inline;font-size:15px;color:#cfc9c0;margin-left:2px}
+.dm-note{font-size:13px;color:#cfc9c0;line-height:1.7;margin:14px 0 0;min-height:1em}
+.dm-btns{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.dm-go{background:#ff6b8e;color:#161514;text-decoration:none;font-weight:700;border-radius:999px;padding:13px 24px;font-size:15px;opacity:.35;pointer-events:none;transition:opacity .3s}
+.dm-go.show{opacity:1;pointer-events:auto}
+.dm-btns button{background:transparent;border:1px solid #4a4542;color:#f4f2ee;border-radius:999px;padding:11px 18px;font:inherit;font-size:14px;cursor:pointer}
+@media (max-width:520px){.demo{border-radius:18px;padding:22px 16px;margin:12px 0 4px}.dm-h{font-size:28px}.dm-h .sp{display:inline}.dm-ex{font-size:12.5px;margin-bottom:12px}}
+.conds-h{font-size:13px;font-weight:500;color:var(--ink2);margin:22px 0 8px;padding-top:16px;border-top:1px solid var(--hair)}
+.cond.new{animation:condNew 1.6s ease}
+@keyframes condNew{0%{box-shadow:0 0 0 3px var(--wine);background:#fbeff1}100%{box-shadow:0 0 0 0 transparent}}
+.env{margin:4px 0 18px;padding:14px 14px 6px;border:1px solid var(--hair);border-radius:14px;background:#fff}
+.env h4{font-size:14px;font-weight:600;margin:0 0 2px}
+.env-n{font-size:12px;color:var(--ink2);margin:0 0 10px}
+.env-r{padding:8px 0;border-top:1px solid var(--hair)}
+.env-name{display:block;font-size:13px;margin-bottom:6px}
+.env-seg{display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.env-seg button{border:1px solid var(--hair);background:#faf8f5;border-radius:8px;padding:7px 2px;font:inherit;font-size:11.5px;line-height:1.25;cursor:pointer;color:var(--ink2)}
+.env-seg button.on{background:var(--wine);border-color:var(--wine);color:#fff}
+#result .scale,#result .chip,#result .res-side,#result details.more{display:none}
+#result .result{grid-template-columns:1fr}
+.res-env{font-size:13px;color:var(--ink2);margin-top:8px;line-height:1.7}
+.res-env b{color:var(--wine)}
+.lvl{display:flex;flex-direction:column;gap:5px;margin-top:4px}
+.lvl button{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;border:1px solid var(--hair);background:#fff;border-radius:10px;padding:9px 12px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.lvl button small{font-size:11px;color:var(--ink3);white-space:nowrap;font-family:var(--mono)}
+.lvl button.on{border-color:var(--wine);background:#fbeff1;box-shadow:inset 3px 0 0 var(--wine)}
+.lvl button.on small{color:var(--wine)}
+#result .num .tiny{color:var(--wine);opacity:1;font-size:26px}
+body.pg-cond [data-pg="around"]{display:none !important}
+body.pg-around [data-pg="cond"]{display:none !important}
+[data-setseg]{display:none !important}
+.setseg{display:inline-grid;grid-template-columns:1fr 1fr;border:1px solid var(--hair);border-radius:999px;padding:3px;background:#fff;margin:0 0 14px}
+.setseg button{border:0;background:transparent;border-radius:999px;padding:7px 16px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--ink2)}
+.setseg button.on{background:var(--ink);color:#fff}
+.pg-head{margin:28px 0 4px}
+.pg-head h1{font-family:var(--serif);font-weight:500;font-size:clamp(28px,5vw,44px);margin:0 0 8px}
+.pg-head p{font-size:14px;color:var(--ink2);line-height:1.7;margin:0 0 14px;max-width:46em}
+.next-pg{display:block;text-align:center;margin-top:18px;background:var(--ink);color:#fff;text-decoration:none;border-radius:999px;padding:14px;font-size:15px;font-weight:600}
+.env-sum small{font-size:12.5px;color:var(--ink2)}
+.es-row{display:flex;align-items:center;gap:12px;margin:6px 0 16px}
+.es-row div{flex:1;background:#fff;border:1px solid var(--hair);border-radius:12px;padding:10px 14px}
+.es-row span{display:block;font-size:11.5px;color:var(--ink3)}
+.es-row b{font-family:var(--serif);font-weight:500;font-size:22px}
+.es-row .es-me{border-color:var(--wine);background:#fbeff1}.es-row .es-me b{color:var(--wine)}
+.es-row i{font-style:normal;color:var(--ink3)}
+#envBox .env-r{padding:14px 0;border-top:1px solid var(--hair)}
+.env-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline;margin-bottom:6px}
+.env-top .env-name{font-size:14px;margin:0}
+.env-top output{font-family:var(--mono);font-size:13px;color:var(--wine);white-space:nowrap}
+#envBox input[type=range]{width:100%}
+.env-ref{display:flex;justify-content:space-between;font-size:12px;color:var(--ink3);margin-top:4px}
+.env-ref button{border:0;background:none;color:var(--wine);text-decoration:underline;font:inherit;font-size:12px;cursor:pointer;padding:0}
+.env-n{font-size:12.5px;color:var(--ink2);line-height:1.7;margin:0 0 6px}
+.mv-adj{background:#221f1d;border-radius:14px;padding:6px 14px 12px;margin:0 0 14px}
+.mv-adj h4{font-size:13px;font-weight:600;color:#f4f2ee;margin:12px 0 6px}
+.mv-adj h4 span{font-weight:400;font-size:11.5px;color:#8a847c;margin-left:8px}
+.adj-r{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid #34302d}
+.adj-n{font-size:13px;color:#e8e3dc;line-height:1.45;min-width:0}
+.adj-n small{display:block;font-size:12px;color:#a8a199}
+.adj-n small b{color:#f4f2ee;font-weight:500}
+.adj-r.chg .adj-n small b{color:#ff8fa6}
+.adj-ctl{display:flex;gap:4px;flex-shrink:0}
+.adj-ctl button{background:transparent;border:1px solid #4a4542;color:#cfc9c0;border-radius:8px;padding:6px 9px;font:inherit;font-size:12px;cursor:pointer}
+.adj-ctl button.lo{border-color:#ff6b8e;color:#ff8fa6}
+.adj-beh{display:flex;flex-wrap:wrap;gap:6px}
+.adj-beh button{background:transparent;border:1px solid #4a4542;color:#cfc9c0;border-radius:999px;padding:6px 12px;font:inherit;font-size:12.5px;cursor:pointer}
+.adj-beh button.on{background:#ff6b8e;border-color:#ff6b8e;color:#161514}
+.adj-best{font-style:normal;font-size:10px;background:#ff6b8e;color:#161514;border-radius:999px;padding:1px 6px;margin-right:6px;vertical-align:1px}
+.adj-beh button.on .adj-best{background:#161514;color:#ff8fa6}
+.adj-foot{text-align:right;margin-top:8px}
+.adj-foot button{background:none;border:0;color:#8a847c;text-decoration:underline;font:inherit;font-size:12px;cursor:pointer}
+.lvs{margin-top:4px}
+.lvs-v{display:flex;justify-content:space-between;align-items:baseline;gap:10px;min-height:2.6em;margin-bottom:6px}
+.lvs-v b{font-size:16px;font-weight:600;color:var(--wine);line-height:1.4}
+.lvs-v small{font-family:var(--mono);font-size:11.5px;color:var(--ink3);white-space:nowrap}
+.lvs input[type=range]{width:100%;display:block}
+.lvs-tick{display:flex;justify-content:space-between;padding:0 8px;margin-top:2px}
+.lvs-tick i{width:2px;height:6px;background:#d9d2c8;border-radius:1px}
+.lvs-ends{display:flex;justify-content:space-between;font-size:11.5px;color:var(--ink3);margin-top:2px}
+.dock[data-run]{gap:12px;background:#ff6b8e;color:#161514;padding:10px 20px 10px 12px}
+.dk-play{width:38px;height:38px;border-radius:50%;background:#161514;color:#ff8fa6;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.dk-run{display:flex;flex-direction:column;min-width:0}
+.dock[data-run] .dk-t{font-family:var(--sans);font-size:15px;font-weight:700;color:#161514;line-height:1.3}
+.dk-sub{font-size:11.5px;color:#3a1f27;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:520px){.dock[data-run]{display:flex;grid-template-columns:none}}
+.pg-head{margin-top:44px;padding-top:24px;border-top:1px solid var(--hair)}
+.mv-adj{background:transparent;padding:0}
+.mv-moves span small{margin-left:6px;color:#6d6660}
+.mv-moves button i.adj-best{background:#161514;color:#ff8fa6}
+.mv-moves button:not(.on) i.adj-best{background:#ff6b8e;color:#161514}
+.adj-more{background:#221f1d;border-radius:12px;padding:0 12px;margin-top:4px}
+.adj-more summary{cursor:pointer;font-size:12.5px;color:#cfc9c0;padding:10px 0;list-style:none}
+.adj-more summary::-webkit-details-marker{display:none}
+.adj-more summary::before{content:"＋ ";color:#ff8fa6}
+.adj-more[open] summary::before{content:"− "}
+.adj-more[open]{padding-bottom:8px}
+.dock[data-run]{justify-content:space-between;padding:8px 8px 8px 20px;gap:12px}
+.dock[data-run] .dk-sub{font-size:12px;color:#3a1f27;white-space:nowrap}
+.dock[data-run] .dk-p{font-family:var(--serif);font-weight:600;font-size:34px;line-height:1.05;color:#161514}
+.dk-go{background:#161514;color:#ff8fa6;border-radius:999px;padding:12px 18px;font-weight:700;font-size:15px;white-space:nowrap;flex-shrink:0}
+@media (max-width:520px){.dock[data-run] .dk-p{font-size:32px}}
+.dock[data-run]{padding:8px 8px 8px 16px;gap:10px}
+.dk-st{display:flex;flex-direction:column;min-width:0}
+.dock[data-run] .dk-st+.dk-st{border-left:1px solid rgba(22,21,20,.2);padding-left:10px}
+.dock[data-run] .dk-r,.dock[data-run] .dk-p{font-family:var(--serif);font-weight:600;font-size:24px;line-height:1.1;color:#161514;white-space:nowrap}
+.dock[data-run] .dk-sub{font-size:11px}
+@media (max-width:520px){.dock[data-run] .dk-r,.dock[data-run] .dk-p{font-size:21px}.dock[data-run] .dk-sub{font-size:10.5px}.dk-go{padding:11px 13px;font-size:14px}}
+.adj-h{font-size:15px;font-weight:600;color:#fff;margin:6px 0 10px;padding-top:16px;border-top:1px solid #34302d}
+.mv-desc-d{margin:4px 0 12px}
+.mv-desc-d summary{cursor:pointer;list-style:none;font-size:13px;color:#e8e3dc;padding-left:10px;border-left:2px solid #ff6b8e}
+.mv-desc-d summary::-webkit-details-marker{display:none}
+.mv-desc-d summary span{margin-left:10px;color:#ff8fa6;text-decoration:underline;font-size:12px}
+.mv-desc-d[open] summary span{display:none}
+.mv-desc-d .mv-desc{margin:8px 0 0}
+.dk-lines{display:grid;grid-template-columns:auto 1fr;column-gap:10px;row-gap:1px;align-items:baseline;min-width:0}
+.dock[data-run] .dk-lines .dk-sub{font-size:11.5px;color:#3a1f27;white-space:nowrap}
+.dock[data-run] .dk-lines b{font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.2;color:#161514;white-space:nowrap}
+@media (max-width:520px){.dock[data-run] .dk-lines b{font-size:18px}.dock[data-run] .dk-lines .dk-sub{font-size:10.5px}}
+.adj-box{background:#221f1d;border-radius:12px;padding:4px 12px 6px;margin:12px 0 8px}
+.adj-bh{font-size:12.5px;color:#cfc9c0;padding:8px 0 4px}
+.adj-box .adj-r:first-of-type{border-top:0}
+.dock[data-pt]{background:#ff6b8e;color:#161514;justify-content:space-between;padding:8px 8px 8px 16px;gap:10px}
+.dock[data-pt] .dk-lines .dk-sub{font-size:11.5px;color:#3a1f27;white-space:nowrap}
+.dock[data-pt] .dk-lines b{font-family:var(--serif);font-weight:600;font-size:20px;line-height:1.2;color:#161514;white-space:nowrap}
+@media (max-width:520px){.dock[data-pt]{display:flex}.dock[data-pt] .dk-lines b{font-size:18px}.dock[data-pt] .dk-lines .dk-sub{font-size:10.5px}}
+.retro-stats b{font-size:36px;color:var(--wine)}
+.retro-stats div:last-child{border-color:var(--wine);background:#fbeff1}
+.retro-stats div:last-child b{font-size:44px}
+.mv-hud{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 10px;font-family:var(--serif);font-size:15px;color:#cfc9c0}
+.mv-hud #mvDate{font-size:30px;color:#fff;font-weight:500}
+.mv-hud b{font-size:30px;color:#ff8fa6;font-weight:500}
+@media (max-width:520px){.mv-hud #mvDate,.mv-hud b{font-size:26px}}
+.few{background:#fbeff1;border:2px solid var(--wine);border-radius:14px;padding:14px 16px;font-size:15px;line-height:1.7;margin:0 0 18px;color:var(--ink)}
+.few b{color:var(--wine)}
+.rk{display:inline-flex;align-items:center;justify-content:center;min-width:38px;height:24px;border-radius:999px;background:var(--wine);color:#fff;font-size:12px;font-weight:700;margin-right:8px;flex-shrink:0}
+.mvud{display:inline-flex;gap:4px;margin-left:8px}
+.mvud button{width:30px;height:28px;border:1px solid var(--hair);background:#fff;border-radius:8px;cursor:pointer;font-size:14px;color:var(--ink2)}
+.mvud button:disabled{opacity:.3;cursor:default}
+.conds-h small{display:block;font-weight:400;font-size:12px;color:var(--ink2);margin-top:4px;line-height:1.6}
+.rank-line{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 10px}
+.rank-line span{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--hair);border-radius:999px;padding:3px 10px 3px 4px;font-size:12.5px}
+.rank-line i{font-style:normal;background:var(--wine);color:#fff;border-radius:50%;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:11px}
+.ob{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:80;display:flex;align-items:center;justify-content:center;padding:18px}
+.ob-box{background:#fff;border-radius:20px;padding:24px 22px;max-width:440px;width:100%}
+.ob-k{font-size:12px;color:var(--wine);margin:0 0 4px;font-weight:600}
+.ob-box h2{font-family:var(--serif);font-weight:500;font-size:26px;margin:0 0 14px}
+.ob-box ol{list-style:none;padding:0;margin:0 0 18px;counter-reset:ob}
+.ob-box li{counter-increment:ob;position:relative;padding:0 0 14px 40px}
+.ob-box li::before{content:counter(ob);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--wine);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
+.ob-box li b{display:block;font-size:16px;margin-bottom:2px}
+.ob-box li span{font-size:13px;color:var(--ink2);line-height:1.6}
+#obGo{width:100%;background:#ff6b8e;border:0;border-radius:999px;padding:14px;font:inherit;font-size:16px;font-weight:700;color:#161514;cursor:pointer}
+.life{margin:0 0 16px}
+.life-h{font-size:14px;font-weight:600;margin-bottom:8px}
+.life-h small{display:block;font-weight:400;font-size:12px;color:var(--ink2);margin-top:2px}
+.life-b{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.life-b button{text-align:left;border:1px solid var(--hair);background:#fff;border-radius:12px;padding:10px 12px;cursor:pointer;font:inherit}
+.life-b button b{display:block;font-size:13.5px;font-weight:600;line-height:1.4}
+.life-b button small{font-size:11.5px;color:var(--ink3)}
+.life-b button.on{border-color:var(--wine);background:#fbeff1;box-shadow:inset 3px 0 0 var(--wine)}
+.mv-title{background:linear-gradient(135deg,#2a1a1f,#221f1d);border:1px solid #ff6b8e;border-radius:16px;padding:16px 18px;margin:14px 0}
+.mv-title small{display:block;font-size:12px;color:#ff8fa6;letter-spacing:.1em}
+.mv-title b{display:block;font-family:var(--serif);font-weight:600;font-size:24px;color:#fff;line-height:1.4;margin:4px 0}
+.mv-title span{font-size:13px;color:#cfc9c0;line-height:1.6}
+.code-in{display:block;width:100%;border:1px dashed var(--wine);background:#fff;color:var(--wine);border-radius:12px;padding:10px;font:inherit;font-size:13.5px;cursor:pointer;margin:0 0 14px}
+.code-box{text-align:left}
+.code-box h3{color:#fff;font-size:18px;margin:4px 0 8px}
+.code-box p{font-size:13px;color:#cfc9c0;line-height:1.6;margin:0 0 10px}
+.code-box textarea{width:100%;box-sizing:border-box;border-radius:10px;border:1px solid #4a4542;background:#221f1d;color:#f4f2ee;font-family:var(--mono);font-size:12px;padding:10px;resize:none}
+.code-msg{color:#ff8fa6 !important;min-height:1.2em}
+.rank-cmp{margin-top:18px}
+.rank-cmp h4{font-size:15px;margin:0 0 6px}
+.rc-msg{font-size:14px;line-height:1.7;margin:0 0 10px}
+.rc-msg b{color:var(--wine)}
+.rank-cmp table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:12px;overflow:hidden}
+.rank-cmp th{font-weight:500;color:var(--ink3);font-size:11.5px;text-align:left;padding:8px 10px;border-bottom:1px solid var(--hair)}
+.rank-cmp td{padding:8px 10px;border-bottom:1px solid var(--hair)}
+.rank-cmp td.n{font-family:var(--mono);white-space:nowrap}
+.rank-cmp em{font-style:normal;font-size:11.5px;color:var(--ink3);white-space:nowrap}
+.rank-cmp em.up{color:var(--wine);font-weight:600}.rank-cmp em.dn{color:#3d6fa8;font-weight:600}
+.rc-n{font-size:11.5px;color:var(--ink3);margin:8px 0 0;line-height:1.6}
+.c-top .c-name{min-width:0;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}.c-top .rk,.c-top .mvud,.c-top .x{flex:none}
+@media (max-width:520px){.c-top .c-prob{font-size:14px;white-space:nowrap}}
+.st-hint{display:block;margin-top:6px;font-size:12px;color:#a8a199}
+
+/* ---- 結婚相談所で活動すると（相談員が入力） ---- */
+.agy .agy-in{display:grid;grid-template-columns:1fr;gap:0}
+.agy .ai{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;padding:11px 0;border-top:1px solid var(--hair)}
+.agy .ai label{font-size:14px}
+.agy .ai .v{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink2);white-space:nowrap}
+.agy .ai input{width:84px;font:inherit;font-family:var(--mono);font-size:15px;padding:6px 8px;border:1px solid var(--hair);border-radius:8px;background:#fff;text-align:right}
+.agy .ai small{grid-column:1/3;font-size:11.5px;color:var(--ink3)}
+.agy .tg{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:1px;background:#efece6;color:var(--ink2)}
+.agy .tg.in{background:#e6f3ea;color:#1f6b3a}
+.agy .ag-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 6px}
+.agy .ag-cmp div{border:1px solid var(--hair);border-radius:14px;padding:12px 14px;background:#fff}
+.agy .ag-cmp div.me{border-color:var(--wine);background:#fbf1f2}
+.agy .ag-cmp small{display:block;font-size:12px;color:var(--ink3)}
+.agy .ag-cmp b{display:block;font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.25}
+.agy .ag-cmp span{display:block;font-size:11.5px;color:var(--ink2)}
+.agy .ag-msg{font-size:14px;line-height:1.8;padding:12px 14px;background:#efece6;border-radius:10px;margin-top:12px}
+.agy .ag-msg b{color:var(--wine)}
+.agy #ag_pool{width:118px}
+.cm-btn{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:4px 11px;font:inherit;font-size:12px;color:var(--ink2);cursor:pointer;margin-right:10px}
+.cm-btn[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.meta{display:flex;align-items:center;flex-wrap:wrap;justify-content:flex-end;gap:4px}
+#codeIn,#codeOut,#mvTitle,#mvCard,#cmBtn{display:none !important}
+.cm-note{display:none;background:#efece6;border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--ink2);margin:12px 0}
+body.cmode .cm-note{display:block}
+.agy .mdist{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0}
+.agy .mdist label{font-size:11.5px;color:var(--ink3);display:flex;flex-direction:column;gap:2px}
+.agy .mdist input{width:100%;font:inherit;font-family:var(--mono);font-size:14px;padding:5px 6px;border:1px solid var(--hair);border-radius:8px;text-align:right;background:#fff}
+.exs .exr{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:11px 12px;border:1px solid var(--hair);border-radius:12px;background:#fff;margin-bottom:8px}
+.exs .exr.me{border-color:var(--wine);background:#fbf1f2}
+.exs .exr .l{font-weight:700;font-size:14px}
+.exs .exr .r{font-size:12.5px;font-weight:700;border-radius:999px;padding:2px 10px;background:#efece6;align-self:start}
+.exs .exr .r.ok{background:#e6f3ea;color:#1f6b3a}
+.exs .exr .c{grid-column:1/3;font-size:12.5px;color:var(--ink2)}
+.exs .exr .n{grid-column:1/3;display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2)}
+.exs .exr .n b{font-family:var(--mono);color:var(--ink);font-weight:500}
+.exs .exr .m{grid-column:1/3;font-size:12px;color:var(--ink3)}
+.exs .exr .x{position:absolute;right:8px;top:6px}
+.exs .exr{position:relative}
+.exs .ex-del{grid-column:1/3;justify-self:end;border:0;background:none;color:var(--ink3);font:inherit;font-size:11.5px;text-decoration:underline;cursor:pointer}
+.exs .ex-msg{font-size:13.5px;line-height:1.8;padding:10px 12px;background:#efece6;border-radius:10px;margin:4px 0 14px}
+.exs .ex-msg:empty{display:none}
+.exs .ex-save{display:flex;gap:8px;margin-bottom:10px}
+.exs .ex-save input,.exs .ex-form input,.exs .ex-form select{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--hair);border-radius:10px;background:#fff;width:100%;box-sizing:border-box}
+.exs .ex-save button,.exs .pri-b{border:0;background:var(--ink);color:#fff;border-radius:999px;padding:8px 16px;font:inherit;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.exs .ex-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.exs .ex-form label{display:flex;flex-direction:column;gap:3px;font-size:12px;color:var(--ink2)}
+.exs .ex-form label.w,.exs .ex-form label:nth-child(2){grid-column:1/3}
+.agy .ag-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.agy .ag-grid h4{grid-column:1/3;margin:8px 0 0;font-size:13px;color:var(--ink2);font-weight:500}
+.agy .cell{background:#fff;border:1px solid var(--hair);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.agy .cell label{font-size:12.5px;color:var(--ink2);display:flex;justify-content:space-between;gap:4px;align-items:center}
+.agy .cell .tg{margin:0;font-size:10px;padding:0 6px}
+.agy .cell .v{display:flex;align-items:baseline;gap:4px;font-size:12px;color:var(--ink3)}
+.agy .cell input{width:100%;min-width:0;font:inherit;font-family:var(--mono);font-size:17px;padding:5px 7px;border:1px solid var(--hair);border-radius:8px;background:#faf9f7;text-align:right}
+.agy .ag-cmp div.hit{border-color:var(--wine);box-shadow:0 0 0 3px rgba(140,29,44,.1)}
+.agy .ag-res{display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px;margin:14px 0 0;padding:12px 14px;background:#161514;color:#f4f2ee;border-radius:14px}
+.agy .ag-res b{font-family:var(--serif);font-weight:500;font-size:34px;color:#ff8fa6;line-height:1.1}
+.agy .ag-res b.o{color:#cfc9c0;font-size:26px}
+.agy .ag-res .vs{color:#cfc9c0}
+.agy .ag-res span{font-size:13px}
+.agy .ag-res small{flex-basis:100%;font-size:12px;color:#cfc9c0}
+.agy .ag-msg ul{margin:0;padding-left:18px}
+.agy .ag-fn{margin-top:16px;border:1px solid var(--hair);border-radius:16px;padding:14px 16px;background:#fff}
+.agy .ag-fn h4{margin:0 0 10px;font-size:15px}
+.agy .ag-fn h4 span{display:block;font-size:11.5px;color:var(--ink3);font-weight:400;margin-top:2px}
+.agy .fin{display:inline-flex;align-items:baseline;gap:3px;margin:0 2px}
+.agy .fin input{width:58px;font:inherit;font-family:var(--mono);font-size:14px;padding:2px 6px;border:1px solid var(--wine);border-radius:6px;background:#fbf1f2;text-align:right}
+.agy .fin input[data-ag=pool]{width:104px}
+.agy .fin .tg{font-size:10px;padding:0 5px;margin-left:2px}
+.agy .ag-reset{margin-top:10px;border:0;background:none;color:var(--ink3);text-decoration:underline;font:inherit;font-size:12px;cursor:pointer}
+</style>
+</head>
+<body class="pg-all">
+<div id="miniIn" hidden></div>
+<a class="dock" id="dock" href="#result"></a>
+
+<div class="wrap">
+  <header class="top">
+    <div class="mark">婚活<i>ドック</i></div>
+    <div class="meta"><span><span id="dlName">1年後</span>まで <b id="days">--</b> 日</span></div>
+  </header>
+  <nav class="gnav" id="gnav" aria-label="ページ切り替え">
+    <a href="#ideal" data-view="cond" class="on"><span>理想の結婚相手</span><b id="navP_cond">–</b></a><b id="navP_around" hidden></b><b id="navP_ideal" hidden></b>
+    <a href="#minimum" data-view="must"><span>最低限の結婚相手</span><b id="navP_must">–</b></a>
+    <a href="#partner" data-view="current"><span>今交際している相手</span><b id="navP_current">–</b></a><b id="navP_ex" hidden></b>
+    <a href="#compare" data-view="compare"><span>くらべる</span></a>
+    <a href="#about" data-view="about"><span>しくみ</span></a>
+  </nav>
+
+  <div class="view" id="view-main">
+  <section class="demo" id="demo" data-pg="cond">
+    <p class="dm-k">婚活ドック · 使い方 20秒</p>
+    <h1 class="dm-h">条件を選ぶと、<br class="sp">どこで詰まって<br class="sp">いるかが分かる。</h1>
+    <ol class="dm-prog" id="dmProg"><li>条件</li><li>何人に1人</li><li>最低限</li><li>相談所</li><li>詰まり</li></ol>
+    <div class="dm-screen" id="dmScreen"></div>
+    <p class="dm-cap" id="dmCap"></p>
+    <div class="dm-btns"><a class="dm-go show" href="#mainGrid" id="dmGo">自分で入れてみる ↓</a><button id="dmRe">もう一度</button><button id="dmSkip">飛ばす</button></div>
+  </section>
+  <section class="hero" data-pg="cond">
+    <div>
+      <h1 id="heroH">あなたが結婚相手に<br>求める<em>条件</em>は<br>何ですか？</h1>
+    </div>
+    <div>
+      <p class="lead" id="heroLead">あなたが決めた日までに、結婚相手の条件に合う人と付き合える確率を、その場で計算するサイトです。</p>
+      <ol class="steps" id="heroSteps">
+        <li><span>1</span>結婚相手に求めることを入れる（理想と最低限）</li>
+        <li><span>2</span>ふだん会う人の中の割合と、会うペースを入れる</li>
+        <li><span>3</span>期限を決める（最初は1年後）</li>
+      </ol>
+      <p class="steps-out" id="heroOut">→ 画面下の「▶ 1000人のあなたを走らせる」を押すと、いつでも結果が見られます</p>
+    </div>
+  </section>
+  <details class="caveat top-cav" data-pg="cond"><summary><b>この数字は目安です。</b>条件や行動を変えたときに「どれくらい変わるか」を比べるためのものです。<span class="cav-more">前提を見る</span></summary><ul>
+        <li>すでに恋人や配偶者がいる人は対象から除き、一度付き合ったら別れないものとします。付き合ってから結婚するまでは、平均で約4.3年です（出生動向基本調査 2021）。</li>
+        <li>どの相手とも、関係は0から作るものとします。すでに知っている人も新しく出会う人に含めてかまいません。<b>（成功率は絶対的なものではありません）</b></li>
+        <li>モデルはユーザーの主観的な入力に依存しており、ユーザーの行動傾向を可視化するための一つの指標にすぎません。<b>（実際の恋愛の複雑な要素は含まれていません。）</b></li>
+        <li>条件一致度は各項目を独立と仮定しており、周りの反対や、他の人に奪われるといった事象は考えないものとします。</li>
+        <li>上達と疲弊は単純化された関数で表現しており、実際の人間の心理変化を完全に再現するものではありません。</li>
+      </ul></details>
+
+<div id="retro" hidden></div>
+
+
+
+
+
+  <div class="grid solo" id="mainGrid">
+    <div class="col" data-pg="cond">
+      <section class="panel">
+        <div class="step-tag">STEP 1</div>
+        <div class="setseg" data-setseg><button data-set="ideal" class="on">理想の条件</button><button data-set="must">最低限の条件</button></div>
+        <div class="p-head"><h2 id="condH">理想の条件</h2></div>
+        <p class="c-note" id="condLead" style="margin:-6px 0 14px;font-size:12.5px"></p>
+        <p class="ctab-note" id="ctabNote"></p>
+        <div class="add" style="margin-top:4px">
+          <button class="code-in" id="codeIn">友達のコードで走らせる</button>
+          <div class="few"><b>全部入れる必要はありません。</b>条件は<b>必要最低限</b>にするほど、当てはまる人が増えて<b>確率が上がります</b>。本当に大事なものだけ選んでください。</div>
+          <h3 id="exH">よく挙がる条件（押すと下のランキングに追加）<span style="font-weight:400;color:var(--ink3);font-size:11.5px">　数字は、結婚したい人のうち重視・考慮する人の割合（出生動向基本調査 2021）</span></h3>
+          <div class="chips" id="addTop"></div>
+          <div class="chips" style="display:none"><button id="addCustom"></button></div>
+          <h3 style="margin-top:16px">身長・年齢・年収で決めたいとき</h3>
+          <div class="chips" id="addDist"></div>
+          <div class="who" style="margin-top:10px;font-size:12.5px">相手の性別
+            <div class="seg" id="sexSeg"><button data-s="m" class="on">男性</button><button data-s="f">女性</button></div>
+          </div>
+          <h3 id="freeH" style="margin-top:16px">ほかに必要なものがあれば書く</h3>
+          <form class="free" id="freeForm"><input id="freeIn" type="text" placeholder="例：転勤がない、子どもがほしい" maxlength="30"><button type="submit">追加</button></form>
+        </div>
+        <h3 class="conds-h" id="condsH" hidden></h3>
+        <div class="conds" id="conds"></div>
+        <div class="rank-cmp" id="rankCmp"></div>
+        <div class="inline-res" id="condRes"></div>
+
+      </section>
+    </div>
+
+    <section class="panel" id="result" data-pg="cond">
+    <div class="p-head"><h2 id="resH" data-x="1">あなたの理想に当てはまる人は？</h2></div>
+    <div class="result">
+      <div>
+        <div class="res-main">
+          <div class="ring">
+            <svg viewBox="0 0 200 200" aria-hidden="true">
+              <circle cx="100" cy="100" r="88" fill="none" stroke="#ebe7e0" stroke-width="6"/>
+              <circle id="arc" cx="100" cy="100" r="88" fill="none" stroke="#8c1d2c" stroke-width="6" stroke-linecap="round" stroke-dasharray="552.92" stroke-dashoffset="552.92"/>
+            </svg>
+            <div class="num"><b id="bigP">––<small>%</small></b><span id="byLabel">BY 12/25</span></div>
+          </div>
+          <div class="verdict">
+            <h3 id="vTitle"></h3>
+            <p id="vText"></p>
+            <div class="chip"><span class="dots" id="ledDots"><i></i><i></i><i></i></span><span id="chipText"></span></div>
+          </div>
+        </div>
+        <div class="scale">
+          <div class="bands" id="bands"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><span class="pin" id="pin"></span></div>
+          <div class="bands-lab" id="bandsLab"></div>
+        </div>
+      </div>
+      <div class="res-side">
+        <p class="fn-sum" id="fnSumTop"></p>
+        <div class="best" id="best"></div>
+        <a class="go-cmp" href="#compare" id="goCmp">理想と最低限を、くらべる →</a>
+      </div>
+    </div>
+    <details class="more">
+      <summary>計算の中身を見る</summary>
+      <ol class="chain" id="chain"></ol>
+    </details>
+    <a class="next-pg" href="#around">次へ：ふだん会う人の中では？ ↓</a>
+    </section>
+
+    <section class="pg-head" id="pgHead" data-pg="around">
+      <h1>あなたの周りと、行動</h1>
+      <p>日本全体での割合と、あなたがふだん会う人の中での割合は違います。まず周りにどれくらいいるかを入れて、次に会うペースを決めます。</p>
+      <div class="setseg" data-setseg><button data-set="ideal" class="on">理想の条件</button><button data-set="must">最低限の条件</button></div>
+    </section>
+    <section class="panel" id="envPanel" data-pg="around">
+      <div class="step-tag">STEP 2</div>
+      <div class="p-head"><h2>ふだん会う人の中に、条件に当てはまる人は？</h2></div>
+      <div id="envBox"></div>
+      <div id="envSum" class="env-sum" style="margin-top:14px"></div>
+    </section>
+    <div class="col" data-pg="around">
+      <section class="panel">
+        <div class="step-tag">STEP 3</div>
+        <div class="p-head"><h2 id="paramsH">出会いのペースと、あなた</h2></div>
+        <p class="shared-note">ここはすべてのページで共通です。</p>
+        <div id="params"></div>
+        <div class="retro-below" id="retroBelow" hidden>
+          <div class="retro-pace">
+        <div class="prm-h"><label for="retroT">当時、恋人を探していた期間はどれくらい？</label><output id="o_retroT">90 日</output></div>
+        <div class="row"><input type="range" id="retroT" min="7" max="730" step="1" value="90"></div>
+        <div class="ends"><span>← 短い</span><span>長い →</span></div>
+        
+      </div>
+          <div class="retro-stats" id="retroStats"></div>
+          <ul class="retro-cmp" id="retroCmp"></ul>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="panel step1" id="step1" data-pg="around" style="margin-top:24px">
+    <div class="step-tag">STEP 4</div>
+    <div class="s1-body">
+      <h2>いつまでに、結婚相手と出会って付き合いたい？</h2>
+      <div class="dl-row"><input type="date" id="dlDate" aria-label="期限の日付"><div class="chips" id="dlChips"><button data-m="6">半年後</button><button data-m="12" class="on">1年後</button><button data-m="24">2年後</button><button data-m="36">3年後</button></div></div>
+    </div>
+    <div class="s1-days"><b id="o_T">--</b><span>日後</span></div>
+  </section>
+
+  <section class="panel mv" id="multi" data-pg="around" style="margin-top:24px">
+    <div class="mv-head">
+      <div class="step-tag" style="color:#ff8fa6">RESULT</div>
+      <h2 class="mv-h">1000人のあなたを、<span id="mvDl">1年後</span>まで走らせる</h2>
+      <p class="mv-lead">同じ条件の「あなた」が1000人いたら、期限までに何人が<b style="color:#fff">結婚が決まる（成婚）</b>か。白く光るのが成婚、ピンクは交際まで進んだ人です。ふだんの出会いと、結婚相談所に入った場合をくらべられます。条件を変えると、ふだんの出会いの人数も変わります。</p>
+    </div>
+    <div class="mv-sc" id="mvSc">
+      <button data-sc="now" class="on"><small>ふだんの出会いの<br>あなた</small><b id="mvNow">–</b></button>
+      <button data-sc="move"><small id="mvMoveLab">1つ変えた<br>（ふだんの出会い）</small><b id="mvMoveN">–</b></button>
+      <button data-sc="agy" class="agy-b"><small>結婚相談所に<br>入ったあなた</small><b id="mvAgyN">–</b></button>
+    </div>
+    <div class="mv-stage" id="mvStage">
+      <div class="mv-hud"><span id="mvDate">今日</span><span>成婚 <b id="mvCnt">0</b>人 / 1000人<small id="mvCnt2" style="display:block;text-align:right;font-size:11px;color:#cfc9c0"></small></span></div>
+      <canvas id="mvCv"></canvas>
+      <button class="mv-play" id="mvPlay">▶ 走らせる</button>
+    </div>
+    <p class="mv-story" id="mvStory">光った点をタップすると、その「あなた」に何が起きたかが見られます。</p>
+    <div class="mv-title" id="mvTitle" hidden></div>
+    <p class="mv-sum" id="mvSum"></p>
+    <div class="mv-adj" id="mvAdj"></div>
+    <div class="mv-btns"><button id="mvReplay">▶ もう一度</button><button id="mvCard" class="pri">結果をカードにする</button><button id="codeOut">友達に送るコード</button></div>
+  </section>
+  <div class="ob" id="ob" hidden><div class="ob-box">
+  <p class="ob-k">はじめての方へ</p>
+  <h2>使い方は3つだけ</h2>
+  <ol>
+    <li><b>大事な条件を押す</b><span>よく挙がる条件から、結婚相手に求めるものを押します。全部入れる必要はありません。少ないほど確率は上がります。</span></li>
+    <li><b>順番を並べる</b><span>押した条件はランキングになります。↑↓で、大事なものを上に。上ほど「ゆずれない」として計算します。</span></li>
+    <li><b>「▶ 走らせる」を押す</b><span>画面下のボタンです。1000人のあなたが期限まで走り、結婚相手と付き合えた人が光ります。</span></li>
+  </ol>
+  <button id="obGo">はじめる</button>
+</div></div>
+<div class="mv-modal" id="codeModal" hidden><div class="mv-mbox code-box">
+  <h3 id="codeH">友達に送るコード</h3>
+  <p id="codeP">このコードを友達に送って、「友達のコードで走らせる」に貼ってもらうと、相手のスマホであなたの理想の1000人が走ります。</p>
+  <textarea id="codeTx" rows="4" spellcheck="false"></textarea>
+  <p class="code-msg" id="codeMsg"></p>
+  <div class="mv-btns"><button id="codeAct" class="pri">コピーする</button><button id="codeClose">閉じる</button></div>
+</div></div>
+<div class="mv-modal" id="mvModal" hidden><div class="mv-mbox"><img id="mvImg" alt="結果カード"><p>長押し（PCは右クリック）で保存できます</p><div class="mv-btns"><button id="mvShare" class="pri">共有する</button><button id="mvClose">閉じる</button></div></div></div>
+
+
+
+  <section class="panel agy" id="agyPanel" data-pg="around" style="margin-top:24px">
+    <div class="step-tag">結婚相談所なら</div>
+    <div class="p-head"><h2>求める側と、選ばれる側</h2></div>
+    <div class="setseg mt-seg" id="mtSeg" style="display:inline-grid"><button data-mt="first" class="on">初回の面談</button><button data-mt="active">活動中の面談</button></div>
+    <div class="ag-grid" id="agyIn"></div>
+    <p class="prm-d" id="agyHint" style="margin:6px 0 0"></p>
+    <div class="ag-cmp" id="agyCmp"></div>
+    <div class="ag-res" id="agyRes"></div>
+    <div class="ag-msg" id="agyMsg"></div>
+    <div class="ag-fn">
+      <h4>成婚までの内訳<span>枠の数字は全部書きかえられます。割合と期間はあなたの相談所の実績に（このブラウザに残ります）</span></h4>
+      <div class="funnel" id="agyFn"></div>
+    </div>
+    <details class="adv" id="agySet"><summary>⚙ 相談所の設定<span>最初に1回だけ。会員の数と分布（年齢・年収・身長・学歴・喫煙）など（このブラウザに残ります）</span></summary><div id="agySetBody"></div></details>
+    <button class="ag-reset" id="agyReset">次のお客さんへ（入力を消す）</button>
+  </section>
+
+  <div class="grid outrow" id="mainOut" data-pg="around">
+    <section class="panel">
+      <div class="p-head"><h2>人数で見ると</h2><span class="eyebrow">Breakdown</span></div>
+      <div class="funnel" id="funnel"></div>
+    </section>
+    <section class="panel">
+      <div class="p-head"><h2>出会う日ごとの成功率</h2><span class="eyebrow">Timeline</span></div>
+      <canvas id="chart" aria-label="日ごとの出会いの成功率と累積成功率"></canvas>
+      <div class="legend"><span><i style="background:#8c1d2c"></i>その日までの出会いで、結婚相手と付き合えている確率（累積・左目盛）</span><span><i style="background:#cfc9c0;height:8px;width:8px;vertical-align:0"></i>その日に出会った相手と期限までに付き合える確率 q(i)（右目盛）</span></div>
+    </section>
+  </div>
+
+  </div>
+
+  <div class="view" id="view-compare" hidden>
+  <details class="caveat top-cav"><summary><b>この数字は目安です。</b>条件や行動を変えたときに「どれくらい変わるか」を比べるためのものです。<span class="cav-more">前提を見る</span></summary><ul>
+        <li>すでに恋人や配偶者がいる人は対象から除き、一度付き合ったら別れないものとします。付き合ってから結婚するまでは、平均で約4.3年です（出生動向基本調査 2021）。</li>
+        <li>どの相手とも、関係は0から作るものとします。すでに知っている人も新しく出会う人に含めてかまいません。<b>（成功率は絶対的なものではありません）</b></li>
+        <li>モデルはユーザーの主観的な入力に依存しており、ユーザーの行動傾向を可視化するための一つの指標にすぎません。<b>（実際の恋愛の複雑な要素は含まれていません。）</b></li>
+        <li>条件一致度は各項目を独立と仮定しており、周りの反対や、他の人に奪われるといった事象は考えないものとします。</li>
+        <li>上達と疲弊は単純化された関数で表現しており、実際の人間の心理変化を完全に再現するものではありません。</li>
+      </ul></details>
+    <section class="page-h">
+      <div class="eyebrow">Compare</div>
+      <h1>理想と最低限、<br><em>どれだけ違う？</em></h1>
+      <p class="lead">同じ期限・同じ行動のまま、条件だけを「理想」から「最低限」にしぼると、確率がどう変わるかを並べます。</p>
+    </section>
+    <section class="panel">
+      <div class="cmp" id="cmp"></div>
+    </section>
+    <section class="panel exs" id="exPanel" style="margin-top:24px">
+      <div class="p-head"><h2>ほかの相談者さんの例とくらべる</h2><span class="eyebrow">Cases</span></div>
+      <p class="c-note" style="font-size:12.5px;margin:-6px 0 12px">相談員さんが入力します。お名前は入れず、「30代前半・女性」のように書いてください。このブラウザだけに残ります。</p>
+      <div id="exList"></div>
+      <div class="ex-msg" id="exMsg"></div>
+      <div class="ex-add">
+        <div class="ex-save"><input id="exSnapLab" placeholder="例：30代前半・女性" maxlength="20"><button id="exSnap">今の相談者さんを例に追加</button></div>
+        <details class="adv"><summary>手で入れる<span>過去の相談者さんの例を、分かる分だけ入れます</span></summary>
+          <div class="ex-form">
+            <label>呼び方<input id="exL" placeholder="例：30代後半・男性" maxlength="20"></label>
+            <label>理想の条件<input id="exC" placeholder="例：年収600万以上・28〜35歳" maxlength="60"></label>
+            <label>何人に1人<input id="exN" type="number" min="1" placeholder="例 40"></label>
+            <label>申込が通る割合（%）<input id="exA" type="number" min="0" max="100" placeholder="例 8"></label>
+            <label>結果<select id="exR"><option>成婚</option><option>交際中</option><option>活動中</option><option>休会・退会</option></select></label>
+            <label>そこまでの期間（か月）<input id="exM" type="number" min="0" step="1" placeholder="例 10"></label>
+            <label class="w">メモ<input id="exT" placeholder="例：年収の条件を500万にゆるめてからお見合いが増えた" maxlength="80"></label>
+          </div>
+          <button id="exAdd" class="pri-b">この例を追加</button>
+        </details>
+      </div>
+    </section>
+    <section class="panel" style="margin-top:24px">
+      <div class="p-head"><h2>今交際している相手は、どれくらい貴重？</h2><span class="eyebrow">Rarity</span></div>
+      <div class="cmp" id="rareCmp"></div>
+    </section>
+    <div class="grid outrow">
+      <section class="panel">
+        <div class="p-head"><h2>人数で見ると</h2><span class="eyebrow">Breakdown</span></div>
+        <div class="fn-cols"><span></span><span>理想</span><span>最低限</span></div>
+        <div class="funnel" id="funnel2"></div>
+      </section>
+      <section class="panel">
+        <div class="p-head"><h2>一番効く一手</h2><span class="eyebrow">Next move</span></div>
+        <div class="best" id="bestIdeal"></div>
+        <div class="best" id="bestMust"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="view" id="view-about" hidden>
+  <details class="caveat top-cav"><summary><b>この数字は目安です。</b>条件や行動を変えたときに「どれくらい変わるか」を比べるためのものです。<span class="cav-more">前提を見る</span></summary><ul>
+        <li>すでに恋人や配偶者がいる人は対象から除き、一度付き合ったら別れないものとします。付き合ってから結婚するまでは、平均で約4.3年です（出生動向基本調査 2021）。</li>
+        <li>どの相手とも、関係は0から作るものとします。すでに知っている人も新しく出会う人に含めてかまいません。<b>（成功率は絶対的なものではありません）</b></li>
+        <li>モデルはユーザーの主観的な入力に依存しており、ユーザーの行動傾向を可視化するための一つの指標にすぎません。<b>（実際の恋愛の複雑な要素は含まれていません。）</b></li>
+        <li>条件一致度は各項目を独立と仮定しており、周りの反対や、他の人に奪われるといった事象は考えないものとします。</li>
+        <li>上達と疲弊は単純化された関数で表現しており、実際の人間の心理変化を完全に再現するものではありません。</li>
+      </ul></details>
+  <section class="basis" id="basis">
+    <aside class="basis-side">
+      <div class="eyebrow">How it works</div>
+      <h2>しくみ</h2>
+      <p>数式を知らなくても大丈夫。やっていることは「人数を順番にしぼっていく」だけです。</p>
+    </aside>
+    <div class="easy">
+      <h3 style="font-family:var(--serif);font-weight:500;font-size:23px;margin:0">かんたんに言うと</h3>
+      <ol>
+        <li><b>期限までに、相手のいない人に何人会えるか</b><span>1週間に会える人数 × 期限までの週数です。恋人や配偶者のいない人だけを数えます（すでに知っている人も含めてOK）。週3人なら、48日で約21人。</span></li>
+        <li><b>そのうち、あなたの条件に合う人は何人か</b><span>「身長175cm以上」なら男性の約4人に1人、のように、条件ごとの割合を掛けてしぼります。条件を増やすほど、人数は減ります。</span></li>
+        <li><b>そのうち、恋愛に発展しそうな関係になる人は何人か</b><span>関係は0から作るものとして、会った人のうち「いい感じ」まで進む割合を掛けます。</span></li>
+        <li><b>そのうち、あなたを好きになってくれる人は何人か</b><span>「10人中何人くらい好きになってくれそうか」というあなたの見積もりを掛けます。</span></li>
+        <li><b>そのうち、期限までに付き合える人は何人か</b><span>付き合うまでにかかる日数と、慣れ・疲れを考えます。期限の直前に出会った人とは、付き合うのが間に合いません。</span></li>
+        <li><b>最後に残った人数から、「少なくとも1人と付き合える確率」を出す</b><span>残りが平均0.2人なら、5回に1回くらい1人と付き合える、というイメージで約18%です。</span></li>
+      </ol>
+      <div class="ex">ポイント：最後の人数が1人より少なくても、0%ではありません。「何回もやり直したら、何回に1回うまくいくか」が確率です。</div>
+      <details class="math">
+        <summary>数式と前提をくわしく見る</summary>
+    <div class="art">
+      <section id="b1">
+        <div class="no">01 — OVERVIEW</div>
+        <h3>全体の式</h3>
+        <p>恋愛を「出会いという試行の積み重ね」と見ます。<i>i</i> 回目のチャンス（恋愛に発展しそうな出会い）がうまくいき、しかも期限までに付き合える確率を <i>q</i>(<i>i</i>) とします。</p>
+        <div class="eq"><i>q</i>(<i>i</i>) = <i>P</i><sub>fits</sub> · <i>P</i><sub>likes</sub> · <i>G</i>(<i>i</i>) · <i>F</i>(<i>i</i>) · <i>W</i>(<i>t</i><sub>i</sub>)</div>
+        <table class="tbl">
+          <tr><th>記号</th><th>意味</th><th>決め方</th></tr>
+          <tr><td class="m" style="text-align:left">P_fits</td><td>相手があなたの条件を満たす確率</td><td>条件から計算（02）</td></tr>
+          <tr><td class="m" style="text-align:left">P_likes</td><td>相手があなたを好きになってくれる確率</td><td>あなたの見積もり（03）</td></tr>
+          <tr><td class="m" style="text-align:left">G(i)</td><td>慣れによる上達</td><td>上達度 g・上達スピード κ（05）</td></tr>
+          <tr><td class="m" style="text-align:left">F(i)</td><td>会い続けることによる疲れ</td><td>疲弊度 λ・行動量 r（05）</td></tr>
+          <tr><td class="m" style="text-align:left">W(t_i)</td><td>期限までに付き合い始められる確率</td><td>付き合うまでの日数 m・期限（06）</td></tr>
+        </table>
+        <p>期限までのチャンスの数を <i>N</i><sub>eff</sub>（04）とすると、少なくとも1回うまくいく確率が最終成功率です。</p>
+        <div class="eq"><i>P</i> = 1 − <span class="big">∏</span><sub><i>i</i>=1</sub><sup><i>N</i>eff</sup> ( 1 − <i>q</i>(<i>i</i>) )</div>
+        <p class="eq-note">「全部うまくいかない確率」を1から引いています。<i>q</i> が小さいときは、<i>P</i> ≈ 1 − e<sup>−Σq</sup>（Σq = 最後に残る平均人数）です。</p>
+      </section>
+
+      <section id="b2">
+        <div class="no">02 — CONDITIONS</div>
+        <h3>条件を満たす確率 P<sub>fits</sub></h3>
+        <p>条件はユーザー自身が入力します。種類によって確率の出し方を変えています。</p>
+        <h4>身長・年収 → 分布の面積</h4>
+        <div class="eq">P(<i>X</i> ≥ <i>a</i>) = 1 − Φ( (<i>a</i> − μ) / σ )</div>
+        <p class="eq-note">Φ：標準正規分布の累積分布関数。年収は対数正規分布（ln X が正規分布）で同様に計算します。</p>
+        <div class="ex">例：男性の身長を μ = 171.5 cm、σ = 5.5 cm とすると、180 cm 以上は 1 − Φ(1.55) ≈ 6%。</div>
+        <h4>年齢 → 独身の人の年齢構成の中で範囲に入る割合</h4>
+        <p>結婚相手を探すので、独身の人だけで数えます。年齢ごとの人口（概算）に、令和2年国勢調査の年齢別未婚率（たとえば30〜34歳の男性51.8%・女性38.5%）をかけた構成の中で、選んだ年齢幅に入る人の割合です。</p>
+        <h4>よく挙がる条件の数字</h4>
+        <p>国立社会保障・人口問題研究所「第16回出生動向基本調査」（2021年）で、結婚したい18〜34歳の未婚者が、結婚相手の条件として「重視する」「考慮する」と答えた割合です。</p>
+        <h4>統計がある条件</h4>
+        <p>タバコを吸わない：令和4年 国民健康・栄養調査（喫煙する人は男性24.8%・女性6.2%）。大卒以上：内閣府男女共同参画局の調査の割付値をもとにした概数。結婚相談所の人数：IBJの会員数110,482名（2026年7月）・男女比 男54%女46%（IBJ発表）。</p>
+        <h4>数値にしにくい条件 → こだわり度</h4>
+        <p>「こだわらない（全員OK）」から「絶対ゆずれない（100人に1人）」まで6段階で選びます。「気にする（10人中3人がOK）」なら 0.3 です。</p>
+        <h4>年齢 → ふだん会う人の中での割合</h4>
+        <p>大学にいれば会う人のほとんどが同年代のように、年齢は環境で大きく変わるため、「ふだん会う人のうち、この年齢の人は10人中何人か」で入れます。全国の人口構成で計算することもできます。</p>
+        <h4>まとめ方</h4>
+        <div class="eq"><i>P</i><sub>fits</sub> = <span class="big">∏</span><sub>k</sub> <i>P</i><sub>k</sub></div>
+        <div class="ex">例：上位90%・上位50%・上位20% の3条件なら　0.9 × 0.5 × 0.2 = 0.09（9%）</div>
+      </section>
+
+      <section id="b3">
+        <div class="no">03 — BEING LIKED</div>
+        <h3>好きになってくれる確率 P<sub>likes</sub></h3>
+        <p>条件に合う人と仲良くなっても、相手があなたを好きにならなければ付き合えません。そこで「条件に合う人と仲良くなったとき、その人があなたを好きになってくれる確率」を、あなた自身の見積もりとして入れます。</p>
+        <div class="eq"><i>P</i><sub>likes</sub> = （10人中 <i>n</i> 人） = <i>n</i> / 10</div>
+        <p class="eq-note">本当の値は誰にもわかりません。高く見積もるほど結果も高くなります。自己評価を変えて、結果がどう動くかを試すのも一つの使い方です。</p>
+      </section>
+
+      <section id="b4">
+        <div class="no">04 — CHANCES</div>
+        <h3>チャンスの数と、それがいつ来るか</h3>
+        <ul>
+          <li><b>行動量 <i>r</i></b>：恋人や配偶者のいない人に、1週間で会える人数（すでに知っている人も含む）</li>
+          <li><b>期間 <i>T</i></b>：今日から期限の日までの日数</li>
+          <li><b>関係進展速度 <i>k</i><sub>rel</sub></b>：会った人のうち、恋愛に発展しそうな関係まで進む割合（関係は0から作る）</li>
+        </ul>
+        <div class="eq"><i>N</i><sub>eff</sub> = ⌊ <i>r</i> · ( <i>T</i> / 7 ) · <i>k</i><sub>rel</sub> ⌋　　　<i>t</i><sub>i</sub> = 7<i>i</i> / ( <i>r</i> · <i>k</i><sub>rel</sub> )</div>
+        <p class="eq-note"><i>t</i><sub>i</sub>：<i>i</i> 回目のチャンスが来る日（今日から何日後か）。チャンスは一定のペースで来るとします。</p>
+      </section>
+
+      <section id="b5">
+        <div class="no">05 — GROWTH &amp; FATIGUE</div>
+        <h3>慣れ G(i) と疲れ F(i)</h3>
+        <h4>慣れ：経験を積むほど上手くなるが、いずれ頭打ち</h4>
+        <div class="eq"><i>G</i>(<i>i</i>) = 1 + <i>g</i> · <i>i</i> / ( <i>i</i> + 1/κ )</div>
+        <p class="eq-note">最初は1に近く、だんだん 1+<i>g</i> に近づきます。<i>g</i>：最大の伸び　κ：慣れる速さ</p>
+        <h4>疲れ：会うペースが速いほど、1回ごとの質が下がる</h4>
+        <div class="eq"><i>F</i> = 1 / ( 1 + λ · <i>r</i> )</div>
+        <p class="eq-note">λ：疲れやすさ　<i>r</i>：ペース（人/週）。ペースを上げると1回ごとの質は下がりますが、会う回数がそれ以上に増えるので、行動すれば結果は上がります。</p>
+      </section>
+
+      <section id="b6">
+        <div class="no">06 — DEADLINE</div>
+        <h3>期限までに付き合える確率 W</h3>
+        <p>仲良くなってから付き合うまでの日数を、平均 <i>m</i> 日の指数分布とします。<i>t</i><sub>i</sub> 日後に出会った相手と、残り <i>R</i> = <i>T</i> − <i>t</i><sub>i</sub> 日のうちに付き合い始められる確率は</p>
+        <div class="eq"><i>W</i>(<i>R</i>) = 1 − e<sup>−<i>R</i> / <i>m</i></sup></div>
+        <p class="eq-note">早く出会うほど1に近く、期限の直前に出会うと0に近づきます。付き合い始めたカップルは別れないものとします。</p>
+      </section>
+
+      <section id="b7">
+        <div class="no">07 — LED</div>
+        <h3>結果の表示（Arduino の LED）</h3>
+        <table class="tbl">
+          <tr><th>P</th><td>〜5%</td><td>5〜10%</td><td>10〜20%</td><td>20〜40%</td><td>40〜60%</td><td>60〜80%</td><td>80%〜</td></tr>
+          <tr><th>LED</th><td>全点滅</td><td>緑点滅</td><td>緑点灯</td><td>黄点滅</td><td>黄点灯</td><td>赤点灯</td><td>全点灯</td></tr>
+        </table>
+      </section>
+
+      <section id="b8">
+        <div class="no">08 — ASSUMPTIONS</div>
+        <h3>前提と限界</h3>
+        <ul>
+          <li><b>好かれる確率は自己評価：</b>結果はこの値にほぼ比例して変わります。</li>
+          <li><b>相手のいない人だけを数える：</b>恋人や配偶者がいる人は最初から除いています。すでに知っている人も含めてよく、関係は0から作るものとします。</li>
+          <li><b>カップルは別れない：</b>付き合い始めたら、期限まで続くものとしています。</li>
+          <li><b>条件どうしは独立：</b>実際は年収と学歴などに相関があり、掛け算だと確率を小さく出しすぎます。</li>
+          <li><b>チャンスどうしは独立：</b>1人と仲良くなっている間は次の出会いが減る、といった制約は入れていません。</li>
+          <li><b>式の形は仮定：</b>慣れ・疲れ・付き合うまでの日数の式は、直感に合う形として選んだもので、データで検証したものではありません。</li>
+          <li><b>N<sub>eff</sub> は切り捨て：</b>チャンスが1回未満なら0回として扱います。</li>
+          <li><b>分布は概算：</b>身長・年収・年齢の値は目安です。</li>
+        </ul>
+      </section>
+    </div>
+      </details>
+    </div>
+
+  </section>
+
+  </div>
+
+  <footer>婚活ドック（Love Simulator より）— 結果は目安です。統計の出典は「数式と出典をくわしく見る」に載せています。</footer>
+</div>
+
+<script>
+/* ---------- math ---------- */
+function erf(x){const s=Math.sign(x);x=Math.abs(x);const t=1/(1+0.3275911*x);
+  const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return s*y;}
+const Phi=z=>0.5*(1+erf(z/Math.SQRT2));
+const pdf=z=>Math.exp(-z*z/2)/Math.sqrt(2*Math.PI);
+const $=id=>document.getElementById(id);
+function oneInN(p,unit="人"){if(p<=0)return "該当なし";const n=1/p;if(n<1.05)return "ほぼ全員";const u=`${unit}に1${unit}`;
+  if(n<10)return `${n.toFixed(1)}${u}`;if(n<10000)return `${Math.round(n).toLocaleString()}${u}`;if(n<1e8)return `約${(n/1e4).toFixed(n<1e5?1:0)}万${u}`;return `約${(n/1e8).toFixed(1)}億${u}`;}
+const pct=(x,d=1)=>{if(x===0)return "0%";const v=x*100;if(v<0.1)return oneInN(x);if(v<1)return v.toFixed(2)+"%";return v.toFixed(d)+"%";};
+
+/* ---------- presets ---------- */
+let sex="m";
+const DIST={
+  height:{name:"身長",unit:"cm",kind:"normal",step:1,m:{mu:171.5,sd:5.5,a:175,b:185},f:{mu:158.5,sd:5.3,a:155,b:165},note:s=>`日本の${s==="m"?"男性":"女性"}の身長の分布（平均${DIST.height[s].mu}cm・概算）`},
+  income:{name:"年収",unit:"万円",kind:"lognormal",step:10,m:{med:420,s:0.5,a:500,b:800},f:{med:310,s:0.5,a:300,b:600},note:s=>`年収の分布（真ん中の人で${DIST.income[s].med}万円・概算）`},
+  age:{name:"年齢",unit:"歳",kind:"age",step:1,a:28,b:35,note:s=>`独身の${s==="m"?"男性":"女性"}の年齢構成（人口×令和2年国勢調査の年齢別未婚率）`},
+};
+/* population (approx, Japan, 5-year brackets, relative) -> per single age 18..59 */
+const AGE_BR=[[18,19,2.2],[20,24,6.3],[25,29,6.3],[30,34,6.4],[35,39,7.0],[40,44,7.8],[45,49,9.2],[50,54,9.5],[55,59,8.2]];
+const AGEW={};AGE_BR.forEach(([a,b,v])=>{for(let k=a;k<=b;k++)AGEW[k]=v/(b-a+1);});
+const AGE_TOTAL=Object.values(AGEW).reduce((x,y)=>x+y,0);
+/* 独身の人だけで数える：令和2年国勢調査の年齢別未婚率（%、18-19歳は20-24歳と同じとみなす） */
+const UNM={m:[99,95.7,76.4,51.8,38.5,32.2,29.9,26.6,21.6],f:[99,93.0,65.8,38.5,26.2,21.3,19.2,16.5,12.2]};
+const AGEU={m:{},f:{}};["m","f"].forEach(s=>{AGE_BR.forEach(([a,b,v],i)=>{for(let k=a;k<=b;k++)AGEU[s][k]=v/(b-a+1)*UNM[s][i]/100;});AGEU[s].tot=Object.values(AGEU[s]).reduce((x,y)=>x+y,0);});
+/* よく出る統計の条件 */
+const STAT={"タバコを吸わない":{p:s=>s==="m"?1-0.248:1-0.062,note:s=>`令和4年 国民健康・栄養調査：喫煙する人は${s==="m"?"男性24.8%":"女性6.2%"}（20歳以上）`},
+  "大卒以上":{p:s=>s==="m"?0.5:0.4,note:s=>`20〜50代の${s==="m"?"男性の約5割":"女性の約4割"}が大卒以上（内閣府男女共同参画局の調査の割付値をもとにした概数）`}};
+const IBJ_TOTAL=110482,IBJ_SHARE={m:0.54,f:0.46};
+const LVX=[2,5,10,30,50,70,100];
+const LVSUB=["上位2%（50人に1人）","上位5%（20人に1人）","上位10%（10人に1人）","上位30%","上位50%（半分）","上位70%","全員OK"];
+const LVL={
+ "人柄":["誰からも尊敬される人柄","ものすごく人柄がいい","かなり人柄がいい","人並み以上に人柄がいい","普通にいい人","悪い人でなければいい","こだわらない"],
+ "家事・育児の能力や姿勢":["家事も育児も完璧に、進んでやる","ほとんど任せられる","しっかり半分ずつ分担できる","人並み以上にやる","普通にやる","頼めばやってくれればいい","こだわらない"],
+ "仕事への理解と協力":["全面的に応援して、生活も合わせてくれる","かなり理解があって協力的","理解して協力してくれる","人並み以上に理解がある","普通に理解がある","反対しなければいい","こだわらない"],
+ "容姿":["芸能人レベル","街で振り返られるレベル","かなり見た目がいい","見た目がいい方","普通","苦手なタイプでなければいい","こだわらない"],
+ "共通の趣味":["趣味が完全に同じ","一番の趣味がまったく同じ","メインの趣味が同じ","共通の趣味がいくつかある","共通の趣味が1つはある","話を聞いてくれればいい","こだわらない"],
+ "職業":["医師・弁護士クラス","一流企業・専門職","大手企業・公務員","正社員","安定した仕事がある","働いていればいい","こだわらない"],
+ "学歴":["東大・京大クラス","旧帝大・早慶","難関大学","大卒","短大・専門卒以上","高卒以上","こだわらない"],
+ "優しさ":["聖人レベルに優しい（誰にでも、いつでも）","ものすごく優しい","かなり優しい","人並み以上に優しい","普通に優しい","冷たくなければいい","こだわらない"],
+ "価値観の一致":["ほぼすべての価値観が同じ","お金・家族・仕事の考え方が全部同じ","大事なことはだいたい同じ","いくつかの大事なことが同じ","大きくずれていなければいい","話し合えればいい","こだわらない"],
+ "誠実さ":["絶対に嘘をつかない","約束を必ず守る","かなり誠実","人並み以上に誠実","普通に誠実","浮気しなければいい","こだわらない"],
+ "一緒にいて楽しいこと":["誰といるより圧倒的に楽しい","いつ会っても最高に楽しい","かなり楽しい","楽しい時間が多い","それなりに楽しい","気まずくなければいい","こだわらない"],
+ "清潔感":["いつも完璧（服・髪・肌・部屋まで）","身だしなみがとても整っている","かなり清潔","きちんとしている","普通に清潔","不潔でなければいい","こだわらない"],
+ "経済力":["超お金持ち（資産が何億もある）","お金持ち（欲しいものは何でも買える）","かなり余裕がある","そこそこ余裕がある","普通に暮らせる","生活に困らなければいい","あまりお金がなくてもいい"],
+ "外見":["芸能人レベル","街で振り返られるレベル","かなり見た目がいい","見た目がいい方","普通","苦手なタイプでなければいい","こだわらない"],
+ "コミュニケーション能力":["誰とでも一瞬で打ち解ける","話し上手で聞き上手","話が上手","会話が弾む","普通に話せる","会話に困らなければいい","こだわらない"],
+ "趣味の一致":["趣味が完全に同じ","一番の趣味がまったく同じ","メインの趣味が同じ","共通の趣味がいくつかある","共通の趣味が1つはある","話を聞いてくれればいい","こだわらない"],
+ "学歴・職業":["東大・京大、医師・弁護士クラス","旧帝大・早慶、一流企業","難関大学・大手企業","大卒・正社員","安定した仕事がある","働いていればいい","こだわらない"],
+};
+const lvIdx=c=>{let b=0;LVX.forEach((x,i)=>{if(Math.abs(Math.log(x)-Math.log(Math.max(.1,c.x)))<Math.abs(Math.log(LVX[b])-Math.log(Math.max(.1,c.x))))b=i;});return b;};
+function levelControl(c){const L=LVL[c.name],cur=lvIdx(c);
+  return `<div class="lvs"><div class="lvs-v"><b>${L[cur]}</b><small>${LVSUB[cur]}</small></div>
+    <input type="range" min="0" max="${LVX.length-1}" step="1" value="${cur}" data-lvs aria-label="${c.name}の度合い">
+    <div class="lvs-tick">${LVX.map(()=>"<i></i>").join("")}</div>
+    <div class="lvs-ends"><span>← きびしく</span><span>ゆるく →</span></div></div>`;}
+/* 結婚したい18〜34歳の未婚者が、結婚相手の条件として「重視する」＋「考慮する」割合（%）。キーは相手の性別：相手が男性 → 女性が重視する割合 */
+const RANKV={m:[["人柄",98],["家事・育児の能力や姿勢",97],["仕事への理解と協力",93],["経済力",92],["職業",81],["容姿",81],["共通の趣味",72],["学歴",52]],
+             f:[["人柄",95],["家事・育児の能力や姿勢",92],["仕事への理解と協力",89],["容姿",81],["共通の趣味",73],["経済力",48],["職業",47],["学歴",27]]};
+let RANK=RANKV.m;
+
+/* ---------- state ---------- */
+let uid=0;
+let conds=[];const sets={ideal:[],must:[],current:[],ex:[]};let tab="ideal";const TABNAME={ideal:"理想の条件",must:"最低限の条件",current:"今交際している相手",ex:"元の恋人"};const isPartner=t=>t==="current"||t==="ex";
+function makeCond(type,extra={}){
+  const id="c"+(++uid),set=tab;
+  if(type==="height"||type==="income"){const p=DIST[type][sex];return {id,set,type,mode:"ge",a:p.a,b:p.b};}
+  if(type==="age")return {id,set,type,mode:"range",a:DIST.age.a,b:DIST.age.b,amode:"national",lx:5};
+  if(type==="top")return {id,set,type,name:extra.name,x:extra.x??50};
+  return {id,set,type:"custom",name:extra.name||"",x:extra.x??50};
+}
+const envAdj=(p,c)=>c.loc==null?p:Math.max(0,Math.min(1,c.loc));
+function condProb(c){
+  if(c.type==="height"){const {mu,sd}=DIST.height[sex];return rangeP(c,v=>Phi((v-mu)/sd));}
+  if(c.type==="income"){const {med,s}=DIST.income[sex];return rangeP(c,v=>v<=0?0:Phi((Math.log(v)-Math.log(med))/s));}
+  if(c.type==="age"&&c.amode==="local")return Math.max(0,Math.min(10,+c.lx||0))/10;
+  if(c.type==="age"){let a=Math.max(18,Math.min(c.a,c.b)),b=Math.min(59,Math.max(c.a,c.b)),w=0;for(let k=a;k<=b;k++)w+=AGEU[sex][k]||0;return w/AGEU[sex].tot;}
+  if(c.type==="stat")return c.off?1:STAT[c.name].p(sex);
+  return Math.max(0,Math.min(100,+c.x||0))/100;
+}
+function rangeP(c,F){
+  if(c.mode==="ge")return 1-F(c.a);
+  if(c.mode==="le")return F(c.a);
+  const lo=Math.min(c.a,c.b),hi=Math.max(c.a,c.b);return F(hi)-F(lo);
+}
+
+const P_DEF=[
+  {k:"kn",name:"今知っている、恋人のいない異性",sym:"K",min:0,max:200,step:1,v:20,ends:["ほとんどいない","たくさんいる"],fmt:v=>Math.round(v)+" 人",d:"職場・学校・趣味の集まりなどで、顔と名前が分かる人。1回だけ数えます（毎週会っていても1人）。",group:null},
+  {k:"r",name:"1週間に新しく知り合う、恋人のいない異性",sym:"r",min:0.5,max:300,step:0.5,log:true,v:1,ends:["あまり会わない","たくさん会う"],fmt:v=>(v<10?(+v).toFixed(1):Math.round(v))+" 人/週",d:"初めて話す人だけを数えてください。すでに知っている人は、上の「知っている人」で1回だけ数えます。",group:"出会い"},
+  {k:"likes",name:"あなたを好きになってくれる確率",sym:"P_likes",min:0.5,max:10,step:0.5,v:3,ends:["好かれにくいと思う","好かれやすいと思う"],fmt:v=>`10人中 ${(+v)%1?(+v).toFixed(1):v} 人`,d:"条件に合う人と仲良くなったとき、その人があなたを好きになってくれるのは10人中何人くらいだと思う？（あなたの見積もり）",group:"あなたの見積もり"},
+  {k:"T",name:"期間",sym:"T",min:1,max:1500,step:1,v:null,fmt:v=>v+" 日",d:"",group:null,xmas:true},
+  {k:"krel",name:"仲が深まる割合",sym:"k_rel",min:0.05,max:1,step:0.05,v:0.5,ends:["知り合い止まりが多い","すぐ仲良くなれる"],fmt:v=>`会った人の${Math.round(v*100)}%`,d:"会った人のうち、2人で会うくらいまで仲が深まる人の割合。結果への影響が大きい項目です",group:null},
+  {k:"m",name:"出会ってから付き合うまでの日数（平均）",sym:"m",min:7,max:365,step:1,v:120,ends:["すぐ付き合う","じっくり時間をかける"],fmt:v=>v+" 日",d:"初期値の120日は調査から。付き合った人に聞くと「1か月未満」15.5%、「1〜2か月」37%、「3〜6か月」28.5%、「半年以上」19%（ハッピーメール調査、成人200人）。マッチングアプリだともっと短い傾向です",group:"時間"},
+  {k:"kf",name:"そのうち、仲がいい人（2人で話せる）",sym:"Kf",min:0,max:50,step:1,v:2,ends:["いない","多い"],fmt:v=>Math.round(v)+" 人",d:"上の「知っている人」の中で、2人で話したり遊んだりできる人。仲良くなる段階はもう済んでいるとして計算します。",group:"知っている人のくわしい内訳"},
+  {k:"kg",name:"そのうち、いい感じの人",sym:"Kg",min:0,max:10,step:1,v:0,ends:["いない","いる"],fmt:v=>Math.round(v)+" 人",d:"お互いに気になっていそうな人。好きになってもらう段階もほぼ済んでいるとして計算します。",group:null},
+  {k:"lambda",name:"疲れやすさ",sym:"λ",min:0,max:0.2,step:0.005,v:0.03,ends:["疲れにくい","疲れやすい"],fmt:v=>`${(+v).toFixed(3)}（${v<0.03?"疲れにくい":v<0.08?"ふつう":"疲れやすい"}）`,d:"たくさんの人に会うペースのとき、1回ごとの質がどれくらい落ちるか。右に行くほど疲れやすい（ただし会う回数は増えるので、行動すれば結果は上がります）",group:"慣れと疲れ"},
+  {k:"g",name:"上達の伸びしろ",sym:"g",min:0,max:2,step:0.05,v:0.5,ends:["あまり上達しない","大きく上達する"],fmt:v=>`最大 ${(1+ +v).toFixed(2)} 倍`,d:"経験を積むと、成功率が最大で何倍まで上がるか。右に行くほど伸びしろが大きい",group:null},
+  {k:"kappa",name:"慣れる速さ",sym:"κ",min:0.01,max:1,step:0.01,v:0.2,ends:["ゆっくり慣れる","すぐ慣れる"],fmt:v=>`${(+v).toFixed(2)}（${v<0.15?"ゆっくり":v<0.5?"ふつう":"すぐ慣れる"}）`,d:"何人くらい会うと上達しきるか。右に行くほど少ない人数で慣れます",group:null},
+];
+const prm={};
+
+let deadline=null;
+function xmasDate(){const n=today0();return new Date(n.getFullYear()+1,n.getMonth(),n.getDate());}
+function today0(){const n=new Date();return new Date(n.getFullYear(),n.getMonth(),n.getDate());}
+function daysTo(d){return Math.max(1,Math.round((d-today0())/864e5));}
+let DLK=12;function isXmas(d){return false;}
+const md=d=>`${d.getMonth()+1}/${d.getDate()}`;
+function dlName(){const n=today0(),M=(deadline.getFullYear()-n.getFullYear())*12+deadline.getMonth()-n.getMonth();if(deadline.getDate()===n.getDate()&&[6,12,24,36].includes(M))return M===6?"半年後":(M/12)+"年後";return `${deadline.getFullYear()}/${deadline.getMonth()+1}/${deadline.getDate()}`;}
+const ymd=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+function setDeadline(d){deadline=d;prm.T=daysTo(d);
+  const el=$("dlDate");if(el)el.value=ymd(d);const o=$("o_T");if(o)o.textContent=prm.T;renderHero();
+  $("days").textContent=prm.T;$("dlName").textContent=dlName();
+  document.querySelectorAll("#dlChips button").forEach(b=>b.classList.toggle("on",dlName()===b.textContent));
+  update();}
+function daysToXmas(){return daysTo(xmasDate());}
+
+/* ---------- compute ---------- */
+function invPhi(p){ /* Acklam */
+  if(p<=0)return -Infinity;if(p>=1)return Infinity;
+  const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.357751867269,-30.66479806614716,2.506628277459239],
+  b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],
+  c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],
+  d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416],pl=0.02425;let q,r;
+  if(p<pl){q=Math.sqrt(-2*Math.log(p));return (((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  if(p>1-pl){q=Math.sqrt(-2*Math.log(1-p));return -(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  q=p-0.5;r=q*q;return (((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);
+}
+
+const Fat=(i,r,l)=>1/(1+l*r);
+const Gro=(i,g,k)=>1+g*(i/(i+1/k));
+function Wwin(R,m){
+  if(R<=0)return 0;return 1-Math.exp(-R/m);
+}
+function compute(cs=conds,ov={}){
+  const pp=Object.assign({},prm,ov);
+  const probs=cs.map(condProb);
+  const indep=probs.reduce((a,b)=>a*b,1);
+  const ageP=cs.filter(c=>c.type==="age").reduce((a,c)=>a*condProb(c),1);
+  const others=cs.filter(c=>c.type!=="age").map(condProb);
+  const tl=cs.map((c,i)=>c.set==="ideal"?Math.min(0.5,0.1*i):0);
+  const fitsNat=probs.reduce((a,p,i)=>a*(p+(1-p)*tl[i]),1);
+  const fits=cs.reduce((a,c,i)=>{const q=envAdj(probs[i],c);return a*(q+(1-q)*tl[i]);},1);
+  const likes=pp.likes/10;
+  const free=fits;
+  const rate=pp.r/7*pp.krel;
+  const NeffRaw=pp.r*(pp.T/7)*pp.krel;
+  const N=Math.min(20000,Math.floor(NeffRaw));
+  let fail=1;const qs=[],cum=[],ts=[],Ws=[],GF=[];
+  for(let i=1;i<=N;i++){
+    const t=i/rate,W=Wwin(pp.T-t,pp.m);
+    const gf=Gro(i,pp.g,pp.kappa)*Fat(i,pp.r,pp.lambda);
+    let q=fits*likes*gf*W;if(q>1)q=1;
+    fail*=(1-q);qs.push(q);cum.push(1-fail);ts.push(t);Ws.push(W);GF.push(gf);
+  }
+  const kn=Math.max(0,Math.round(+pp.kn||0)),kg=Math.min(kn,Math.max(0,Math.round(+pp.kg||0))),kf=Math.min(kn-kg,Math.max(0,Math.round(+pp.kf||0))),ka=kn-kf-kg;
+  const WT=Wwin(pp.T,pp.m),bA=Math.min(1,fits*pp.krel*likes),bF=Math.min(1,fits*likes),bG=Math.min(1,likes*2);
+  const known={ka,kf,kg,bA,bF,bG,WT};
+  const failK=Math.pow(1-bA*WT,ka)*Math.pow(1-bF*WT,kf)*Math.pow(1-bG*WT,kg);
+  return {probs,indep,fits,fitsNat,free,likes,N,NeffRaw,rate,qs,cum,ts,Ws,GF,known,Pnew:1-fail,P:1-fail*failK,r:pp.r,T:pp.T};
+}
+
+/* ---------- LED rules ---------- */
+const RULES=[
+  {max:.05,text:"全点滅",lab:"<5",pat:{r:"b",y:"b",g:"b"},title:"今のままだと、厳しめ。",body:"でも、変えられるところはあります。右の「一番効く一手」から試してみましょう。"},
+  {max:.10,text:"緑点滅",lab:"5",pat:{g:"b"},title:"小さいけれど、ゼロじゃない。",body:"一手加えるだけで、ぐっと上がるかもしれません。"},
+  {max:.20,text:"緑点灯",lab:"10",pat:{g:"on"},title:"動き方しだいで、届く。",body:"出会いを少し増やすだけでも、伸びやすいところです。"},
+  {max:.40,text:"黄点滅",lab:"20",pat:{y:"b"},title:"十分、狙える。",body:"無理しすぎず、続けられるペースで動けば届く距離です。"},
+  {max:.60,text:"黄点灯",lab:"40",pat:{y:"on"},title:"五分五分。あと一押し。",body:"一番効く一手を足せば、さらに上を狙えます。"},
+  {max:.80,text:"赤点灯",lab:"60",pat:{r:"on"},title:"かなり、有望。",body:"この調子で。予定を空けておきましょう。"},
+  {max:9,text:"全点灯",lab:"80+",pat:{r:"on",y:"on",g:"on"},title:"ほぼ、届いている。",body:"あとは、一歩を踏み出すだけ。"},
+];
+const ruleIdx=P=>RULES.findIndex(r=>P<r.max);
+function ledDots(el,pat){const col={r:"#ff4d4d",y:"#ffc53d",g:"#3ddc84"};
+  el.querySelectorAll("i").forEach((d,i)=>{const k="ryg"[i];d.style.background=pat[k]?col[k]:"#ddd";d.classList.toggle("b",pat[k]==="b");});}
+
+/* ---------- render result ---------- */
+let last=null;
+const f2=x=>(+x).toFixed(2);
+const fmtP=P=>{const v=P*100;return v>0&&v<0.1?oneInN(P,"回"):v.toFixed(1)+"%";};
+function bestMoves(cs,R0,kind=tab){
+  const mv=[];const r=+prm.r,T=prm.T;
+  const add=(k,label,chip,who,desc,cs2,ov)=>mv.push({k,label,chip,who,desc,cs:cs2,ov,P:compute(cs2,ov).P});
+  if(kind==='ideal')cs.forEach(c=>{const rest=cs.filter(x=>x!==c),n=condTitle(c),pc=condProb(c);
+    add("drop:"+c.id,`「${n}」の条件を外す`,`「${n}」を外す`,`「${n}」をあきらめた`,`「${n}」の条件をなくします。合う人が約${fmtN(1/Math.max(pc,1e-9))}倍に増えます。`,rest,{});});
+  add("r2",`出会いを2倍にする（週${fmtN(r)}人→${fmtN(r*2)}人）`,`会う人を2倍に`,`週に${fmtN(r*2)}人と会う`,`1週間に会う、恋人のいない人を ${fmtN(r)}人 → ${fmtN(r*2)}人 にします（例：サークルや集まりに、週に1つ多く顔を出す）。`,cs,{r:r*2});
+  add("t30",`期限を半年延ばす（${T}日→${T+182}日）`,`期限を半年のばす`,`期限を半年のばした`,`期限を ${dlName()} から半年あとにします。`,cs,{T:T+182});
+  if(prm.krel<1){const k=Math.min(1,+prm.krel+0.2);
+    add("krel",`会った人と、もう一歩仲良くなる（会った人の${Math.round(prm.krel*100)}%→${Math.round(k*100)}%）`,`もう一歩仲良くなる`,`会った人ともう一歩仲良くなった`,`会った人のうち、2人で話したり出かけたりするくらい仲良くなる人を ${Math.round(prm.krel*100)}% → ${Math.round(k*100)}% にします（例：授業やバイトのあとに、ご飯に誘ってみる）。`,cs,{krel:k});}
+  if(prm.m>7){const m=Math.max(7,Math.round(prm.m/2));
+    add("m",`早めに気持ちを伝える（付き合うまで${prm.m}日→${m}日）`,`早めに気持ちを伝える`,`早めに気持ちを伝えた`,`出会ってから付き合うまでの日数を ${prm.m}日 → ${m}日 にします（例：何度か会ったら、待たずに自分から伝える）。`,cs,{m});}
+  return mv.sort((a,b)=>b.P-a.P);
+}
+function renderCompare(Ri,Rm){
+  const hasMust=sets.must.length>0;
+  const box=(k,R)=>`<div class="box" data-tab="${k}"><small>${TABNAME[k]}</small><b>${k==="must"&&!hasMust?"–":fmtP(R.P)}</b><span>${k==="must"&&!hasMust?"まだ入力していません":`条件${sets[k].length}つ・条件に合う人 ${pct(R.fits,2)}`}</span></div>`;
+  let diff="";
+  if(hasMust){
+    const a=Ri.P,b=Rm.P;
+    if(b>a*1.05){const x=a>0?b/a:Infinity;diff=`<div class="diff">理想を「最低限の条件」までしぼると、確率は <b>${x===Infinity||x>=100?"大きく":x.toFixed(1)+"倍"}</b>（${fmtP(a)} → ${fmtP(b)}）になります。</div>`;}
+    else diff=`<div class="diff">2つの差はほとんどありません。条件より、出会い方を変えるほうが効きそうです。</div>`;
+  }else diff=`<div class="diff">「最低限の条件」のページで条件を入れると、ここで理想と比べられます。</div>`;
+  $("cmp").innerHTML=box("ideal",Ri)+box("must",Rm)+diff;
+}
+function renderBest(R,cs=conds,kind=tab,el="best"){
+  const mv=bestMoves(cs,R,kind).filter(m=>m.P>R.P+1e-6);
+  const h=`<h4>一番効く一手（${TABNAME[kind]}）</h4>`;
+  if(kind==="must"&&!cs.length&&el!=="best"){$(el).innerHTML=h+`<p class="best-top">最低限の条件がまだありません。</p>`;return;}
+  if(!mv.length){$(el).innerHTML=h+`<p class="best-top">今の条件と行動で、すでに十分高い確率です。</p>`;return;}
+  const t=mv[0];
+  $(el).innerHTML=h+`<p class="best-top">${kind==="must"?"最低限の条件はそのままで、":"あなたの場合、"}一番効くのは<br><b>${t.label}</b>（${fmtP(R.P)} → <b>${fmtP(t.P)}</b>）</p>`
+   +`<ul>${mv.slice(1,5).map(m=>`<li><span>${m.label}</span><span>→ ${fmtP(m.P)}</span></li>`).join("")}</ul>`;
+}
+function meetEvery(fits){const perDay=prm.r/7*fits;if(perDay<=0)return "出会えない";const d=1/perDay;
+  if(d<1)return `1日に${(perDay).toFixed(1)}人`;if(d<60)return `${Math.round(d)}日に1人`;if(d<730)return `${(d/30.4).toFixed(1)}か月に1人`;return `${(d/365).toFixed(d<3650?1:0)}年に1人`;}
+function exFit(R){
+  const out=[];const rows=[["ideal","理想の条件"],["must","最低限の条件"]];
+  rows.forEach(([k,n])=>{if(!sets[k].length)return;const f=compute(sets[k]).fitsNat;
+    const msg=R.fitsNat<=f?"理想並みかそれ以上に珍しい人":"あなたの条件より、見つけやすいタイプ";
+    out.push(`<li><span>${n}に合う人は ${oneInN(f)}（元恋人は ${oneInN(R.fitsNat)}）</span><span>${R.fitsNat<=f?"貴重":"見つけやすい"}</span></li>`);});
+  if(!out.length)out.push(`<li><span>「理想の条件」「最低限の条件」も入れると、元恋人とくらべられます</span><span></span></li>`);
+  return out.join("");
+}
+function renderPartnerCard(R){
+  const who=tab==="current"?"今交際している相手":"元の恋人";
+  if(!conds.length){$("best").innerHTML=`<h4>${who}の貴重さ</h4><p class="best-top">STEP 1 で、${who}に当てはまる特徴を入れてください。</p>`;return;}
+  $("best").innerHTML=`<h4>${who}の貴重さ</h4><p class="best-top">${who}のような人は<br><b class="big-rare">${oneInN(R.fitsNat)}</b></p>
+   <ul><li><span>相手のいない人に週${(+prm.r).toFixed(1)}人会うペースだと、同じような人に出会えるのは</span><span>${meetEvery(R.fits)}</span></li>
+   <li><span>同じような人と${dlName()}までに付き合える確率</span><span>${fmtP(R.P)}</span></li>${tab==="ex"?exFit(R):""}</ul>`;
+}
+function renderRare(Rc,Rx){
+  const card=(k,R)=>{const has=sets[k].length>0;return `<div class="box" data-tab="${k}"><small>${TABNAME[k]}</small><b>${has?oneInN(R.fitsNat):"–"}</b><span>${has?`同じような人に出会えるのは ${meetEvery(R.fits)}・条件${sets[k].length}つ`:"まだ入力していません"}</span></div>`;};
+  $("rareCmp").innerHTML=card("current",Rc);
+}
+function renderInline(R){
+  const P=isPartner(tab),who=tab==="current"?"今交際している相手":"元の恋人";
+  if(P&&conds.length){$("condRes").innerHTML=`<span class="cr-lead">${who}のような人は</span><span class="cr-big">${oneInN(R.fitsNat)}</span><span class="cr-msg">${tab==="current"?"それだけ珍しい出会いだった、ということです。":"振り返ると、それだけの確率で出会った相手でした。"}</span>`;}
+  else $("condRes").innerHTML=!conds.length?`条件を入れると、ここに「${P?who+"のような人":"あなたが求める結婚相手"}は何人に1人か」が出ます。`
+    :`${P?who+"のような人":"あなたが求める結婚相手"}は<b>日本全体で ${oneInN(R.fitsNat)}</b><small>${conds.length}つの条件をすべて満たす人の割合${Math.abs(R.fits-R.fitsNat)>1e-9?`。あなたの周りでは <b style="font-size:inherit">${oneInN(R.fits)}</b>（STEP 2で調整）`:"（周りでの多さは STEP 2 で調整できます）"}</small>`;
+  const ri=ruleIdx(R.P),rule=RULES[ri];
+  if(0)$("prmRes").innerHTML=P?`当時のあなたで、${retroT}日間に${who}のような人と付き合えた確率<b>${fmtP(R.P)}</b><small>上の入力を変えると、すぐに変わります</small>`
+    :`${dlName()}に結婚相手と付き合っている確率<b>${fmtP(R.P)}</b><span class="dots" id="inDots"><i></i><i></i><i></i></span><small>${TABNAME[tab]}・${md(deadline)}まで ${prm.T}日。上の入力を変えると、すぐに変わります</small>`;
+  
+}
+function renderDock(Ri,Rm,R){
+  const d=$("dock");delete d.dataset.cm;const v=(location.hash||"#ideal").slice(1);
+  if(v==="compare"||v==="about"){d.hidden=true;return;}d.hidden=false;
+  const ri=ruleIdx(R.P),rule=RULES[ri],col={r:"#ff4d4d",y:"#ffc53d",g:"#3ddc84"};
+  const dots=["r","y","g"].map(k=>`<i style="background:${rule.pat[k]?col[k]:"#4a4542"}" class="${rule.pat[k]==="b"?"b":""}"></i>`).join("");
+  if(isPartner(tab)){const who=tab==="current"?"今交際している相手":"元の恋人";delete d.dataset.run;
+    if(!conds.length){d.removeAttribute("data-pt");d.innerHTML=`<span class="dk-l">${who}の特徴を入れると、ここに結果が出ます</span>`;return;}
+    d.dataset.pt="1";
+    d.innerHTML=`<span class="dk-lines"><span class="dk-sub">${who}のような人</span><b class="dk-r">${oneInN(R.fitsNat)}</b><span class="dk-sub">付き合えた確率</span><b class="dk-p">${fmtP(R.P)}</b></span><span class="dk-go">結果を見る</span>`;return;}
+  d.removeAttribute("data-pt");
+  d.dataset.run="1";
+  d.innerHTML=`<span class="dk-lines"><span class="dk-sub">${tab==="must"?"最低限":"理想"}に合う人</span><b class="dk-r">${conds.length?oneInN(R.fitsNat):"条件なし"}</b><span class="dk-sub">${dlName()}までに付き合える</span><b class="dk-p">${fmtP(R.P)}</b></span><span class="dk-go">▶ 走らせる</span>`;
+}
+function update(){
+  if(typeof renderEnv==="function"&&!(document.activeElement&&document.activeElement.closest&&document.activeElement.closest("#envBox")))renderEnv();
+  sets[tab]=conds;
+  const Ri=compute(sets.ideal),Rm=compute(sets.must),Rc=compute(sets.current,{T:retroT}),Rx=compute(sets.ex,{T:retroT});
+  const R={ideal:Ri,must:Rm,current:Rc,ex:Rx}[tab];last=R;
+  $("navP_current").textContent=sets.current.length?oneInN(Rc.fitsNat):"–";$("navP_ex").textContent=sets.ex.length?oneInN(Rx.fitsNat):"–";
+  renderRare(Rc,Rx);
+  const navF=P=>P>0&&P<0.001?"0.1%未満":fmtP(P);const Rcur=tab==="must"?Rm:Ri;$("navP_cond").textContent=sets.ideal.length?navF(Ri.P):"–";$("navP_must").textContent=sets.must.length?navF(Rm.P):"–";$("navP_around").textContent=navF(Rcur.P);
+  renderCompare(Ri,Rm);
+  renderInline(R);renderDock(Ri,Rm,R);renderEnvSum(R);if(typeof renderAgy==="function"&&!isPartner(tab)){if(renderAgyIn._t!==tab){renderAgyIn._t=tab;renderAgyIn();}renderAgy(R);}if(!isPartner(tab))mvSchedule();
+  if(isPartner(tab)){renderPartnerCard(R);renderRetro(R);}else renderBest(R);
+  $("goCmp").textContent=isPartner(tab)?"ほかの条件と、くらべる →":"理想と最低限を、くらべる →";
+  renderBest(Ri,sets.ideal,"ideal","bestIdeal");renderBest(Rm,sets.must,"must","bestMust");if(typeof renderExs==="function")renderExs();
+  renderFunnel2(Ri,Rm);
+  const ri=ruleIdx(R.P),rule=RULES[ri],F=R.fitsNat,v=F*100;
+  const big=(v>0&&v<0.1?"<0.1":v.toFixed(1));
+  $("bigP").innerHTML=v>0&&v<0.1?`<span class="tiny">${oneInN(F)}</span>`:big+"<small>%</small>";
+  $("arc").style.strokeDashoffset=552.92*(1-Math.min(1,F));
+  const RV=F>=0.5?["わりと多くの人が当てはまる。","ゆるめの条件です。"]:F>=0.2?["ほどよい理想。","周りにも、それなりにいそうです。"]:F>=0.05?["なかなかの理想。","探せば見つかるレベルです。"]:F>=0.01?["かなり高い理想。","出会えたら、かなり貴重な人です。"]:["とても高い理想。","日本中を探しても、なかなかいない人です。"];
+  $("vTitle").textContent=conds.length?RV[0]:"まだ条件がありません。";
+  const rankLine=conds.length&&!isPartner(tab)?`<div class="rank-line">${conds.slice(0,5).map((c,i)=>`<span><i>${i+1}</i>${condTitle(c)}</span>`).join("")}${conds.length>5?`<span>ほか${conds.length-5}つ</span>`:""}</div>`:"";
+  $("vText").innerHTML=conds.length?`日本全体で <b>${oneInN(F)}</b>。${RV[1]}`+(Math.abs(R.fits-F)>1e-9?`<div class="res-env">STEP 2 で入れた値だと、あなたの周りでは <b>${oneInN(R.fits)}</b>。</div>`:`<div class="res-env">ふだん会う人の中での割合は、すぐ下の STEP 2 で入れられます。</div>`):"STEP 1 で条件を入れると、日本全体で何人に1人かが出ます。";
+  if(rankLine)$("vText").innerHTML=rankLine+$("vText").innerHTML;
+  if(conds.length&&!isPartner(tab)){const pool=IBJ_TOTAL*IBJ_SHARE[sex],k=pool*F,kk=k>=100?Math.round(k/10)*10:Math.max(0,Math.round(k));
+    $("vText").innerHTML+=(tab==="ideal"&&F<0.1?`<div class="res-env">それだと、出会うのは<b>厳しいかもしれません</b>。<a href="#minimum" style="color:var(--wine)">最低限の条件にすると？ →</a></div>`:"")+
+      `<div class="res-env">結婚相談所なら：IBJの${sex==="m"?"男性":"女性"}会員 約${(pool/1e4).toFixed(1)}万人に同じ割合をかけると、約<b>${kk.toLocaleString()}人</b>。会員の年齢や年収の分布は日本全体と違うので、実際の人数は相談所で検索してもらうと分かります。</div>`;}
+  $("chipText").textContent="LED　"+rule.text;ledDots($("ledDots"),rule.pat);
+  document.querySelectorAll("#bands div").forEach((d,i)=>d.classList.toggle("cur",i===ri));
+  document.querySelectorAll("#bandsLab span").forEach((d,i)=>d.classList.toggle("cur",i===ri));
+  $("pin").style.left=`calc(${Math.min(99.5,v)}% - 1px)`;
+  const n=R.N,first=n?0:-1,lastI=n-1;
+  const day=t=>t<1?"今日":Math.round(t)+"日後";
+  const rows=[
+    ["01","最低条件を満たす確率",`P_fits = Π P_k（${conds.length}条件）`,pct(R.fits,2),""],
+    ["02","× 好きになってくれる確率",`P_likes = 10人中 ${prm.likes}人（自己評価）`,pct(R.fits*R.likes,2),"1回のチャンスあたり"],
+    ["03","恋愛のチャンス",`N_eff = ⌊${(+prm.r).toFixed(1)} × ${prm.T}/7 × ${f2(prm.krel)}⌋`,n+" 回",n?`${(1/R.rate).toFixed(1)}日に1回`:"チャンスなし"],
+    ["04","慣れ × 疲れ",`G(i)·F(i)　1回目 → ${n}回目`,n?`${f2(R.GF[0])} → ${f2(R.GF[lastI])}`:"–",""],
+    ["05",`${dlName()}までに付き合える確率`,`W = 1 − e^(−(T − t_i)/m)　1回目 → ${n}回目`,n?`${pct(R.Ws[0])} → ${pct(R.Ws[lastI])}`:"–",n?`${day(R.ts[0])} と ${day(R.ts[lastI])} の出会い`:""],
+    ["06",`${dlName()}に結婚相手と付き合っている確率`,`P = 1 − Π(1 − q(i))`,pct(R.P),"最終成功率"],
+  ];
+  renderFunnel(Ri,Rm);
+  $("byLabel").textContent="日本全体";
+  $("resH").textContent=`あなたの${TABNAME[tab]}に当てはまる人は？`;
+  $("chain").innerHTML=rows.map((r,i)=>`<li class="${i===5?"final":""}"><span class="n">${r[0]}</span><span class="t">${r[1]}<small>${r[2]}</small></span><span class="v">${r[3]}${r[4]?`<small>${r[4]}</small>`:""}</span></li>`).join("");
+  const M=prm.r*prm.T/7,dsum=R.qs.reduce((x,y)=>x+y,0);
+  $("miniIn").innerHTML=`<span>理想 <b>${fmtP(Ri.P)}</b></span><span class="arrow">/</span><span>譲れない <b>${sets.must.length?fmtP(Rm.P):"–"}</b></span><span class="arrow">｜</span><span>表示中：${TABNAME[tab]}　出会う <b>${ppl(M)}</b> → 付き合える <b>${ppl(dsum)}</b></span><span class="dots" id="miniDots"><i></i><i></i><i></i></span><b class="P">${big}%</b>`;
+
+  let run=1;
+  conds.forEach((c,i)=>{run*=R.probs[i];const el=$(c.id);if(!el)return;
+    const lvType=c.type==="top"||c.type==="custom"||(c.type==="age"&&c.amode==="local");
+    el.querySelector(".c-prob").textContent=lvType?"":(R.probs[i]>=0.1?`10人中 ${fmtN(R.probs[i]*10)}人`:oneInN(R.probs[i]));
+    drawPlot(c);});
+  drawChart(R);
+}
+
+/* ---------- funnel (natural frequencies) ---------- */
+function ppl(x){if(x>=10)return Math.round(x)+" 人";if(x>=1)return x.toFixed(1)+" 人";if(x>=0.01)return x.toFixed(2)+" 人";if(x===0)return "0 人";return "0.01人未満";}
+function oneIn(x){if(x<=0||x>=1)return "";const t=oneInN(x,"回");return t.replace(/回に1回$/,"回やり直して1人くらい");}
+function fnVals(R){const M=R.r*R.T/7,a=M*R.fits,c=R.NeffRaw*R.fits,e=c*R.likes,d=R.qs.reduce((x,y)=>x+y,0);return [M,a,c,e,d];}
+function fnRows(){const P=isPartner(tab),per=P?`当時の${retroT}日間で`:`${dlName()}までに`;return [
+    [`${per}会える<b>相手のいない人</b>`,P?`1週間 ${(+prm.r).toFixed(1)}人 × ${retroT}日`:`1週間 ${(+prm.r).toFixed(1)}人 × ${prm.T}日（${md(deadline)}まで）`],
+    [P?`そのうち<b>${tab==="current"?"今交際している相手":"元の恋人"}のような人</b>`:`そのうち<b>あなたの条件に合う人</b>`,`条件 ${conds.length}つ`],
+    [`さらに<b>恋愛に発展しそうな人</b>`,`会った人の${Math.round(prm.krel*100)}%と仲が深まる`],
+    [`さらに<b>あなたを好きになってくれる人</b>`,`10人中 ${prm.likes}人（あなたの見積もり）`],
+    [`さらに<b>${P?"その期間内に":dlName()+"までに"}付き合える人</b>`,`付き合うまで平均${prm.m}日・慣れと疲れも考慮`],
+  ];}
+const fnW=(v,M)=>M>0?Math.max(v>0?1.5:0,Math.pow(Math.min(1,v/M),0.35)*100):0;
+function renderFunnel(Ri,Rm){
+  const R=last,v=fnVals(R),M=v[0];
+  $("funnel").innerHTML=fnRows().map((r,i)=>`<div class="fn-row one ${i===4?"last":""}"><span class="lb">${r[0]}</span><span class="ct">${ppl(v[i])}</span><span class="bar"><i style="width:${fnW(v[i],M)}%"></i></span><span class="hint">${r[1]}</span></div>`).join("");
+  const d=v[4],tail=d<1&&d>0?`（${oneIn(d)}）`:"";
+  const who=tab==="current"?"今交際している相手":"元の恋人";
+  const txt=isPartner(tab)?`当時のあなたの行動だと、${retroT}日間で${who}のような人と付き合えるのは平均 <b>${ppl(d)}</b>${tail}。<br>確率にすると <b>${fmtP(R.P)}</b> です。`:`${TABNAME[tab]}では、最後に残るのは平均 <b>${ppl(d)}</b>${tail}。<br>なので「${dlName()}に恋人がいる」確率は <b>${fmtP(R.P)}</b> です。`;
+  $("fnSumTop").innerHTML=(conds.length?`あなたの周りで条件に当てはまる人は <b>${oneInN(R.fits)}</b>。<br>`:"")+txt;
+}
+function renderFunnel2(Ri,Rm){
+  const vi=fnVals(Ri),vm=fnVals(Rm),M=vi[0],has=sets.must.length>0;
+  const rows=fnRows();rows[1][1]=`理想 ${sets.ideal.length}つ・最低限 ${sets.must.length}つの条件`;
+  $("funnel2").innerHTML=rows.map((r,i)=>`<div class="fn-row ${i===4?"last":""}"><span class="lb">${r[0]}</span><span class="ct off">${ppl(vi[i])}</span><span class="ct">${has?ppl(vm[i]):"–"}</span><span class="bar"><i style="width:${fnW(has?vm[i]:vi[i],M)}%"></i></span><span class="hint">${r[1]}</span></div>`).join("");
+}
+
+/* ---------- conditions UI ---------- */
+function condTitle(c){if(c.type==="height"||c.type==="income"||c.type==="age")return DIST[c.type].name;return c.name||"自分の条件";}
+function condBadge(c){if(c.type==="stat")return "統計";if(c.type==="age")return c.amode==="local"?"ふだん会う人の中で":"全国の人口構成";return {height:"正規分布",income:"対数正規",top:"こだわり",custom:"こだわり"}[c.type];}
+const PSVG='<svg viewBox="0 0 12 16" aria-hidden="true"><circle cx="6" cy="4" r="3.2"/><path d="M0.8 16 Q0.8 8.6 6 8.6 Q11.2 8.6 11.2 16Z"/></svg>';
+function lvName(n){const P=isPartner(tab);
+  if(P){if(n>=10)return "誰にでも当てはまる";if(n>=7)return "やや高め";if(n>=4)return "高め";if(n>=2)return "かなり高い";if(n>=1)return "とても高い";return "ずば抜けている";}
+  if(n>=10)return "こだわらない";if(n>=7)return "少しだけ気にする";if(n>=4)return "気にする";if(n>=2)return "けっこうこだわる";if(n>=1)return "かなりこだわる";if(n>=0.5)return "強くこだわる";return "絶対ゆずれない";}
+function fmtN(n){return (Math.round(n*10)/10).toString();}
+function okLine(n){const P=isPartner(tab);if(n>=0.5)return `10人中 <b>${fmtN(n)}</b> 人${P?"に入るレベル":"がOK"}<small>（${fmtN(n*10)}%）</small>`;return `<b>${oneInN(n/10)}</b>${P?" のレベル":" がOK"}<small>（${fmtN(n*10)}%）</small>`;}
+function picker(n,f){/* n: people out of 10, f: data-f key */
+  const icons=Array.from({length:10},(_,i)=>{const k=i+1,fill=n>=k?100:n>=k-0.5?50:0;
+    return `<span class="pp"><span class="pp-base">${PSVG}</span><span class="pp-fill" style="width:${fill}%">${PSVG}</span><button class="pp-h l" data-pv="${k-0.5}" data-f="${f}" aria-label="10人中${k-0.5}人"></button><button class="pp-h r" data-pv="${k}" data-f="${f}" aria-label="10人中${k}人"></button></span>`;}).join("");
+  return `<div class="picker">${icons}</div><p class="pp-hint">${f==="lx"?"10人のうち、当てはまる人数を押してください":"世の中の10人のうち、当てはまる人数を押してください（統計がない条件なので、あなたの見積もりです）"}</p>`;}
+function lvControl(c){if(c.type==="top"&&LVL[c.name])return levelControl(c);const n=c.x/10;
+  return `<div class="lv"><div class="lv-head"><b class="lv-name">${lvName(n)}</b><span class="lv-ok">${okLine(n)}</span></div>
+    <div class="lv-pick">${picker(n,"x")}</div>
+    ${isPartner(tab)?"":`<button class="lv-rare ${c.x<=1?"on":""}" data-rare="1">もっと厳しく：100人に1人（絶対ゆずれない）</button>`}</div>`;}
+function refreshLv(el,c){const box=el.querySelector(".lv");if(!box)return;
+  const n=c.type==="age"?c.lx:c.x/10,f=c.type==="age"?"lx":"x";
+  const nm=box.querySelector(".lv-name");if(nm)nm.textContent=c.type==="age"?"":lvName(n);
+  box.querySelector(".lv-ok").innerHTML=c.type==="age"?`10人中 <b>${fmtN(n)}</b> 人くらい<small>（${fmtN(n*10)}%）</small>`:okLine(n);
+  box.querySelector(".lv-pick").innerHTML=picker(n,f);
+  const rb=box.querySelector(".lv-rare");if(rb)rb.classList.toggle("on",c.x<=1);}
+function condControls(c){
+  if(c.type==="height"||c.type==="income"){
+    const u=DIST[c.type].unit,st=DIST[c.type].step;
+    return `<select data-f="mode"><option value="ge"${c.mode==="ge"?" selected":""}>以上</option><option value="le"${c.mode==="le"?" selected":""}>以下</option><option value="range"${c.mode==="range"?" selected":""}>範囲</option></select>
+      <input type="number" data-f="a" step="${st}" value="${c.a}"> ${u}
+      <span class="rb" ${c.mode==="range"?"":"hidden"}>〜 <input type="number" data-f="b" step="${st}" value="${c.b}"> ${u}</span>`;
+  }
+  if(c.type==="age"){
+    const seg="";
+    const rng=`<span class="age-rng"><input type="number" data-f="a" min="18" max="59" value="${c.a}"> 〜 <input type="number" data-f="b" min="18" max="59" value="${c.b}"> 歳</span>`;
+    if(c.amode!=="local")return seg+rng;
+    return seg+rng+`<div class="lv"><div class="lv-head"><span class="lv-q">ふだん会う人のうち、この年齢の人は</span><span class="lv-ok">10人中 <b>${fmtN(c.lx)}</b> 人くらい<small>（${fmtN(c.lx*10)}%）</small></span></div>
+      <div class="lv-pick">${picker(c.lx,"lx")}</div>
+      <p class="lv-hint">例：大学で同年代を希望するなら 10人中9人くらい。職場で5歳差以内なら 10人中3人くらい。</p></div>`;
+  }
+  if(c.type==="stat")return `<div class="c-note" style="margin:0">${STAT[c.name].note(sex)}</div>`;
+  const nm=c.type==="custom"&&!c.name?`<input type="text" data-f="name" value="${c.name}" placeholder="例：タバコを吸わない" aria-label="条件名">`:"";
+  return nm+lvControl(c);
+}
+function renderConds(){
+  if(!conds.length){$("conds").innerHTML="";$("condsH").hidden=true;}
+  else {$("condsH").hidden=false;$("condsH").innerHTML=isPartner(tab)?`入れた特徴（${conds.length}つ）`:tab==="ideal"?`あなたの価値観ランキング（${conds.length}つ）<small>上にあるほど大事。↑↓で順番を変えられます。1位は絶対にゆずれない条件、2位以下は下に行くほど「少し足りなくても許せる」として計算します。</small>`:`最低限の条件（${conds.length}つ）<small>最低限なので、すべて「絶対にゆずれない」として計算します。</small>`;}
+  if(conds.length)$("conds").innerHTML=conds.map((c,i)=>{
+    const plot=c.type==="top"||c.type==="custom"||c.type==="stat"||(c.type==="age"&&c.amode==="local")?"":`<svg class="c-plot" viewBox="0 0 220 58" preserveAspectRatio="none" aria-hidden="true"></svg>`;
+    const note=DIST[c.type]&&!(c.type==="age"&&c.amode==="local")?`<div class="c-note">${DIST[c.type].note(sex)}</div>`:"";
+    return `<div class="cond" id="${c.id}">
+      <div class="c-top">${isPartner(tab)?"":`<span class="rk">${i+1}位</span>`}<span class="c-name">${condTitle(c)}</span><span class="c-prob">–</span>${isPartner(tab)?"":`<span class="mvud"><button data-up="${c.id}" ${i===0?"disabled":""} aria-label="順位を上げる">↑</button><button data-down="${c.id}" ${i===conds.length-1?"disabled":""} aria-label="順位を下げる">↓</button></span>`}<button class="x" data-del="${c.id}" aria-label="削除">×</button></div>
+      <div class="c-body" ${plot?"":'style="grid-template-columns:1fr"'}><div><div class="c-ctrl">${condControls(c)}</div>${note}</div>${plot?`<div>${plot}<p class="plot-hint">↔ グラフをドラッグして範囲を動かせます</p></div>`:""}</div></div>`;}).join("");
+  sets[tab]=conds;renderTabNote();renderChips();renderEnv();renderRankCmp();update();
+  if(MV_NEW){const el=$(MV_NEW);MV_NEW=null;if(el){el.classList.add("new");}}
+}
+let MV_NEW=null;
+function envLabel(c){
+  if(c.type==="top"&&LVL[c.name])return `${c.name}：${LVL[c.name][lvIdx(c)]}`;
+  const u={height:"cm",income:"万円",age:"歳"}[c.type];if(!u)return condTitle(c);
+  const r=c.mode==="ge"?`${Math.round(c.a)}${u}以上`:c.mode==="le"?`${Math.round(c.a)}${u}以下`:`${Math.round(Math.min(c.a,c.b))}〜${Math.round(Math.max(c.a,c.b))}${u}`;
+  return `${condTitle(c)} ${r}`;}
+function renderEnv(){
+  const box=$("envBox");if(!box)return;
+  if(!conds.length){box.innerHTML=`<p class="env-n">まだ条件がありません。上の STEP 1 で入れてください。</p>`;$("envSum").innerHTML="";return;}
+  box.innerHTML=`<p class="env-n">スライダーを動かして、ふだん会う人のうち何%が当てはまるかを入れてください。最初は日本全体と同じ値です。<br>例：年収1000万円以上は日本全体だと少なくても、高級住宅街に住んでいれば周りの9割かもしれません。</p>`+
+    conds.map(c=>{const pn=condProb(c),pl=c.loc==null?pn:c.loc;
+      return `<div class="env-r" data-cid="${c.id}"><div class="env-top"><span class="env-name">${envLabel(c)}</span><output>${envOut(pl)}</output></div>
+      <input type="range" min="0" max="100" step="0.5" value="${(pl*100).toFixed(1)}" aria-label="${envLabel(c)}のふだん会う人の中での割合">
+      <div class="env-ref"><span>日本全体：${envOut(pn)}</span>${c.loc==null?`<span class="env-same">日本全体と同じ</span>`:`<button data-reset>日本全体と同じに戻す</button>`}</div></div>`;}).join("");
+}
+function envOut(p){const v=p*100;return v>=10?`10人中 ${fmtN(p*10)}人（${Math.round(v)}%）`:v>0?`${oneInN(p)}（${fmtN(v)}%）`:"0人";}
+function renderEnvSum(R){const el=$("envSum");if(!el)return;
+  if(!conds.length){el.innerHTML="";return;}
+  el.innerHTML=`<small>${TABNAME[tab]}に当てはまる人は</small><div class="es-row"><div><span>日本全体</span><b>${oneInN(R.fitsNat)}</b></div><i>→</i><div class="es-me"><span>あなたの周り</span><b>${oneInN(R.fits)}</b></div></div>`;}
+document.addEventListener("input",e=>{const r=e.target.closest(".env-r input[type=range]");if(!r)return;
+  const row=r.closest(".env-r"),c=conds.find(x=>x.id===row.dataset.cid);if(!c)return;c.loc=(+r.value)/100;
+  row.querySelector("output").textContent=envOut(c.loc);const sm=row.querySelector(".env-same");
+  if(sm)sm.outerHTML=`<button data-reset>日本全体と同じに戻す</button>`;update();});
+document.addEventListener("click",e=>{const b=e.target.closest(".env-r [data-reset]");if(!b)return;
+  const c=conds.find(x=>x.id===b.closest(".env-r").dataset.cid);if(!c)return;c.loc=null;renderEnv();update();});
+function renderRankCmp(){
+  const el=$("rankCmp");if(!el)return;
+  if(tab!=="ideal"||!conds.length){el.innerHTML="";return;}
+  const ALL=RANK.map(r=>r[0]),tops=conds.map((c,i)=>({c,ur:i+1})).filter(o=>o.c.type==="top"&&ALL.includes(o.c.name));
+  if(!tops.length){el.innerHTML="";return;}
+  const rows=tops.map(o=>{const er=ALL.indexOf(o.c.name)+1,d=er-o.ur;
+    const tag=d>=3?`<em class="up">みんなより重視</em>`:d<=-3?`<em class="dn">みんなより軽め</em>`:`<em>みんなと同じくらい</em>`;
+    return {o,er,d,html:`<tr><td>${o.c.name}</td><td class="n">${o.ur}位</td><td class="n">${er}位</td><td>${tag}</td></tr>`};});
+  const big=rows.slice().sort((a,b)=>b.d-a.d)[0];
+  const picked=new Set(tops.map(o=>o.c.name)),miss=ALL.slice(0,3).filter(n=>!picked.has(n));
+  let msg="";
+  if(big&&big.d>=3)msg=`あなたは「<b>${big.o.c.name}</b>」を、みんなよりかなり重視しています（みんなの中では${big.er}位 → あなたは${big.o.ur}位）。`;
+  else msg="あなたの価値観は、みんなとかなり近いです。";
+  if(miss.length)msg+=` みんなの上位にある「${miss.join("」「")}」は、あなたのランキングに入っていません。`;
+  el.innerHTML=`<h4>みんなのランキングとくらべると</h4><p class="rc-msg">${msg}</p>
+    <table><thead><tr><th>条件</th><th>あなた</th><th>みんな</th><th></th></tr></thead><tbody>${rows.map(r=>r.html).join("")}</tbody></table>
+    <p class="rc-n">「みんな」は、結婚したい人が結婚相手の条件として重視・考慮する割合が多い順（出生動向基本調査 2021・全8項目）。身長・年収などの数値の条件や、自分で書いた条件は比べていません。</p>`;
+}
+function renderChips(){
+  const has=t=>conds.some(c=>c.type===t);
+  RANK=RANKV[sex];
+  $("addDist").innerHTML=["height","age","income"].map(t=>`<button data-add="${t}" ${has(t)?"disabled":""}>＋ ${DIST[t].name}</button>`).join("")+Object.keys(STAT).map(n=>`<button data-stat="${n}" ${conds.some(c=>c.type==="stat"&&c.name===n)?"disabled":""}>＋ ${n}<small>${Math.round(STAT[n].p(sex)*100)}%</small></button>`).join("");
+  $("addTop").innerHTML=RANK.map(([n,p])=>`<button data-top="${n}" ${conds.some(c=>c.type==="top"&&c.name===n)?"disabled":""}>＋ ${n}<small>${p}%</small></button>`).join("");
+}
+$("conds").addEventListener("input",e=>{
+  const el=e.target.closest(".cond");if(!el)return;const c=conds.find(x=>x.id===el.id);
+  if(e.target.dataset.lvs!=null){const i=+e.target.value;c.x=LVX[i];const v=el.querySelector(".lvs-v");v.innerHTML=`<b>${LVL[c.name][i]}</b><small>${LVSUB[i]}</small>`;update();return;}const f=e.target.dataset.f;if(!f)return;
+  if(f==="name"){c.name=e.target.value;el.querySelector(".c-name").textContent=c.name||"自分の条件";return;}
+  if(f==="mode"){c.mode=e.target.value;el.querySelector(".rb").hidden=c.mode!=="range";}
+  else c[f]=+e.target.value;
+  update();
+});
+$("conds").addEventListener("change",e=>{if(e.target.dataset.f==="mode"){const ev=new Event("input",{bubbles:true});e.target.dispatchEvent(ev);}});
+$("conds").addEventListener("click",e=>{
+  const lv=e.target.closest("[data-lvi]");
+  if(lv){const el=e.target.closest(".cond");const c=conds.find(x=>x.id===el.id);c.x=LVX[+lv.dataset.lvi];
+    lv.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===lv));update();return;}
+  const pv=e.target.closest("[data-pv]"),am=e.target.closest("[data-amode]"),rr=e.target.closest("[data-rare]");
+  if(pv||am||rr){const el=e.target.closest(".cond");const c=conds.find(x=>x.id===el.id);
+    if(pv){const v=+pv.dataset.pv;if(pv.dataset.f==="lx")c.lx=v;else c.x=v*10;refreshLv(el,c);update();}
+    else if(rr){c.x=1;refreshLv(el,c);update();}
+    else{c.amode=am.dataset.amode;renderConds();}
+    return;}
+  const ud=e.target.closest("[data-up],[data-down]");
+  if(ud){const id=ud.dataset.up||ud.dataset.down,i=conds.findIndex(c=>c.id===id),j=ud.dataset.up?i-1:i+1;
+    if(i<0||j<0||j>=conds.length)return;[conds[i],conds[j]]=[conds[j],conds[i]];MV_NEW=id;renderConds();
+    const el=$(id);if(el)el.scrollIntoView({block:"nearest",behavior:"smooth"});return;}
+  const id=e.target.dataset.del;if(!id)return;conds=conds.filter(c=>c.id!==id);renderConds();});
+document.querySelector(".add").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b||b.disabled)return;
+  if(b.dataset.add){const c=makeCond(b.dataset.add);conds.push(c);MV_NEW=c.id;}
+  else if(b.dataset.top){const c=makeCond("top",{name:b.dataset.top,x:30});conds.push(c);MV_NEW=c.id;}
+  else if(b.dataset.stat){const c={id:"c"+(++uid),set:tab,type:"stat",name:b.dataset.stat};conds.push(c);MV_NEW=c.id;}
+  else if(b.id==="addCustom"){const c=makeCond("custom",{x:50});conds.push(c);renderConds();const t=document.querySelector(`#${c.id} [data-f="name"]`);t&&t.focus();return;}
+  renderConds();
+});
+$("freeForm").addEventListener("submit",e=>{e.preventDefault();const v=$("freeIn").value.trim();if(!v){$("freeIn").focus();return;}
+  const c=makeCond("custom",{name:v,x:50});conds.push(c);MV_NEW=c.id;$("freeIn").value="";renderConds();});
+$("sexSeg").addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b||b.dataset.s===sex)return;sex=b.dataset.s;
+  $("sexSeg").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+  [...sets.ideal,...sets.must].forEach(c=>{if(c.type==="height"||c.type==="income"){const p=DIST[c.type][sex];c.a=p.a;c.b=p.b;}});
+  renderConds();
+});
+
+const CONDH={ideal:"理想の条件",must:"最低限の条件",current:"今交際している相手は、どんな人ですか？",ex:"元の恋人は、どんな人でしたか？"};
+const LEAD={ideal:"よく挙がる条件から、大事なものを押してください。押した順に下のランキングに入ります。",must:"これがないと絶対に無理、という条件だけを入れてください。1つでもOKです。",current:"今交際している相手の特徴を、思いついた分だけ入れてください（1つでもOK）。",ex:"元の恋人の特徴を、思いついた分だけ入れてください（1つでもOK）。"};
+let retroT=90;
+function applyMode(){
+  const p=isPartner(tab);
+  $("retro").hidden=true;$("retroBelow").hidden=!p;$("step1").hidden=p;$("result").hidden=p;$("multi").hidden=p;$("agyPanel").hidden=p;$("demo").hidden=p;$("condRes").hidden=!p;$("envPanel").hidden=p;$("pgHead").hidden=p;
+  $("paramsH").textContent="出会いのペースと、あなた";
+}
+function renderRetro(R){
+  const who=tab==="current"?"今交際している相手":"元の恋人";
+  if(!conds.length){$("retroStats").innerHTML=`<div style="grid-column:1/-1"><small>${who}に当てはまる特徴を左の条件に入れると、ここに計算結果が出ます。</small></div>`;$("retroCmp").innerHTML="";return;}
+  const f=R.fits;
+  const rr=+prm.r,perWeek=rr*f, weeks=perWeek>0?1/perWeek:Infinity;
+  const span=w=>w===Infinity?"出会えない":w<1?`1週間に${perWeek.toFixed(1)}人`:w<9?`約${w.toFixed(1)}週間`:w<104?`約${(w/4.35).toFixed(1)}か月`:`約${(w/52).toFixed(1)}年`;
+  $("retroStats").innerHTML=`
+    <div><small>同じような人に出会うまでに会う人数</small><b>平均 ${f>0?Math.round(1/f).toLocaleString():"–"} 人</b><span>相手のいない人の中で数えた場合</span></div>
+    <div><small>当時のペース（週${rr.toFixed(1)}人）だと、出会うまで</small><b>${span(weeks)}</b><span>同じような人に1人出会うまでの平均</span></div>
+    <div><small>当時のペースで、${retroT}日間のうちに同じような人に1人でも出会えた確率</small><b>${fmtP(1-Math.pow(1-f,rr*retroT/7))}</b><span>週${rr.toFixed(1)}人 × ${retroT}日</span></div>
+    <div><small>当時のあなたで、${retroT}日間のうちに同じような人と付き合えた確率</small><b>${fmtP(R.P)}</b><span>仲の深まり・好かれる確率・付き合うまでの日数・慣れと疲れも考慮</span></div>`;
+  const rows=[["ideal","理想の条件"],["must","最低限の条件"]].filter(([k])=>sets[k].length).map(([k,n])=>{const g=compute(sets[k]).fitsNat,fn=R.fitsNat;
+    const tag=fn<=g?`${who}の方が珍しい`:`${n}の方が珍しい`;
+    return `<li><span>あなたの${n}に合う人は ${oneInN(g)}（${who}は ${oneInN(fn)}）</span><b>${tag}</b></li>`;});
+  $("retroCmp").innerHTML=rows.length?rows.join(""):`<li><span>「理想の条件」「最低限の条件」も入れると、${who}とくらべられます。</span></li>`;
+}
+function renderHero(){
+  const H={current:["今交際している相手は、<br><em>どれくらい貴重？</em>","これからの予想ではなく、過去のふりかえり。今交際している相手の特徴を入れると、同じような人が「何人に1人」いるのか、当時のペースで出会うまでにどれくらいかかるのかが分かります。"],
+           ex:["元の恋人は、<br><em>自分に合っていた？</em>","これからの予想ではなく、過去のふりかえり。元の恋人の特徴を入れると、その人がどれくらい貴重だったか、あなたの理想・最低限の条件とくらべてどうだったかが分かります。"]};
+  const p=H[tab];
+  $("heroH").innerHTML=p?p[0]:(tab==="must"?"結婚相手に求める<br><em>最低限の条件</em>は<br>何ですか？":"あなたが恋人に<br>求める<em>条件</em>は<br>何ですか？");
+  $("heroLead").textContent=p?p[1]:"あなたが決めた日までに、結婚相手の条件に合う人と付き合える確率を、その場で計算するサイトです。";
+  $("heroSteps").hidden=!!p;$("heroOut").hidden=!!p;
+}
+function setTab(t){
+  sets[tab]=conds;tab=t;conds=sets[tab];
+  $("condH").textContent=CONDH[tab];$("condLead").textContent=LEAD[tab];$("freeH").textContent=isPartner(tab)?"ほかの特徴を書く":"ほかに必要なものがあれば書く";$("freeIn").placeholder=isPartner(tab)?"例：優しい、話が合う":"例：転勤がない、子どもがほしい";renderHero();applyMode();
+  renderConds();
+}
+const HASH={ideal:"ideal",minimum:"must",around:"around",partner:"current",ex:"ex",compare:"compare",about:"about"};
+let PAGE="cond";
+function setPage(pg){PAGE=pg;document.body.classList.toggle("pg-cond",pg==="cond");document.body.classList.toggle("pg-around",pg==="around");document.body.classList.toggle("pg-partner",pg==="partner");}
+function syncSetSeg(){document.querySelectorAll("[data-setseg] button").forEach(b=>b.classList.toggle("on",b.dataset.set===tab));}
+function route(){
+  const v=HASH[(location.hash||"#ideal").slice(1)]||"ideal";
+  const main=["ideal","must","around","current","ex"].includes(v);
+  $("view-main").hidden=!main;$("view-compare").hidden=v!=="compare";$("view-about").hidden=v!=="about";
+  const nv=v==="must"?"must":v==="ideal"||v==="around"?(tab==="must"&&v==="around"?"must":"cond"):v;
+  document.querySelectorAll("#gnav a").forEach(a=>a.classList.toggle("on",a.dataset.view===nv));
+  if(v==="around"){setPage("all");if(isPartner(tab))setTab("ideal");else{applyMode();update();}syncSetSeg();setTimeout(()=>$("envPanel").scrollIntoView({behavior:"smooth"}),30);history.replaceState(null,"",tab==="must"?"#minimum":"#ideal");return;}
+  else if(v==="ideal"||v==="must"){const keep=PAGE==="all";setPage("all");if(v!==tab)setTab(v);else{applyMode();update();}if(keep){syncSetSeg();return;}}
+  else if(main){setPage("partner");if(v!==tab)setTab(v);else update();}
+  else update();
+  syncSetSeg();
+  scrollTo({top:0});
+  if(main&&last)drawChart(last);
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-setseg] button");if(!b)return;
+  const t=b.dataset.set;if(t===tab)return;
+  history.replaceState(null,"",t==="must"?"#minimum":"#ideal");setTab(t);syncSetSeg();});
+
+/* ---------- 1000人のあなた ---------- */
+const jd=d=>`${d.getMonth()+1}月${d.getDate()}日`;
+const MV={n:1000,seen:{now:false,move:false,agy:false},sc:"now",move:"r2",runs:{},anim:null,played:false,sel:-1,t:0};
+function mulberry(a){return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function mvSim(cs,ov){
+  const pp=Object.assign({},prm,ov),R=compute(cs,ov),rnd=mulberry(20251225);
+  const talked=Math.floor(pp.r*pp.T/7),selves=[];
+  for(let s=0;s<MV.n;s++){
+    let best=null,near=null;const K=R.known;
+    [["a",K.ka,K.bA],["f",K.kf,K.bF],["g",K.kg,K.bG]].forEach(([kind,n,base])=>{for(let j=0;j<n;j++){const u=rnd(),v=rnd();
+      if(u<base){const day=-pp.m*Math.log(1-v);if(day<=pp.T){if(!best||day<best.day)best={kind,day,met:0};}else if(!near||day<near.day)near={kind,day,met:0};}}});
+    for(let i=0;i<R.N;i++){
+      const base=Math.min(1,R.fits*R.likes*R.GF[i]);
+      const u=rnd(),v=rnd();
+      if(u<base){const d=-pp.m*Math.log(1-v),day=R.ts[i]+d;
+        if(day<=pp.T){if(!best||day<best.day)best={kind:"n",i:i+1,day,met:R.ts[i]};}
+        else if(!near||day<near.day)near={kind:"n",i:i+1,day,met:R.ts[i]};}
+    }
+    selves.push({best,near});
+  }
+  const ok=selves.filter(x=>x.best),okN=ok.filter(x=>x.best.kind==="n");
+  const avgI=okN.length?okN.reduce((a,x)=>a+x.best.i,0)/okN.length:0;
+  return {selves,count:ok.length,knownShare:ok.length?(ok.length-okN.length)/ok.length:0,newCount:okN.length,T:pp.T,talked,kn:R.known.ka+R.known.kf+R.known.kg,krel:pp.krel,avgTalk:Math.max(1,Math.round(avgI/pp.krel)),r:pp.r};
+}
+const ADJ_STEP={height:5,income:100};
+function adjCond(c,st){
+  if(!st)return c;const d=Object.assign({},c);
+  if(c.type==="height"||c.type==="income"){const k=ADJ_STEP[c.type];
+    if(c.mode==="ge")d.a=Math.max(0,c.a-st*k);else if(c.mode==="le")d.a=c.a+st*k;else{const lo=Math.min(c.a,c.b),hi=Math.max(c.a,c.b);d.a=Math.max(0,lo-st*k);d.b=Math.max(d.a+k/5,hi+st*k);}}
+  else if(c.type==="age"){const lo=Math.min(c.a,c.b),hi=Math.max(c.a,c.b);d.a=Math.max(18,Math.min(59,lo-st));d.b=Math.max(d.a,Math.min(59,hi+st));}
+  else if(c.type==="stat"){d.off=st>0;}
+  else if(c.type==="top"&&LVL[c.name]){d.x=LVX[Math.max(0,Math.min(LVX.length-1,lvIdx(c)+st))];}
+  else d.x=Math.max(1,Math.min(100,(+c.x||0)+st*10));
+  if(c.loc!=null){const p0=condProb(c),p1=condProb(d),o=q=>q/(1-Math.min(q,0.999999));
+    if(p0>0&&p0<1&&p1<1){const k=o(p1)/o(p0),L=c.loc;d.loc=Math.min(1,L*k/(1-L+L*k));}else if(p1>=1)d.loc=1;}
+  return d;
+}
+function adjShort(c){
+  if(c.type==="height"||c.type==="income"||c.type==="age")return envLabel(c).replace(/^[^ ]+ /,"");
+  if(c.type==="top"&&LVL[c.name])return LVL[c.name][lvIdx(c)];
+  if(c.type==="stat")return c.off?"こだわらない":"こだわる";
+  return `10人中${fmtN(c.x/10)}人`;
+}
+function mvBeh(){const r=+prm.r,T=prm.T,b=[{k:"r2",lab:`会う人を2倍（週${fmtN(r*2)}人）`,ov:{r:r*2}},{k:"t30",lab:"期限を半年のばす",ov:{T:T+182}}];
+  if(prm.krel<1)b.push({k:"krel",lab:"もう一歩仲良くなる",ov:{krel:Math.min(1,+prm.krel+0.2)}});
+  if(prm.m>7)b.push({k:"m",lab:"早めに気持ちを伝える",ov:{m:Math.max(7,Math.round(prm.m/2))}});return b;}
+function mvScenario(){
+  const cs=conds.map(c=>adjCond(c,MV.adj[c.id]||0));const ov={};const parts=[];
+  conds.forEach(c=>{const st=MV.adj[c.id]||0;if(st)parts.push(c.type==="height"||c.type==="income"||c.type==="age"?`${condTitle(c)}を${adjShort(adjCond(c,st))}に`:`${condTitle(c)}を「${adjShort(adjCond(c,st))}」に`);});
+  mvBeh().forEach(b=>{if(MV.beh.has(b.k)){Object.assign(ov,b.ov);parts.push(b.lab.replace(/（.*?）/,""));}});
+  return {cs,ov,parts};
+}
+function mvBest(){
+  const P0=compute(conds).P;let best=null;
+  conds.forEach(c=>{const P=compute(conds.map(x=>x===c?adjCond(x,1):x)).P;if(P>P0+1e-9&&(!best||P>best.P))best={k:"c:"+c.id,P};});
+
+  return best&&best.k;
+}
+function mvAdjUI(){
+  const bk=mvBest(),tag=k=>k===bk?`<i class="adj-best">一番効く</i>`:"";
+  const sc=mvScenario();
+  const rows=conds.map(c=>{const st=MV.adj[c.id]||0,d=adjCond(c,st);
+    return `<div class="adj-r ${st?"chg":""}" data-cid="${c.id}"><div class="adj-n">${tag("c:"+c.id)}${condTitle(c)}<small>${st?`${adjShort(c)} → `:""}<b>${adjShort(d)}</b></small></div>
+      <div class="adj-ctl"><button data-adj="-1">きびしく</button><button data-adj="1" class="lo">ゆるめる</button></div></div>`;}).join("");
+  const beh=mvBeh().map(b=>`<button data-chip="b:${b.k}" class="${MV.beh.has(b.k)?"on":""}">${tag("b:"+b.k)}${b.lab.replace(/（.*?）/,"")}</button>`).join("");
+  $("mvAdj").innerHTML=(conds.length?`<div class="adj-box"><div class="adj-bh">条件の度合いを変えて、もう一度走らせる</div>${rows}</div>`:"")+
+    (sc.parts.length?`<details class="mv-desc-d" ${MV.descOpen?"open":""}><summary>${sc.parts.length}つ変えています<span>詳しく見る</span></summary><p class="mv-desc">${sc.parts.join("・")}</p></details>`:"")+
+    `<div class="adj-foot"><button data-adjreset>元に戻す</button></div>`;
+  return bk;
+}
+let mvTimer=null;
+function mvSchedule(){clearTimeout(mvTimer);mvTimer=setTimeout(mvCompute,250);}
+function mvCompute(){
+  if(!MV.adj)MV.adj={};if(!MV.beh)MV.beh=new Set();
+  const bk=mvAdjUI();
+  MV.beh=new Set();if(!MV.touched&&bk){MV.adj={};if(bk.startsWith("c:"))MV.adj[bk.slice(2)]=1;else MV.beh.add(bk.slice(2));mvAdjUI();}
+  const sc=mvScenario();
+  MV.runs.now=wedify(mvSim(conds,{}));MV.runs.move=wedify(mvSim(sc.cs,sc.ov));
+  {const ap=agyParams();MV.runs.agy=agySim(ap.poolN,prm.T,ap.Q.meet,true);MV.runs.agy.key=agyKeyStr();const S=MV.runs.agy.selves,Rs=mulberry(99);for(let i=S.length-1;i>0;i--){const j=Math.floor(Rs()*(i+1));[S[i],S[j]]=[S[j],S[i]];}}
+  if(last)renderAgy(last);
+  MV.runs.move.who=sc.parts.length?sc.parts.join("・"):"何も変えない";
+  $("mvDl").textContent=dlName();
+  $("mvMoveLab").innerHTML="1つ変えた<br>（ふだんの出会い）";
+  mvLabels();
+  if(MV.anim)return;
+  MV.t=MV.played?1:0;MV.sel=-1;mvDraw();
+}
+function agyKeyStr(){const ap=agyParams();return [ap.poolN,ap.Q.meet,agy.p1,agy.p2,agy.p3,agy.d1,agy.d2,prm.T].join("|");}
+function wedify(run){const R=mulberry(4321);let w=0,a=0;run.selves.forEach(s=>{const lag=-MARRY_D*Math.log(1-R());s.a=s.best?s.best.day:null;s.w=s.a!=null&&s.a+lag<=run.T?s.a+lag:null;s.lag=lag;if(s.a!=null)a++;if(s.w!=null)w++;});run.wedCount=w;run.count=w;run.dateCount=a;run.kind="gen";return run;}
+function mvScrollTo(){const el=$("mvSc"),nav=document.querySelector(".gnav");const off=(nav?nav.getBoundingClientRect().height:0)+12;
+  scrollTo({top:el.getBoundingClientRect().top+scrollY-off,behavior:"smooth"});}
+let adjTimer=null;
+function mvAdjChanged(){MV.touched=true;MV.seen.move=false;mvAdjUI();clearTimeout(adjTimer);
+  adjTimer=setTimeout(()=>{mvCompute();mvScrollTo();MV.sc="move";$("mvSc").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.sc==="move"));mvPlay();},700);}
+document.addEventListener("click",e=>{
+  const ds=e.target.closest(".mv-desc-d summary");if(ds){setTimeout(()=>{MV.descOpen=ds.parentElement.open;},0);}
+  const ch=e.target.closest("#mvAdj [data-chip]");
+  if(ch){const k=ch.dataset.chip;if(k.startsWith("b:")){const b=k.slice(2);MV.beh.has(b)?MV.beh.delete(b):MV.beh.add(b);}else{const id=k.slice(2);MV.adj[id]=(MV.adj[id]||0)>0?0:1;}mvAdjChanged();return;}
+  const a=e.target.closest("#mvAdj [data-adj]"),bh=e.target.closest("#mvAdj [data-beh]"),rs=e.target.closest("#mvAdj [data-adjreset]");
+  if(a){MV.moreOpen=true;const id=a.closest(".adj-r").dataset.cid;MV.adj[id]=(MV.adj[id]||0)+(+a.dataset.adj);mvAdjChanged();}
+  else if(bh){const k=bh.dataset.beh;MV.beh.has(k)?MV.beh.delete(k):MV.beh.add(k);mvAdjChanged();}
+  else if(rs){MV.adj={};MV.beh=new Set();mvAdjChanged();}
+});
+function mvLabels(){
+  const q=`<span style="color:#6d6660">?</span>`;
+  $("mvNow").innerHTML=MV.seen.now?`${MV.runs.now.count}<small>人</small>`:q;
+  $("mvMoveN").innerHTML=MV.seen.move?`${MV.runs.move.count}<small>人</small>`:q;
+  $("mvAgyN").innerHTML=MV.seen.agy?`${MV.runs.agy.count}<small>人</small>`:q;
+  if(MV.seen.now){mvSum();const T=mvTitleOf();$("mvTitle").hidden=false;$("mvTitle").innerHTML=`<small>あなたの称号</small><b>${T.t}</b><span>${T.d}</span>`;}else{$("mvSum").innerHTML="";$("mvTitle").hidden=true;}
+  if(MV.seen.now&&!MV.seen.agy)$("mvSum").innerHTML+=` <span style="color:#cfc9c0">→ 上の「結婚相談所に入ったあなた」も走らせてみてください。</span>`;
+}
+function mvTitleOf(){
+  const a=MV.runs.now.count,b=MV.runs.move?MV.runs.move.count:a,F=compute(conds).fitsNat;
+  if(a>=500)return {t:"もう条件はいい感じ。あとは会うだけの人",d:"1000人中半分以上のあなたが、結婚相手と付き合えています。"};
+  if(conds.length&&F<0.01)return {t:`${oneInN(F)}を待ち続ける人`,d:"理想がかなり高め。条件を1つゆるめるだけで、景色が変わるかもしれません。"};
+  if(b>=a*2&&b-a>=20)return {t:"行動すれば化けるポテンシャル型",d:`少し変えるだけで ${a}人 → ${b}人。伸びしろが大きいタイプです。`};
+  if(F>=0.2&&a<100)return {t:"条件はふつう。足りないのは出会いだけ型",d:"理想は高くありません。会う人を増やすのが一番の近道です。"};
+  if(a<20)return {t:"今のままだと冬眠コース",d:"このままだと、ほとんどのあなたが結婚相手と付き合えません。"};
+  return {t:"コツコツ積み上げ型",d:"大きな問題はなし。続けるほど結果がついてきます。"};
+}
+function mvSum(){
+  const a=MV.runs.now,b=MV.runs.move,g=MV.runs.agy;let t=`${dlName()}までに成婚：ふだんの出会い <b>${a.count}人</b>（付き合えたのは${a.dateCount}人。結婚まで平均約4.3年かかるため）`;
+  if(MV.seen.move)t+=`、1つ変えると <b>${b.count}人</b>`;
+  if(MV.seen.agy&&g)t+=`、<b style="color:#fff">結婚相談所なら ${g.count}人</b>`;
+  $("mvSum").innerHTML=t+"。";
+}
+function mvLayout(){
+  const cv=$("mvCv"),w=cv.parentElement.clientWidth;const cols=w<520?25:50,rows=MV.n/cols;
+  const cell=w/cols,h=Math.ceil(rows*cell),dpr=window.devicePixelRatio||1;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);cv.style.height=h+"px";}
+  return {cols,cell,dpr,w,h};
+}
+function mvDraw(){
+  const run=MV.runs[MV.sc];if(!run)return;
+  const L=mvLayout(),cv=$("mvCv"),x=cv.getContext("2d");x.setTransform(L.dpr,0,0,L.dpr,0,0);x.clearRect(0,0,L.w,L.h);
+  const day=MV.t*run.T;let cnt=0;const r=L.cell*0.3;
+  let cnt2=0;
+  run.selves.forEach((s,k)=>{
+    const cx=(k%L.cols+.5)*L.cell,cy=(Math.floor(k/L.cols)+.5)*L.cell;
+    const wed=s.w!=null&&s.w<=day,dat=!wed&&s.a!=null&&s.a<=day;if(wed)cnt++;if(dat)cnt2++;
+    if(wed){const age=Math.min(1,(day-s.w)/(run.T*0.06+0.01));
+      x.fillStyle=`rgba(255,180,200,${0.3*(1-age)})`;x.beginPath();x.arc(cx,cy,r*(1+2.4*(1-age)),0,7);x.fill();
+      x.fillStyle="#ffffff";x.beginPath();x.arc(cx,cy,r*1.2,0,7);x.fill();}
+    else if(dat){x.fillStyle="#b0465f";x.beginPath();x.arc(cx,cy,r*1.0,0,7);x.fill();}
+    else{x.fillStyle="#3a3532";x.beginPath();x.arc(cx,cy,r,0,7);x.fill();}
+    if(k===MV.sel){x.strokeStyle="#fff";x.lineWidth=1.5;x.beginPath();x.arc(cx,cy,r*2.1,0,7);x.stroke();}
+  });
+  $("mvCnt2").textContent=`交際中・交際した ${cnt2}人`;
+  $("mvCnt").textContent=cnt;
+  $("mvDate").textContent=MV.t>=1?dlName()+"（期限）":day<1?"今日":jd(new Date(Date.now()+day*864e5));
+  $("mvPlay").hidden=MV.played||!!MV.anim;
+}
+function mvPlay(){
+  if(MV.anim)cancelAnimationFrame(MV.anim);MV.played=true;MV.sel=-1;$("mvStory").textContent="光った点をタップすると、その「あなた」に何が起きたかが見られます。";
+  const t0=performance.now(),dur=4200;
+  const step=now=>{const p=Math.min(1,(now-t0)/dur);MV.t=p<1?1-Math.pow(1-p,1.6):1;mvDraw();
+    if(p<1)MV.anim=requestAnimationFrame(step);else{MV.anim=null;MV.seen[MV.sc]=true;mvLabels();mvDraw();mvAutoStory();}};
+  MV.anim=requestAnimationFrame(step);
+}
+function mvAutoStory(){const run=MV.runs[MV.sc];if(!run)return;
+  let k=run.selves.findIndex(s=>s.w!=null);if(k<0)k=run.selves.findIndex(s=>s.a!=null||s.best||s.near);if(k<0)k=0;
+  mvStoryOf(k,true);}
+function mvTap(e){
+  const run=MV.runs[MV.sc];if(!run||MV.anim)return;
+  const L=mvLayout(),b=$("mvCv").getBoundingClientRect();
+  const c=Math.floor((e.clientX-b.left)/L.cell),r=Math.floor((e.clientY-b.top)/L.cell),k=r*L.cols+c;
+  if(k<0||k>=MV.n)return;if(!MV.played){MV.t=1;MV.played=true;MV.seen[MV.sc]=true;mvLabels();}
+  mvStoryOf(k,false);}
+function mvStoryOf(k,auto){const run=MV.runs[MV.sc];MV.sel=k;mvDraw();
+  const s=run.selves[k],no=`No.${String(k+1).padStart(4,"0")} のあなた`,dt=d=>jd(new Date(Date.now()+d*864e5));
+  const hint=auto?`<small class="st-hint">ほかの点もタップすると、それぞれの「あなた」に何が起きたか見られます。</small>`:"";
+  if(run.kind==="agy"){let tx;
+    if(s.w!=null)tx=`<b>${no}</b>：お見合い${s.meets}回・仮交際${s.nK}人を経て、<b>${dt(s.w)}に成婚</b>。`;
+    else if(s.serNow)tx=`<b>${no}</b>：お見合い${s.meets}回・仮交際${s.nK}人。期限の時点で<b>真剣交際中</b>でした。`;
+    else if(s.nK)tx=`<b>${no}</b>：お見合い${s.meets}回・仮交際${s.nK}人${s.nS?`・真剣交際${s.nS}人`:""}。期限までに成婚にはいたりませんでした。`;
+    else tx=`<b>${no}</b>：お見合い${s.meets}回。仮交際に進む人がいないまま期限が来ました。`+(s.meets<3?"お見合いの数が足りていません。":"");
+    $("mvStory").innerHTML=tx+hint;return;}
+  const wtx=s.w!=null?` そこから<b>${dt(s.w)}に結婚が決まった</b>。`:s.a!=null?` ただ、結婚が決まるのは期限のあと（${dt(s.a+s.lag)}ごろ）でした。`:"";
+  const nth=i=>Math.max(1,Math.round(i/run.krel));
+  let t;
+  const lf=LIFE.find(l=>l.k===lifeK&&l.r===+prm.r&&l.kn===+prm.kn),pl=lf?lf.place:"";
+  const KL={a:"前から顔見知りだった人",f:"前から仲がよかった人",g:"いい感じだった人"};
+  if(s.best&&s.best.kind!=="n")t=`<b>${no}</b>：${KL[s.best.kind]}と距離が縮まり、<b>${dt(s.best.day)}に付き合った。</b>`;
+  else if(s.best)t=`<b>${no}</b>：${pl}新しく知り合った${nth(s.best.i)}人目の人と${dt(s.best.met)}ごろ仲良くなり、<b>${dt(s.best.day)}に付き合った。</b>`;
+  else if(s.near&&s.near.kind!=="n")t=`<b>${no}</b>：${KL[s.near.kind]}といい感じになったけど、<b>付き合う前に期限が来た</b>（${dt(s.near.day)}に付き合う）。`;
+  else if(s.near)t=`<b>${no}</b>：新しく${run.talked}人と知り合った。${nth(s.near.i)}人目の人といい感じになったけど、<b>付き合う前に期限が来た</b>（${dt(s.near.day)}に付き合う）。`;
+  else t=`<b>${no}</b>：知っている${run.kn}人と、新しく知り合った${run.talked}人の中に、条件に合って好きになってくれる人はいなかった。`;
+  $("mvStory").innerHTML=t+wtx+hint;
+}
+function mvCard(){
+  const a=MV.runs.now,b=MV.runs.move;if(!a)return;const T=mvTitleOf();
+  const W=1080,H=1350,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+  x.fillStyle="#161514";x.fillRect(0,0,W,H);
+  const F=(sz,w=500)=>`${w} ${sz}px "Zen Kaku Gothic New","Hiragino Sans",sans-serif`;
+  const wrap=(txt,y,lh,max=3)=>{let line="",lines=[];for(const ch of txt){if(x.measureText(line+ch).width>W-160){lines.push(line);line=ch;}else line+=ch;}lines.push(line);lines=lines.slice(0,max);lines.forEach((l,i)=>x.fillText(l,80,y+lh*i));return lines.length;};
+  x.fillStyle="#cfc9c0";x.font=F(34);x.fillText(`1000人の私を、${dlName()}まで走らせた。`,80,110);
+  x.fillStyle="#8a847c";x.font=F(28);x.fillText("私の称号",80,180);
+  x.fillStyle="#fff";x.font=F(54,700);const n=wrap(`「${T.t}」`,245,64,2);
+  const o=n>1?64:0;
+  x.fillStyle="#ff8fa6";x.font=F(170,700);const t1=String(a.count);x.fillText(t1,80,430+o);
+  const w1=x.measureText(t1).width;x.fillStyle="#f4f2ee";x.font=F(44,700);x.fillText("人が、結婚相手と付き合えた。",95+w1,430+o);
+  const cols=50,cell=(W-160)/cols,top=470+o;
+  a.selves.forEach((s,k)=>{const cx=80+(k%cols+.5)*cell,cy=top+(Math.floor(k/cols)+.5)*cell;
+    x.fillStyle=s.best?"#ff6b8e":"#3a3532";x.beginPath();x.arc(cx,cy,cell*(s.best?.36:.3),0,7);x.fill();});
+  let y=top+20*cell+60;
+  if(b&&b.who&&b.who!=="何も変えない"){x.fillStyle="#cfc9c0";x.font=F(30);const m=wrap(`「${b.who}」と変えた私なら`,y,40,2);y+=40*m+90;
+    x.fillStyle="#ff8fa6";x.font=F(100,700);x.fillText(`${b.count}人`,80,y);}
+  x.fillStyle="#8a847c";x.font=F(28);x.fillText("婚活ドック ｜ 運命の人は、何人に1人？",80,H-60);
+  const url=c.toDataURL("image/png");$("mvImg").src=url;$("mvModal").hidden=false;
+  $("mvShare").onclick=async()=>{try{const blob=await (await fetch(url)).blob();const f=new File([blob],"love-simulator.png",{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:`私の称号は「${T.t}」。1000人の私のうち、${dlName()}に結婚相手と付き合えていたのは${a.count}人。`});
+    }catch(e){}};
+  $("mvShare").hidden=!(navigator.canShare&&window.File);
+}
+$("mvSc").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;MV.sc=b.dataset.sc;
+  $("mvSc").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));mvPlay();});
+$("mvPlay").addEventListener("click",mvPlay);$("mvReplay").addEventListener("click",mvPlay);
+$("mvCv").addEventListener("click",mvTap);$("mvCard").addEventListener("click",mvCard);
+$("mvClose").addEventListener("click",()=>$("mvModal").hidden=true);
+addEventListener("resize",()=>{if(!MV.anim)mvDraw();});
+try{new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!MV.played&&MV.runs.now)mvPlay();}),{threshold:0.5}).observe($("mvStage"));}catch(e){}
+
+
+/* ---------- トップのデモ ---------- */
+/* ---------- デモ：選んでいく過程を20秒で見せる ---------- */
+const DM={tok:0,done:false};
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+function dmData(){
+  const pd=sex,inc=DIST.income[pd];
+  const c1={type:"top",name:"人柄",x:30},c2={type:"income",mode:"ge",a:500},c3={type:"age",mode:"range",a:28,b:35},c2m={type:"income",mode:"ge",a:400};
+  const F1=[c1,c2,c3].reduce((a,c)=>a*condProb(c),1),F2=[c1,c2m,c3].reduce((a,c)=>a*condProb(c),1);
+  return {who:pd==="m"?"男性":"女性",p:[c1,c2,c3].map(condProb),p2m:condProb(c2m),F1,F2,pool:agyEst(F2),acc:1/15};
+}
+const dmPct=x=>(x*100).toFixed(1)+"%";
+function dmRing(F,big,sub){const C=2*Math.PI*48;return `<div class="dring"><svg viewBox="0 0 116 116"><circle cx="58" cy="58" r="48" fill="none" stroke="#e3dfd8" stroke-width="9"/><circle class="v" cx="58" cy="58" r="48" fill="none" stroke="#8c1d2c" stroke-width="9" stroke-linecap="round" transform="rotate(-90 58 58)" stroke-dasharray="${C}" stroke-dashoffset="${C}" data-to="${C*(1-Math.min(1,F))}"/><text x="58" y="64" text-anchor="middle" font-family="Shippori Mincho B1,serif" font-size="22">${dmPct(F)}</text></svg><div class="t"><b>${big}</b><small>${sub}</small></div></div>`;}
+const dmFill=()=>requestAnimationFrame(()=>requestAnimationFrame(()=>document.querySelectorAll("#dmScreen circle.v").forEach(c=>c.setAttribute("stroke-dashoffset",c.dataset.to))));
+function dmStep(i){document.querySelectorAll("#dmProg li").forEach((l,k)=>{l.classList.toggle("on",k===i);l.classList.toggle("done",k<i);});}
+async function dmPlay(){
+  const tok=++DM.tok,ok=()=>tok===DM.tok,S=$("dmScreen"),cap=$("dmCap"),D=dmData();DM.done=false;
+  const rows=[["人柄","人並み以上",D.p[0]],["年収","500万円以上",D.p[1]],["年齢","28〜35歳",D.p[2]]];
+  const ten=p=>p>=0.1?`10人中${(p*10).toFixed(1).replace(/\.0$/,"")}人`:oneInN(p);
+  /* 1 条件を押す */
+  dmStep(0);cap.innerHTML="<b>1.</b> お客さんと話しながら、結婚相手に求める条件を<b>大事な順に</b>押します。";
+  S.innerHTML=`<h5>よく挙がる条件（数字は重視する人の割合）</h5><div class="dsc"><span data-n="人柄">＋ 人柄<small>${RANKV[sex][0][1]}%</small></span><span>＋ 家事・育児<small>${RANKV[sex][1][1]}%</small></span><span>＋ 経済力</span><span data-n="年収">＋ 年収</span><span data-n="年齢">＋ 年齢</span><span>＋ 身長</span></div><div id="dmRk"></div>`;
+  for(let k=0;k<3;k++){await wait(k?650:900);if(!ok())return;const ch=S.querySelector(`[data-n="${rows[k][0]}"]`);ch.classList.add("tap");await wait(220);if(!ok())return;ch.classList.remove("tap");ch.classList.add("used");
+    $("dmRk").insertAdjacentHTML("beforeend",`<div class="drk"><i>${k+1}位</i>${rows[k][0]}　<span style="color:#5a544e">${rows[k][1]}</span><b>${ten(rows[k][2])}</b></div>`);}
+  await wait(1300);if(!ok())return;
+  /* 2 何人に1人 */
+  dmStep(1);cap.innerHTML=`<b>2.</b> 全部を満たす人が、独身の${D.who}の中で<b>何人に1人</b>かが出ます。`;
+  S.innerHTML=`<h5>理想の条件に当てはまる人は？</h5>${dmRing(D.F1,oneInN(D.F1),D.F1<0.1?"それだと、出会うのは<em>厳しいかもしれません</em>。":"探せば見つかるレベルです。")}`;dmFill();
+  await wait(3200);if(!ok())return;
+  /* 3 最低限 */
+  dmStep(2);cap.innerHTML="<b>3.</b> 「最低限の結婚相手」タブで、ゆずれるところを<b>ゆるめます</b>。";
+  S.innerHTML=`<h5>最低限の条件</h5><div class="drk"><i>2位</i>年収　<span id="dmInc" style="color:#5a544e">500万円以上</span><b id="dmIncP">${ten(D.p[1])}</b></div><div id="dmR2"></div>`;
+  await wait(1000);if(!ok())return;$("dmInc").innerHTML='<span class="chg">400万円以上</span>';$("dmIncP").textContent=ten(D.p2m);
+  await wait(500);if(!ok())return;
+  $("dmR2").innerHTML=dmRing(D.F2,oneInN(D.F2),`理想（${oneInN(D.F1)}）の<em>${(D.F2/D.F1).toFixed(1)}倍</em>の人が対象になります。`);dmFill();
+  await wait(2800);if(!ok())return;
+  /* 4 相談所の数字 */
+  dmStep(3);cap.innerHTML="<b>4.</b> 相談員さんは<b>4つだけ</b>入れます。会員数は検索結果、申込が通る割合は実績か見込みで。";
+  S.innerHTML=`<h5>結婚相談所の数字</h5><div class="dfi" id="dmF1"><span>条件に合う会員数</span><span>–</span></div><div class="dfi" id="dmF2"><span>申込が受けてもらえる割合</span><span>–</span></div><div class="dfi" id="dmF3"><span>1か月に送る申込</span><span>–</span></div><div class="dfi" id="dmF4"><span>1か月に受ける申込</span><span>–</span></div>`;
+  const vals=[`${D.pool.toLocaleString()}人`,"7%","10件","2件"];
+  for(let k=0;k<4;k++){await wait(k?420:700);if(!ok())return;const f=$("dmF"+(k+1));f.classList.add("typing");const sp=f.lastElementChild,v=vals[k];
+    for(let j=1;j<=v.length;j++){sp.textContent=v.slice(0,j);await wait(45);if(!ok())return;}f.classList.remove("typing");}
+  await wait(1000);if(!ok())return;
+  /* 5 どこで詰まっているか */
+  dmStep(4);cap.innerHTML="<b>5.</b> <b>求める側</b>と<b>選ばれる側</b>が並んで、どこで詰まっているかが出ます。";
+  S.innerHTML=`<h5>求める側と、選ばれる側</h5><div class="dcards"><div id="dmA"><small>求める側：条件に合う会員</small><b>${D.pool.toLocaleString()}人</b></div><div id="dmB"><small>選ばれる側：申込が通るのは</small><b>14件に1件</b></div></div><div id="dmM"></div>`;
+  await wait(1200);if(!ok())return;$("dmB").classList.add("hit");
+  $("dmM").innerHTML=`<div class="dmsg">会員は十分いるのに、お見合いは月1.3回ほど。<br>詰まっているのは<b>選ばれる側</b>です。申込を増やすか、相手の年齢や条件の幅を広げると、お見合いが増えます。</div>`;
+  dmStep(5);DM.done=true;
+}
+function dmSkip(){DM.tok++;dmStep(5);$("dmScreen").innerHTML=`<h5>使い方</h5>${["結婚相手に求める条件を、大事な順に押す","日本全体で何人に1人かを見る","最低限の条件にゆるめて、何倍に広がるか見る","相談員さんが、相談所の数字を4つ入れる","求める側と選ばれる側の、どちらで詰まっているかを見る"].map((s,i)=>`<div class="drk" style="animation:none"><i>${i+1}</i>${s}</div>`).join("")}`;$("dmCap").innerHTML="";DM.done=true;}
+$("dmRe").addEventListener("click",dmPlay);
+$("dmSkip").addEventListener("click",()=>{dmSkip();$("mainGrid").scrollIntoView({behavior:"smooth"});});
+$("dmGo").addEventListener("click",e=>{e.preventDefault();DM.tok++;if(!DM.done)dmSkip();$("mainGrid").scrollIntoView({behavior:"smooth"});});
+setTimeout(()=>{if(!isPartner(tab))dmPlay();},400);
+
+$("dock").addEventListener("click",e=>{if($("dock").dataset.cm){e.preventDefault();const el=$("agyPanel"),nav=document.querySelector(".gnav");scrollTo({top:el.getBoundingClientRect().top+scrollY-(nav?nav.offsetHeight:0)-12,behavior:"smooth"});return;}
+  if($("dock").dataset.pt){e.preventDefault();const el=$("retroStats"),nav=document.querySelector(".gnav");scrollTo({top:el.getBoundingClientRect().top+scrollY-(nav?nav.offsetHeight:0)-12,behavior:"smooth"});return;}
+  if(!$("dock").dataset.run)return;e.preventDefault();
+  mvScrollTo();setTimeout(()=>{if(!MV.anim){mvCompute();MV.sc="now";$("mvSc").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.sc==="now"));mvPlay();}},650);});
+(function(){let seen=false;try{seen=localStorage.getItem("ls_ob")==="1";}catch(e){}
+  if(!seen)$("ob").hidden=false;
+  $("obGo").addEventListener("click",()=>{$("ob").hidden=true;try{localStorage.setItem("ls_ob","1");}catch(e){}});})();
+function encState(){const pick=c=>{const o={t:c.type};["name","x","mode","a","b","loc"].forEach(k=>{if(c[k]!=null&&c[k]!=="")o[k]=c[k];});return o;};
+  const st={v:1,s:sex,i:sets.ideal.map(pick),p:{r:+prm.r,kn:+prm.kn,kf:+prm.kf,kg:+prm.kg,likes:+prm.likes,krel:+prm.krel,m:+prm.m}};
+  return "LS1:"+btoa(unescape(encodeURIComponent(JSON.stringify(st))));}
+function decState(code){code=(code||"").trim().replace(/\s/g,"");if(!code.startsWith("LS1:"))throw 0;return JSON.parse(decodeURIComponent(escape(atob(code.slice(4)))));}
+function applyState(st){
+  if(st.s&&st.s!==sex){sex=st.s;document.querySelectorAll("#sexSeg button").forEach(b=>b.classList.toggle("on",b.dataset.s===sex));}
+  sets.ideal=(st.i||[]).map(o=>{const c={id:"c"+(++uid),set:"ideal",type:o.t};["name","x","mode","a","b","loc"].forEach(k=>{if(o[k]!=null)c[k]=o[k];});if(c.type==="age")c.amode="national";return c;});
+  Object.entries(st.p||{}).forEach(([k,v])=>{const pd=P_DEF.find(p=>p.k===k);if(!pd||!isFinite(v))return;setP(k,v);});
+  lifeK=null;syncLife();
+  if(tab!=="ideal"){history.replaceState(null,"","#ideal");setTab("ideal");}else{conds=sets.ideal;renderConds();}
+  MV.adj={};MV.touched=false;MV.seen={now:false,move:false};MV.played=false;
+  setTimeout(()=>{mvCompute();mvScrollTo();setTimeout(()=>{MV.sc="now";$("mvSc").querySelectorAll("button").forEach(x=>x.classList.toggle("on",x.dataset.sc==="now"));mvPlay();},600);},100);
+}
+let codeMode="out";
+$("codeOut").addEventListener("click",()=>{codeMode="out";$("codeH").textContent="友達に送るコード";
+  $("codeP").textContent="このコードを友達に送って、「友達のコードで走らせる」に貼ってもらうと、相手のスマホであなたの理想の1000人が走ります。";
+  $("codeTx").value=encState();$("codeTx").readOnly=true;$("codeAct").textContent="コピーする";$("codeMsg").textContent="";$("codeModal").hidden=false;});
+$("codeIn").addEventListener("click",()=>{codeMode="in";$("codeH").textContent="友達のコードで走らせる";
+  $("codeP").textContent="友達から届いたコード（LS1: で始まる文字）を貼り付けてください。友達の理想の条件で、1000人が走ります。";
+  $("codeTx").value="";$("codeTx").readOnly=false;$("codeAct").textContent="この条件で走らせる";$("codeMsg").textContent="";$("codeModal").hidden=false;setTimeout(()=>$("codeTx").focus(),50);});
+$("codeAct").addEventListener("click",async()=>{
+  if(codeMode==="out"){const t=$("codeTx");t.select();let ok=false;try{await navigator.clipboard.writeText(t.value);ok=true;}catch(e){try{ok=document.execCommand("copy");}catch(e2){}}
+    $("codeMsg").textContent=ok?"コピーしました。LINEなどに貼って送ってください。":"コピーできなかったので、上の文字を長押しで選んでコピーしてください。";return;}
+  try{const st=decState($("codeTx").value);$("codeModal").hidden=true;applyState(st);}catch(e){$("codeMsg").textContent="コードを読み取れませんでした。LS1: から最後まで、すべて貼り付けてください。";}});
+$("codeClose").addEventListener("click",()=>$("codeModal").hidden=true);
+addEventListener("hashchange",route);
+try{const vis=new Set();const io=new IntersectionObserver(es=>{es.forEach(e=>e.isIntersecting?vis.add(e.target):vis.delete(e.target));document.body.classList.toggle("res-in",vis.size>0);},{threshold:0.2});io.observe($("multi"));io.observe($("demo"));}catch(e){}
+
+function renderTabNote(){
+  if(tab==="must"&&!sets.must.length&&sets.ideal.length)$("ctabNote").innerHTML=`理想の条件から、いらないものを消していくと簡単です。<button id="copyIdeal">理想の条件をコピーして始める</button>`;
+  else $("ctabNote").textContent="";
+}
+$("ctabNote").addEventListener("click",e=>{if(e.target.id!=="copyIdeal")return;conds=sets.ideal.map(c=>({...c,set:"must",id:"c"+(++uid)}));sets.must=conds;renderConds();});
+["cmp","rareCmp"].forEach(id=>$(id).addEventListener("click",e=>{const b=e.target.closest(".box");if(b)location.hash={ideal:"#ideal",must:"#minimum",current:"#partner",ex:"#ex"}[b.dataset.tab];}));
+
+/* distribution mini plot */
+function plotRange(c){
+  if(c.type==="age")return [18,60];
+  if(c.type==="height"){const {mu,sd}=DIST.height[sex];return [mu-4*sd,mu+4*sd];}
+  const {med,s}=DIST.income[sex];return [0,med*Math.exp(2.6*s)];}
+function drawPlot(c){
+  const svg=document.querySelector(`#${c.id} .c-plot`);if(!svg)return;
+  const W=220,H=58,base=H-12;let curve="",shade="",xs=[],ticks="";
+  const hd=v=>`<circle cx="${v}" cy="${base}" r="4" fill="#8c1d2c"/><rect x="${v-3}" y="${base-26}" width="6" height="14" rx="3" fill="#fff" stroke="#8c1d2c" stroke-width="1.2"/>`;
+  if(c.type==="age"){
+    const ages=[];for(let k=18;k<=59;k++)ages.push(k);const mx=Math.max(...ages.map(k=>AGEU[sex][k]));const bw=W/ages.length;
+    const lo=Math.min(c.a,c.b),hi=Math.max(c.a,c.b);
+    svg.innerHTML=ages.map((k,i)=>{const h=AGEU[sex][k]/mx*(base-4);const on=k>=lo&&k<=hi;
+      return `<rect x="${i*bw+.5}" y="${base-h}" width="${bw-1}" height="${h}" fill="${on?"#8c1d2c":"#e3dfd8"}" opacity="${on?.85:1}"/>`;}).join("")
+      +`<text x="0" y="${H-1}" font-size="9" fill="#9a958e" font-family="IBM Plex Mono">18</text><text x="${W}" y="${H-1}" font-size="9" fill="#9a958e" text-anchor="end" font-family="IBM Plex Mono">59歳</text>`
+      +hd((lo-18)*bw)+hd((hi-18+1)*bw);
+    return;
+  }
+  let fx,lo,hi,toX;
+  if(c.type==="height"){const {mu,sd}=DIST.height[sex];lo=mu-4*sd;hi=mu+4*sd;fx=v=>pdf((v-mu)/sd);}
+  else{const {med,s}=DIST.income[sex];lo=0;hi=med*Math.exp(2.6*s);fx=v=>v<=0?0:pdf((Math.log(v)-Math.log(med))/s)/v;}
+  toX=v=>(v-lo)/(hi-lo)*W;
+  const n=90,pts=[];let mx=0;for(let i=0;i<=n;i++){const v=lo+(hi-lo)*i/n;const y=fx(v);pts.push([v,y]);if(y>mx)mx=y;}
+  const Y=y=>base-y/mx*(base-4);
+  curve="M"+pts.map(([v,y])=>`${toX(v).toFixed(1)},${Y(y).toFixed(1)}`).join(" L");
+  let a,b;if(c.mode==="ge"){a=c.a;b=hi;}else if(c.mode==="le"){a=lo;b=c.a;}else{a=Math.min(c.a,c.b);b=Math.max(c.a,c.b);}
+  a=Math.max(lo,a);b=Math.min(hi,b);
+  if(b>a){const sp=[];for(let i=0;i<=40;i++){const v=a+(b-a)*i/40;sp.push(`${toX(v).toFixed(1)},${Y(fx(v)).toFixed(1)}`);}
+    shade=`<path d="M${toX(a).toFixed(1)},${base} L${sp.join(" L")} L${toX(b).toFixed(1)},${base} Z" fill="#8c1d2c" opacity=".22"/>`;}
+  const u=DIST[c.type].unit;
+  svg.innerHTML=`${shade}<path d="${curve}" fill="none" stroke="#57534e" stroke-width="1.2"/><line x1="0" y1="${base}" x2="${W}" y2="${base}" stroke="#e3dfd8"/>`
+   +[a,b].filter(v=>v>lo+1e-9&&v<hi-1e-9).map(v=>`<line x1="${toX(v)}" y1="2" x2="${toX(v)}" y2="${base}" stroke="#8c1d2c" stroke-width="1"/>`+hd(toX(v))).join("")
+   +`<text x="0" y="${H-1}" font-size="9" fill="#9a958e" font-family="IBM Plex Mono">${Math.round(lo)}</text><text x="${W}" y="${H-1}" font-size="9" fill="#9a958e" text-anchor="end" font-family="IBM Plex Mono">${Math.round(hi)}${u}</text>`;
+}
+
+/* drag on distribution plots */
+let drag=null;
+function plotVal(svg,c,clientX){const r=svg.getBoundingClientRect();const fr=Math.min(1,Math.max(0,(clientX-r.left)/r.width));const [lo,hi]=plotRange(c);let v=lo+fr*(hi-lo);
+  if(c.type==="age")return Math.min(59,Math.max(18,Math.floor(v)));const st=DIST[c.type].step;return Math.round(v/st)*st;}
+function applyDrag(e){if(!drag)return;const {svg,c,key,el}=drag;const v=plotVal(svg,c,e.clientX);c[key]=v;
+  const inp=el.querySelector(`[data-f="${key}"]`);if(inp)inp.value=v;update();}
+$("conds").addEventListener("pointerdown",e=>{const svg=e.target.closest(".c-plot");if(!svg)return;const el=svg.closest(".cond");const c=conds.find(x=>x.id===el.id);
+  const v=plotVal(svg,c,e.clientX);let key="a";if(c.mode==="range"||c.type==="age")key=Math.abs(v-c.a)<=Math.abs(v-c.b)?"a":"b";
+  drag={svg,c,key,el};svg.setPointerCapture(e.pointerId);applyDrag(e);e.preventDefault();});
+$("conds").addEventListener("pointermove",e=>{if(drag)applyDrag(e);});
+$("conds").addEventListener("pointerup",()=>{drag=null;});
+$("conds").addEventListener("pointercancel",()=>{drag=null;});
+
+/* ---------- params UI ---------- */
+const LIFE=[
+ {k:"none",lab:"ほとんど人と話さない",sub:"知っている人3人・新しく週0.5人",kn:3,kf:0,r:0.5,place:"たまたま"},
+ {k:"home",lab:"ほぼ家と職場（学校）だけ",sub:"知っている人20人・新しく週0.5人",kn:20,kf:2,r:0.5,place:"職場や学校で"},
+ {k:"circle",lab:"趣味や習い事の集まりもある",sub:"知っている人40人・新しく週2人",kn:40,kf:4,r:2,place:"趣味の集まりで"},
+ {k:"party",lab:"飲み会や紹介によく行く",sub:"知っている人60人・新しく週5人",kn:60,kf:6,r:5,place:"飲み会や紹介で"},
+ {k:"app",lab:"マッチングアプリも使っている",sub:"知っている人25人・新しく週10人",kn:25,kf:3,r:10,place:"アプリで"}];
+let lifeK=null;
+function setP(k,v){prm[k]=v;const pd=P_DEF.find(p=>p.k===k),el=$("p_"+k);if(el)el.value=pd.log?toLog(pd,v):v;const o=$("o_"+k);if(o)o.textContent=pd.fmt(v);}
+function setR(v){prm.r=v;const pd=P_DEF.find(p=>p.k==="r"),el=$("p_r");if(el)el.value=toLog(pd,v);const o=$("o_r");if(o)o.textContent=pd.fmt(v);}
+function syncLife(){const l=LIFE.find(x=>x.k===lifeK);const ok=l&&l.r===+prm.r&&l.kn===+prm.kn;document.querySelectorAll("[data-life]").forEach(b=>b.classList.toggle("on",ok&&b.dataset.life===lifeK));}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-life]");if(!b)return;const l=LIFE.find(x=>x.k===b.dataset.life);lifeK=l.k;setR(l.r);setP("kn",l.kn);setP("kf",l.kf);syncLife();update();});
+function toLog(p,v){return Math.round(1000*Math.log(v/p.min)/Math.log(p.max/p.min));}
+function fromLog(p,s){const v=p.min*Math.pow(p.max/p.min,s/1000);return v<10?Math.round(v*2)/2:v<50?Math.round(v):Math.round(v/5)*5;}
+function renderParams(){
+  let h="";
+  const ADV=["kf","kg","lambda","g","kappa"];let adv="";
+  P_DEF.forEach(p=>{
+    if(p.v===null)p.v=daysToXmas();prm[p.k]=p.v;
+    if(p.xmas)return;
+    const isAdv=ADV.includes(p.k);let h0="";
+    if(p.k==="kn")h0+=`<div class="life"><div class="life-h">ふだんの生活に近いのは？<small>選ぶと、下の「知っている人」と「新しく知り合う人」が入ります。新しく知り合う人はゼロから、知っている人は途中の段階から計算します。</small></div><div class="life-b">${LIFE.map(l=>`<button data-life="${l.k}"><b>${l.lab}</b><small>${l.sub}</small></button>`).join("")}</div></div>`;
+    if(p.group&&isAdv)h0+=`<div class="group-h" data-g="${p.group}">${p.group==="出会い"?"出会い方":p.group}</div>`;
+    const extra=p.xmas?`<button class="mini-btn" id="toXmas">クリスマスまで</button>`:"";
+    const d=p.xmas?"出会いを続ける日数（初期値は今日からクリスマスまで）":p.d;
+    h0+=`<div class="prm" data-pk="${p.k}"><div class="prm-h"><label for="p_${p.k}">${p.name}</label><output id="o_${p.k}">${p.fmt(p.v)}</output></div>
+      <div class="row">${p.log?`<input type="range" id="p_${p.k}" data-k="${p.k}" data-log="1" min="0" max="1000" step="1" value="${toLog(p,p.v)}">`:`<input type="range" id="p_${p.k}" data-k="${p.k}" min="${p.min}" max="${p.max}" step="${p.step}" value="${p.v}">`}${extra}</div>
+      ${p.ends?`<div class="ends"><span>← ${p.ends[0]}</span><span>${p.ends[1]} →</span></div>`:""}
+      <div class="prm-d">${d}</div></div>`;
+    if(isAdv)adv+=h0;else h+=h0;
+  });
+  h+=`<details class="adv"><summary>くわしく設定する<span>知っている人の内訳（仲がいい人・いい感じの人）、疲れやすさ・上達・慣れ（そのままでもOK）</span></summary>${adv}</details>`;
+  $("params").innerHTML=h;
+  $("params").addEventListener("input",e=>{const k=e.target.dataset.k;if(!k)return;const pd=P_DEF.find(p=>p.k===k);prm[k]=e.target.dataset.log?fromLog(pd,+e.target.value):+e.target.value;$("o_"+k).textContent=P_DEF.find(p=>p.k===k).fmt(prm[k]);if(k==="r"||k==="kn")syncLife();update();});
+  $("dlDate").min=ymd(new Date(today0().getTime()+864e5));
+  $("dlDate").addEventListener("change",e=>{if(!e.target.value)return;const [y,m,d]=e.target.value.split("-").map(Number);const dt=new Date(y,m-1,d);if(dt>today0())setDeadline(dt);});
+  $("dlChips").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+    if(b.dataset.k==="x")setDeadline(xmasDate());else{const t=today0();setDeadline(new Date(t.getFullYear(),t.getMonth()+(+b.dataset.m),t.getDate()));}});
+}
+
+/* ---------- chart ---------- */
+function drawChart(R){
+  const cv=$("chart"),dpr=devicePixelRatio||1,w=cv.clientWidth||600,h=220;
+  cv.width=w*dpr;cv.height=h*dpr;const x=cv.getContext("2d");x.setTransform(dpr,0,0,dpr,0,0);
+  const L=38,Rr=44,T=10,B=24,pw=w-L-Rr,ph=h-T-B,days=R.T||prm.T;
+  x.font="10.5px 'IBM Plex Mono', monospace";x.fillStyle="#9a958e";x.strokeStyle="#ebe7e0";x.lineWidth=1;
+  for(let k=0;k<=4;k++){const y=Math.round(T+ph*(1-k/4))+.5;x.beginPath();x.moveTo(L,y);x.lineTo(L+pw,y);x.stroke();x.fillText((k*25)+"%",0,y+3);}
+  x.fillText(isPartner(tab)?"探し始め":"今日",L,h-6);x.textAlign="right";x.fillText(isPartner(tab)?`${days}日後`:`${md(deadline)}（${days}日後）`,L+pw,h-6);x.textAlign="left";
+  if(!R.N){x.fillText("チャンスが0回です — 行動量か期間を増やしてください",L+12,T+ph/2);return;}
+  const X=t=>L+t/days*pw,qraw=Math.max(...R.qs)||1e-9;
+  const qmax=qraw>=0.5?1:qraw>=0.2?0.5:qraw>=0.1?0.2:qraw>=0.05?0.1:qraw>=0.02?0.05:qraw>=0.01?0.02:qraw*1.25;
+  const bw=Math.max(1,Math.min(10,pw/R.N*0.7));
+  x.fillStyle="#ddd8cf";
+  R.qs.forEach((q,i)=>{const bh=q/qmax*ph;x.fillRect(X(R.ts[i])-bw/2,T+ph-bh,bw,bh);});
+  x.fillStyle="#b3ada4";x.textAlign="right";
+  for(let k=1;k<=4;k++){const y=Math.round(T+ph*(1-k/4))+3;const v=qmax*k/4*100;x.fillText((v<1?v.toFixed(2):v<10?v.toFixed(1):v.toFixed(0))+"%",w-2,y);}
+  x.textAlign="left";
+  x.beginPath();x.moveTo(L,T+ph);let py=T+ph;
+  R.cum.forEach((c,i)=>{const px=X(R.ts[i]);x.lineTo(px,py);py=T+ph*(1-c);x.lineTo(px,py);});
+  x.lineTo(L+pw,py);x.strokeStyle="#8c1d2c";x.lineWidth=2;x.stroke();
+  x.lineTo(L+pw,T+ph);x.closePath();x.fillStyle="rgba(140,29,44,.06)";x.fill();
+}
+
+
+/* ---------- 結婚相談所で活動すると（相談員が入力） ---------- */
+/* g: 見出し / save: 相談所の数字としてブラウザに残す / per: 理想・最低限で別 / act: お客さんの実績 */
+document.addEventListener("click",e=>{const b=e.target.closest("#mtSeg button");if(!b)return;MT=b.dataset.mt;renderAgyIn();if(last)renderAgy(last);if(typeof mvSchedule==="function"&&!isPartner(tab))mvSchedule();});
+const AGY_DEF=[
+  {main:1,k:"pool",s:"条件に合う会員",name:"条件に合う会員数",unit:"人",step:1,min:0,def:null,per:true,d:"相談所の検索で、STEP 1 の条件で絞った異性の会員数。空欄なら IBJ の会員数（110,482名・男54%女46%）× 日本全体での割合で推定します。"},
+  {main:3,k:"send",s:"送る申込/月",name:"1か月に送る申込",unit:"件",step:1,min:0,def:10,d:"お客さんから、条件に合う人へ申し込む数。"},
+  {main:2,k:"acc",s:"申込が通る",name:"申込が受けてもらえる割合",unit:"%",step:1,min:0,max:100,def:10,d:"送った申込のうち、お見合いが成立する割合。実績がなければ、お客さんの年齢・年収・写真などを見た感覚で。"},
+  {main:4,k:"recv",s:"受ける申込/月",name:"1か月に受ける申込",unit:"件",step:0.5,min:0,def:2,d:"相手から、お客さんに申込が来る数。"},
+  {g:"受けた申込への返事",k:"ok",name:"受けた申込のうち、お客さんがOKする割合",unit:"%",step:1,min:0,max:100,def:30,d:"条件に合わない人からの申込も来るので、全部は受けません。"},
+  {g:"このお客さんの実績（入れると見込みより優先）",gd:"活動を始めてからの合計を入れてください。件数が少ないうちは、上の見込みに寄せて計算します。",k:"aMon",s:"活動した期間",name:"活動した期間",unit:"か月",step:0.5,min:0,def:null,act:true,d:""},
+  {k:"aSend",s:"送った申込",name:"送った申込",unit:"件",step:1,min:0,def:null,act:true,d:""},
+  {k:"aAcc",s:"お見合い成立",name:"そのうち、お見合いが成立した",unit:"件",step:1,min:0,def:null,act:true,d:""},
+  {k:"aRecv",s:"受けた申込",name:"受けた申込",unit:"件",step:1,min:0,def:null,act:true,d:""},
+  {k:"aOk",s:"お見合いにした",name:"そのうち、お見合いにした",unit:"件",step:1,min:0,def:null,act:true,d:""},
+  {g:"交際の進み方（相談所の実績）",gd:"相談所全体の数字です。一度入れると、このブラウザに残ります。",k:"p1",name:"お見合い → 仮交際",unit:"%",step:1,min:0,max:100,def:40,save:true,src:"IBJ",d:"お見合いのあと、お互いOKで仮交際に進む割合。初期値は IBJ の公表値（約4割）。"},
+  {k:"p2",name:"仮交際 → 真剣交際",unit:"%",step:1,min:0,max:100,def:30,save:true,d:"あなたの相談所の実績を入れてください。"},
+  {k:"p3",name:"真剣交際 → 成婚",unit:"%",step:1,min:0,max:100,def:70,save:true,d:"あなたの相談所の実績を入れてください。"},
+  {k:"d1",name:"仮交際の期間（平均）",unit:"か月",step:0.5,min:0.5,def:2,save:true,src:"IBJ",d:"IBJ では、交際から約120日で成婚を決める人が多いとされています（仮交際＋真剣交際）。"},
+  {k:"d2",name:"真剣交際の期間（平均）",unit:"か月",step:0.5,min:0.5,def:2,save:true,d:""},
+];
+const agy={};AGY_DEF.forEach(a=>{if(!a.per)agy[a.k]=a.def;});
+const agyPool={ideal:null,must:null};
+try{const s=JSON.parse(localStorage.getItem("lsk.agy")||"null");if(s)AGY_DEF.filter(a=>a.save).forEach(a=>{if(s[a.k]!=null)agy[a.k]=+s[a.k];});}catch(e){}
+const agySave=()=>{try{const o={};AGY_DEF.filter(a=>a.save).forEach(a=>o[a.k]=agy[a.k]);localStorage.setItem("lsk.agy",JSON.stringify(o));}catch(e){}};
+const agyEst=F=>Math.round((typeof mdTotal==="function"?mdTotal():IBJ_TOTAL*IBJ_SHARE[sex])*F);
+/* 相談所の会員分布（相手の性別ごと、ブラウザに残す） */
+const MB_BR=[[20,24],[25,29],[30,34],[35,39],[40,44],[45,49],[50,54],[55,59]];
+const INC_BR=[[0,300],[300,400],[400,500],[500,600],[600,800],[800,1000],[1000,2000]];
+const mdBlank=()=>({tot:null,age:Array(8).fill(null),inc:Array(7).fill(null),med:null,h:null,edu:null,smoke:null});
+const mdist={m:mdBlank(),f:mdBlank()};
+try{const s=JSON.parse(localStorage.getItem("lsk.mdist")||"null");if(s)["m","f"].forEach(k=>{if(s[k])Object.assign(mdist[k],s[k]);if(!mdist[k].inc)mdist[k].inc=Array(7).fill(null);});}catch(e){}
+const mdSave=()=>{try{localStorage.setItem("lsk.mdist",JSON.stringify(mdist));}catch(e){}};
+const mdSum=a=>(a||[]).reduce((x,y)=>x+(Math.max(0,+y||0)),0);
+const mdHasAge=()=>mdSum(mdist[sex].age)>0,mdHasIncBr=()=>mdSum(mdist[sex].inc)>0,mdHasInc=()=>mdHasIncBr()||mdist[sex].med>0;
+const mdTotal=()=>mdist[sex].tot>0?mdist[sex].tot:Math.round(IBJ_TOTAL*IBJ_SHARE[sex]);
+function memberP(c){const M=mdist[sex];
+  if(c.type==="age"&&mdHasAge()){const A=M.age.map(v=>Math.max(0,+v||0)),tot=mdSum(A);
+    const lo=Math.min(c.a,c.b),hi=Math.max(c.a,c.b);let w=0;MB_BR.forEach(([a,b],i)=>{const ov=Math.max(0,Math.min(b,hi)-Math.max(a,lo)+1);w+=A[i]*ov/(b-a+1);});return w/tot;}
+  if(c.type==="income"&&mdHasIncBr()){const A=M.inc.map(v=>Math.max(0,+v||0)),tot=mdSum(A);
+    const F=v=>INC_BR.reduce((s,[lo,hi],i)=>s+A[i]*Math.max(0,Math.min(1,(v-lo)/(hi-lo))),0)/tot;return Math.max(0,rangeP(c,F));}
+  if(c.type==="income"&&M.med>0){const s=DIST.income[sex].s;return rangeP(c,v=>v<=0?0:Phi((Math.log(v)-Math.log(M.med))/s));}
+  if(c.type==="height"&&M.h>0){const sd=DIST.height[sex].sd;return rangeP(c,v=>Phi((v-M.h)/sd));}
+  if(c.type==="stat"&&!c.off&&c.name==="大卒以上"&&M.edu!=null)return Math.min(1,M.edu/100);
+  if(c.type==="stat"&&!c.off&&c.name==="タバコを吸わない"&&M.smoke!=null)return Math.min(1,M.smoke/100);
+  return condProb(c);}
+const mdUsed=()=>{const M=mdist[sex];return conds.some(c=>(c.type==="age"&&mdHasAge())||(c.type==="income"&&mdHasInc())||(c.type==="height"&&M.h>0)||(c.type==="stat"&&((c.name==="大卒以上"&&M.edu!=null)||(c.name==="タバコを吸わない"&&M.smoke!=null))));};
+const memberF=()=>conds.reduce((a,c)=>a*memberP(c),1);
+const KS=10; /* 実績が少ないうちは見込みに寄せる（見込みを10件分の重みとして混ぜる） */
+function agyRates(){
+  const has=v=>v!=null&&v!=="";
+  const accA=has(agy.aSend)&&agy.aSend>0&&has(agy.aAcc),okA=has(agy.aRecv)&&agy.aRecv>0&&has(agy.aOk),recvA=has(agy.aRecv)&&has(agy.aMon)&&agy.aMon>0;
+  const acc=accA?(Math.min(agy.aAcc,agy.aSend)+agy.acc/100*KS)/(agy.aSend+KS):agy.acc/100;
+  const ok=okA?(Math.min(agy.aOk,agy.aRecv)+agy.ok/100*KS)/(agy.aRecv+KS):agy.ok/100;
+  const recv=recvA?agy.aRecv/agy.aMon:agy.recv;
+  const fromSend=agy.send*acc,fromRecv=recv*ok;
+  return {acc,ok,recv,fromSend,fromRecv,meet:fromSend+fromRecv,accA,okA,recvA,accRaw:accA?Math.min(agy.aAcc,agy.aSend)/agy.aSend:null,okRaw:okA?Math.min(agy.aOk,agy.aRecv)/agy.aRecv:null};
+}
+function agySim(poolN,T,meet,keep){const selves=[];
+  const MO=T/30.4,R=mulberry(20261126),P1=agy.p1/100,P2=agy.p2/100,P3=agy.p3/100,D1=Math.max(.25,agy.d1),D2=Math.max(.25,agy.d2);
+  const dr=D=>D*(0.5+R());
+  const pois=l=>{let k=0,p=Math.exp(-l),c=p,u=R();while(u>c&&k<300){k++;p*=l/k;c+=p;}return k;};
+  let ok=0,sumMeet=0,sumKari=0,sumSer=0;const times=[];
+  for(let s=0;s<1000;s++){
+    let met=0,kari=[],serEnd=null,done=null,nK=0,nS=0,firstK=null;
+    for(let m=0;m<Math.ceil(MO)&&done==null;m++){
+      const t1=Math.min(MO,m+1);
+      if(serEnd!=null){if(serEnd<=t1){if(R()<P3)done=serEnd;else serEnd=null;}if(serEnd!=null||done!=null)continue;}
+      kari=kari.filter(e=>{if(e>t1)return true;if(serEnd==null&&R()<P2){serEnd=e+dr(D2);nS++;}return false;});
+      if(serEnd!=null){kari=[];if(serEnd<=t1){if(R()<P3)done=serEnd;else serEnd=null;}continue;}
+      let k=pois(meet*(t1-m));k=Math.min(k,Math.max(0,poolN-met));
+      for(let j=0;j<k;j++){met++;if(R()<P1){nK++;const st=m+R()*(t1-m);if(firstK==null||st<firstK)firstK=st;kari.push(st+dr(D1));}}
+    }
+    if(done!=null&&done<=MO){ok++;times.push(done);}
+    if(keep)selves.push({a:firstK!=null&&firstK<=MO?firstK*30.4:null,w:done!=null&&done<=MO?done*30.4:null,meets:met,nK,nS,serNow:serEnd!=null&&done==null});
+    sumMeet+=met;sumKari+=nK;sumSer+=nS;
+  }
+  times.sort((a,b)=>a-b);
+  return {P:ok/1000,med:times.length>=500?times[499]:null,meet:sumMeet/1000,kari:sumKari/1000,ser:sumSer/1000,MO,selves,count:ok,T,kind:"agy"};
+}
+const agyKey=()=>tab==="must"?"must":"ideal";
+function agyTag(a){const v=a.per?agyPool[agyKey()]:agy[a.k];
+  if(a.per)return v==null?["","推定"]:["in","検索"];
+  if(a.act)return v==null||v===""?["","未入力"]:["in","実績"];
+  return v!==a.def?["in","入力済み"]:["",a.src||(a.save?"仮の値":"見込み")];}
+function agyRow(a){const v=a.per?agyPool[agyKey()]:agy[a.k],[c,l]=agyTag(a);
+  return `${a.g?`<h4 style="margin:16px 0 2px;font-size:14px">${a.g}</h4>${a.gd?`<p class="prm-d" style="margin:0 0 4px">${a.gd}</p>`:""}`:""}<div class="ai"><label for="ag_${a.k}">${a.name}<span class="tg ${c}" id="agt_${a.k}">${l}</span></label>
+    <span class="v"><input type="number" id="ag_${a.k}" data-ag="${a.k}" step="${a.step}" min="${a.min}" ${a.max?`max="${a.max}"`:""} value="${v??""}" placeholder="${a.per?"例 120":a.act?"–":""}">${a.unit}</span>${a.d?`<small>${a.d}</small>`:""}</div>`;}
+function mdUI(){const M=mdist[sex],who=sex==="m"?"男性":"女性",nat=Math.round(IBJ_TOTAL*IBJ_SHARE[sex]);
+  const one=(k,lab,unit,ph,note)=>`<div class="ai"><label>${lab}<span class="tg ${M[k]!=null?"in":""}" data-mdt="${k}">${M[k]!=null?"入力済み":"日本全体"}</span></label><span class="v"><input type="number" min="0" step="any" data-md="${k}" value="${M[k]??""}" placeholder="${ph}">${unit}</span>${note?`<small>${note}</small>`:""}</div>`;
+  return `<h4 style="margin:16px 0 2px;font-size:14px">会員の分布（相談所の設定・${who}会員）</h4><p class="prm-d" style="margin:0 0 6px">あなたの相談所（または加盟している連盟）の${who}会員について、分かるものだけ入れてください。入れたものは「条件に合う会員数」の推定に使われ、空欄のものは日本全体の独身の${who}の分布を使います。このブラウザに残ります。</p>
+  ${one("tot",`${who}会員の数`,"人",nat.toLocaleString(),`空欄なら IBJ の会員数（110,482名）× ${who}の割合（${Math.round(IBJ_SHARE[sex]*100)}%）`)}
+  <p class="prm-d" style="margin:10px 0 2px">年齢の分布（各年代の人数か割合。合計は100でなくてOK）</p>
+  <div class="mdist">${MB_BR.map(([a,b],i)=>`<label>${a}〜${b}歳<input type="number" min="0" step="any" data-md="age.${i}" value="${M.age[i]??""}" placeholder="–"></label>`).join("")}</div>
+  <p class="prm-d" style="margin:10px 0 2px">年収の分布（各年収帯の人数か割合。入れると下の中央値より優先）</p>
+  <div class="mdist">${INC_BR.map(([a,b],i)=>`<label>${i===0?"300万未満":i===6?"1000万以上":`${a}〜${b}万`}<input type="number" min="0" step="any" data-md="inc.${i}" value="${M.inc[i]??""}" placeholder="–"></label>`).join("")}</div>
+  ${one("med",`${who}会員の年収の真ん中（中央値）`,"万円",DIST.income[sex].med,"年収帯の分布が分からないときだけ。ばらつきは日本全体と同じとして計算します。")}
+  ${one("h",`${who}会員の身長の平均`,"cm",DIST.height[sex].mu,"ばらつきは日本全体と同じとして計算します。")}
+  ${one("edu","大卒以上の割合","%",Math.round(STAT["大卒以上"].p(sex)*100),"")}
+  ${one("smoke","タバコを吸わない人の割合","%",Math.round(STAT["タバコを吸わない"].p(sex)*100),"")}
+  <p class="prm-d" style="margin:8px 0 0">人柄・家事育児などの数字にしにくい条件は、会員でも日本全体と同じとして計算します。</p>`;}
+let MT="first";
+function agyCell(a){const v=a.per?agyPool[agyKey()]:agy[a.k],[c,l]=agyTag(a);
+  return `<div class="cell"><label for="ag_${a.k}">${a.s}<span class="tg ${c}" id="agt_${a.k}">${l}</span></label><span class="v"><input type="number" id="ag_${a.k}" data-ag="${a.k}" step="${a.step}" min="${a.min}" ${a.max?`max="${a.max}"`:""} value="${v??""}" placeholder="${a.per?"検索結果":a.act?"–":""}">${a.unit}</span></div>`;}
+function renderAgyIn(){
+  if(!$("agyIn"))return;
+  document.querySelectorAll("#mtSeg button").forEach(b=>b.classList.toggle("on",b.dataset.mt===MT));
+  const FNK=["p1","p2","p3","d1","d2"];const main=AGY_DEF.filter(a=>a.main).sort((x,y)=>x.main-y.main),act=AGY_DEF.filter(a=>a.act),set=AGY_DEF.filter(a=>!a.main&&!a.act&&!FNK.includes(a.k));
+  $("agyIn").innerHTML=main.map(agyCell).join("")+(MT==="active"?`<h4>このお客さんの実績（始めてからの合計。入れると見込みより優先）</h4>`+act.map(agyCell).join(""):"");
+  const op=$("agySet").open;$("agySetBody").innerHTML=set.map(a=>agyRow(Object.assign({},a,{g:a.g==="受けた申込への返事"?"お客さんの返事（初期値のままでOK）":a.g}))).join("")+mdUI();
+}
+const perN=x=>x<=0?"なし":x>=0.5?`${Math.round(x*100)}%（10件に${(x*10).toFixed(x*10<10&&x*10%1?1:0)}件）`:`${Math.round(1/x)}件に1件（${(x*100).toFixed(x<0.1?1:0)}%）`;
+function agyParams(){const inp=agyPool[agyKey()],FM=memberF(),useMd=mdUsed()||mdist[sex].tot>0,est=agyEst(FM);return {inp,FM,useMd,est,poolN:inp!=null?inp:est,Q:agyRates()};}
+const MARRY_D=4.3*365.25; /* ふだんの出会い：付き合ってから結婚まで平均4.3年（出生動向基本調査 2021） */
+function agyFilled(){const k=[];if(agyPool[agyKey()]!=null)k.push("pool");if(agy.acc!==10||(agy.aSend>0&&agy.aAcc!=null))k.push("acc");if(agy.p2!==30)k.push("p2");if(agy.p3!==70)k.push("p3");return k;}
+function renderAgy(R){
+  if(!$("agyCmp")||isPartner(tab))return;
+  const {inp,FM,useMd,est,poolN}=agyParams();
+  const pi=$("ag_pool");if(pi&&document.activeElement!==pi)pi.placeholder=conds.length?`推定${est.toLocaleString()}`:"検索結果";
+  $("agyHint").textContent=MT==="first"?`会員数は相談所の検索結果を。空欄なら推定（${est.toLocaleString()}人）で計算します。申込が通る割合は、実績がなければ見込みで。`:"実績は件数が少ないうちは、見込みに寄せて計算します。";
+  const Q=agyRates(),A=(MV.runs&&MV.runs.agy&&MV.runs.agy.key===agyKeyStr())?MV.runs.agy:agySim(poolN,prm.T,Q.meet),mo=x=>x<1?"1か月以内":x<12?`${Math.round(x)}か月`:`${(x/12).toFixed(1)}年`,f1=x=>(+x).toFixed(1).replace(/\.0$/,"");
+  const bottleneck=conds.length&&poolN<20?"A":Q.acc<0.1?"B":"";
+  $("agyCmp").innerHTML=`<div class="${bottleneck==="A"?"hit":""}"><small>求める側：条件に合う会員</small><b>${poolN.toLocaleString()}<span style="display:inline;font-size:14px">人</span></b><span>${inp!=null?"相談所の検索":useMd?"会員の分布からの推定":"IBJ 会員数からの推定"}${conds.length?(useMd?`・会員の中で${oneInN(FM)}（日本全体は${oneInN(R.fitsNat)}）`:`・日本全体で${oneInN(R.fitsNat)}`):""}</span></div>
+    <div class="${bottleneck==="B"?"hit":""}"><small>選ばれる側：申込が通るのは</small><b style="font-size:24px">${Q.acc>0&&Q.acc<0.5?`${Math.round(1/Q.acc)}件に1件`:Math.round(Q.acc*100)+"%"}</b><span>${Q.accA?`実績 ${agy.aAcc}/${agy.aSend}件を見込みと合わせて`:"相談員さんの見込み"}・受ける申込 月${f1(Q.recv)}件</span></div>`;
+  const W=MV.runs&&MV.runs.now&&MV.runs.now.wedCount!=null?MV.runs.now.wedCount/1000:null,fl=agyFilled();
+  $("agyRes").innerHTML=`<span>${dlName()}までに成婚</span><span class="vs">ふだんの出会い <b class="o">${W==null?"…":fmtP(W)}</b></span><span>→ 相談所 <b>${fmtP(A.P)}</b></span><small>どちらも「期限までに結婚が決まる（成婚）」で数えています。ふだんの出会いは付き合ってから結婚まで平均約4.3年（出生動向基本調査 2021）、相談所はお見合い 月${f1(Q.meet)}回・${A.med!=null?`真ん中の人は${mo(A.med)}で成婚`:"半分以上は期限までに成婚せず"}。${fl.length<3?`<br><b style="color:#ffc53d;font-size:12px">⚠ 会員数・申込が通る割合・交際の進み方がまだ仮の値です。相談所の数字を入れると、確かな比較になります。</b>`:""}</small>`;
+  const fin=k=>{const a=AGY_DEF.find(x=>x.k===k),[c,l]=agyTag(a),v=a.per?agyPool[agyKey()]:agy[k];return `<span class="fin"><input type="number" data-ag="${k}" step="${a.step}" min="${a.min}" ${a.max?`max="${a.max}"`:""} value="${v??""}" placeholder="${a.per?est.toLocaleString():""}">${a.unit}<span class="tg ${c}" data-agt="${k}">${l}</span></span>`;};
+  const mo1=x=>(+x).toFixed(1).replace(/\.0$/,"");
+  const rows=[["条件に合う会員",poolN,"人",()=>`検索した人数 ${fin("pool")}（空欄なら${useMd?"会員の分布":"IBJ の会員数"}からの推定）`,null],
+    [`${dlName()}までのお見合い`,A.meet,"回",()=>`送る申込 ${fin("send")}／月 × 通る ${fin("acc")} ＋ 受ける申込 ${fin("recv")}／月 × OKする ${fin("ok")}`,()=>`＝ 月${mo1(Q.meet)}回 × ${A.MO.toFixed(1)}か月（会員の数が上限）`],
+    ["仮交際",A.kari,"人",()=>`お見合いの ${fin("p1")}`,null],
+    ["真剣交際",A.ser,"人",()=>`仮交際の ${fin("p2")}・仮交際の期間 ${fin("d1")}`,()=>"真剣交際中は新しいお見合いを止める"],
+    ["成婚",A.P,"%",()=>`真剣交際の ${fin("p3")}・真剣交際の期間 ${fin("d2")}`,null]];
+  const mx=Math.max(1,poolN,A.meet),fmtV=(v,u)=>u==="%"?fmtP(v):(v>=10?Math.round(v).toLocaleString():(+v).toFixed(1))+" "+u,wd=(v,u)=>u==="%"?Math.max(1.5,v*100):fnW(v,mx);
+  const fnEl=$("agyFn");
+  if(fnEl.dataset.built&&fnEl.contains(document.activeElement)){rows.forEach(([l,v,u,ed,cp],i)=>{const c=$("fnc"+i);if(c)c.textContent=fmtV(v,u);const b=$("fnb"+i);if(b)b.style.width=wd(v,u)+"%";const x=$("fnx"+i);if(x&&cp)x.textContent=cp();});}
+  else{fnEl.innerHTML=rows.map(([l,v,u,ed,cp],i)=>`<div class="fn-row one ${i===rows.length-1?"last":""}"><span class="lb">${l}</span><span class="ct" id="fnc${i}">${fmtV(v,u)}</span><div class="bar"><i id="fnb${i}" style="width:${wd(v,u)}%"></i></div><span class="hint">${ed()}${cp?`<br><span id="fnx${i}">${cp()}</span>`:""}</span></div>`).join("");fnEl.dataset.built="1";}
+  document.querySelectorAll("#agyPanel input[data-ag]").forEach(x=>{if(x===document.activeElement)return;const k=x.dataset.ag,a=AGY_DEF.find(z=>z.k===k),v=a.per?agyPool[agyKey()]:agy[k];if(String(v??"")!==x.value)x.value=v??"";});
+
+  /* どこで詰まっているか */
+  const why=[];
+  if(conds.length&&poolN<20)why.push(`<b>求める側で詰まっています</b>：条件に合う会員が${poolN}人だけ。最低限の条件でも検索してみてください。`);
+  if(Q.acc<0.1)why.push(`<b>選ばれる側で詰まっています</b>：申込が通るのは${perN(Q.acc)}。申込を増やすか、相手の幅を広げましょう。`);
+  if(Q.meet<2)why.push(`お見合いが月${f1(Q.meet)}回と少なめ（成婚率はお見合い10〜12回まで上がり続けるとされています：IBJ 成婚白書）。`);
+  if(Q.accA&&Q.accRaw!=null&&Math.abs(Q.accRaw-agy.acc/100)>0.05)why.push(`実績の成立率（${perN(Q.accRaw)}）が、見込み（${agy.acc}%）と違います。見込みを実績に近づけると、ほかのお客さんの計算にも役立ちます。`);
+  let msg=why.length?`<ul>${why.map(w=>`<li>${w}</li>`).join("")}</ul>`:"大きな詰まりはありません。このペースで続けましょう。";
+  $("agyMsg").innerHTML=msg;
+  if(tab!=="must")AGY_LAST={P:A.P,med:A.med};
+}
+document.addEventListener("input",e=>{const md=e.target.dataset&&e.target.dataset.md;if(md==null)return;const raw=e.target.value,v=raw===""||isNaN(+raw)?null:Math.max(0,+raw);
+  const [k,i]=md.split(".");if(i!=null)mdist[sex][k][+i]=v;else{mdist[sex][k]=v;document.querySelectorAll(`[data-mdt="${k}"]`).forEach(tg=>{tg.className="tg "+(v!=null?"in":"");tg.textContent=v!=null?"入力済み":"日本全体";});}mdSave();if(last)renderAgy(last);if(typeof mvSchedule==="function"&&!isPartner(tab))mvSchedule();});
+document.addEventListener("input",e=>{const k=e.target.dataset&&e.target.dataset.ag;if(!k)return;const a=AGY_DEF.find(x=>x.k===k),raw=e.target.value;
+  if(a.per)agyPool[agyKey()]=raw===""?null:Math.max(0,Math.round(+raw));
+  else if(a.act)agy[k]=raw===""?null:Math.max(0,+raw);
+  else{if(raw===""||isNaN(+raw))return;let v=+raw;if(a.max)v=Math.min(a.max,v);agy[k]=Math.max(a.min,v);if(a.save)agySave();}
+  {const [c,l]=agyTag(a);document.querySelectorAll(`#agt_${k},[data-agt="${k}"]`).forEach(tg=>{tg.className="tg "+c;tg.textContent=l;});}
+  if(last)renderAgy(last);if(typeof mvSchedule==="function"&&!isPartner(tab))mvSchedule();});
+
+
+/* ---------- ほかの相談者さんの例（相談員が入力・このブラウザに残す） ---------- */
+let EXS=[];try{EXS=JSON.parse(localStorage.getItem("lsk.cases")||"[]")||[];}catch(e){EXS=[];}
+const exSave=()=>{try{localStorage.setItem("lsk.cases",JSON.stringify(EXS));}catch(e){}};
+let AGY_LAST=null;
+function curCase(){
+  const cs=sets.ideal;if(!cs.length)return null;
+  const F=compute(cs).fitsNat,Q=agyRates();
+  return {l:"今の相談者さん",c:cs.map(envLabel).join("・"),n:Math.max(1,Math.round(1/Math.max(F,1e-9))),a:Math.round(Q.acc*1000)/10,r:"活動中",m:null,t:AGY_LAST?`この条件・この数字だと、${dlName()}までに成婚 ${fmtP(AGY_LAST.P)}`:"",me:true};
+}
+const esc=s=>String(s??"").replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+function renderExs(){
+  if(!$("exList"))return;const cur=curCase(),all=(cur?[cur]:[]).concat(EXS);
+  $("exList").innerHTML=all.length?all.map((e,i)=>`<div class="exr ${e.me?"me":""}"><span class="l">${esc(e.l)}</span><span class="r ${e.r==="成婚"?"ok":""}">${esc(e.r)}${e.m!=null&&e.m!==""?`・${esc(e.m)}か月`:""}</span>
+    ${e.c?`<span class="c">${esc(e.c)}</span>`:""}<span class="n"><span>何人に1人 <b>${e.n?Number(e.n).toLocaleString()+"人":"–"}</b></span><span>申込が通る <b>${e.a!=null&&e.a!==""?esc(e.a)+"%":"–"}</b></span></span>${e.t?`<span class="m">${esc(e.t)}</span>`:""}${e.me?"":`<button class="ex-del" data-exdel="${i-(cur?1:0)}">この例を消す</button>`}</div>`).join(""):`<p class="prm-d">まだ例がありません。「理想の結婚相手」タブで条件を入れるか、下から例を追加してください。</p>`;
+  /* 近い例から一言 */
+  let msg="";
+  if(cur&&EXS.length){
+    const near=EXS.filter(e=>e.n>0&&e.n>=cur.n/2&&e.n<=cur.n*2),ok=near.filter(e=>e.r==="成婚");
+    const ms=ok.map(e=>+e.m).filter(x=>x>0).sort((a,b)=>a-b);
+    if(near.length)msg=`今の相談者さん（${cur.n.toLocaleString()}人に1人）と近い厳しさ（半分〜2倍）の例は<b>${near.length}件</b>。そのうち成婚は<b>${ok.length}件</b>${ms.length?`、期間は${ms[0]}〜${ms[ms.length-1]}か月`:""}。`;
+    else{const easier=EXS.filter(e=>e.n>0&&e.n<cur.n/2&&e.r==="成婚");msg=`近い厳しさの例はまだありません。`+(easier.length?`成婚した例の多くは、今の相談者さんより条件がゆるめです（${easier.map(e=>e.n.toLocaleString()+"人に1人").slice(0,3).join("、")}）。`:"");}
+  }
+  $("exMsg").innerHTML=msg;
+}
+document.addEventListener("click",e=>{
+  const d=e.target.closest("[data-exdel]");if(d){EXS.splice(+d.dataset.exdel,1);exSave();renderExs();return;}
+  if(e.target.id==="exSnap"){const c=curCase();if(!c){$("exSnapLab").placeholder="先に理想の条件を入れてください";return;}
+    const lab=$("exSnapLab").value.trim()||"相談者さん";EXS.unshift(Object.assign({},c,{l:lab,me:false,t:"",r:"活動中"}));$("exSnapLab").value="";exSave();renderExs();return;}
+  if(e.target.id==="exAdd"){const v=id=>$(id).value.trim();if(!v("exL")&&!v("exN")&&!v("exC"))return;
+    EXS.push({l:v("exL")||"相談者さん",c:v("exC"),n:v("exN")?Math.round(+v("exN")):null,a:v("exA")===""?null:+v("exA"),r:v("exR"),m:v("exM")===""?null:+v("exM"),t:v("exT")});
+    ["exL","exC","exN","exA","exM","exT"].forEach(id=>$(id).value="");exSave();renderExs();}
+});
+
+/* ---------- init ---------- */
+deadline=xmasDate();$("days").textContent=daysToXmas();
+$("bandsLab").innerHTML=RULES.map(r=>`<span>${r.lab}</span>`).join("");
+
+renderParams();renderAgyIn();
+$("sexSeg").addEventListener("click",()=>setTimeout(()=>{renderAgyIn();if(last)renderAgy(last);},0));
+
+$("agyReset").onclick=()=>{AGY_DEF.forEach(a=>{if(!a.per&&!a.save)agy[a.k]=a.def;});agyPool.ideal=null;agyPool.must=null;renderAgyIn();if(last)renderAgy(last);};
+$("dlDate").value=ymd(deadline);$("o_T").textContent=prm.T;
+conds=[];
+renderConds();
+$("condLead").textContent=LEAD.ideal;$("retroT").addEventListener("input",e=>{retroT=+e.target.value;$("o_retroT").textContent=retroT+" 日";update();});route();
+addEventListener("resize",()=>last&&drawChart(last));
+</script>
+</body>
+</html>
